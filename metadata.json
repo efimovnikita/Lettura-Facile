@@ -1,0 +1,5 @@
+{
+  "name": "Lettura Facile",
+  "description": "A distraction-free language reading assistant using Mistral AI for simplification and translation.",
+  "requestFramePermissions": []
+}
