@@ -228,6 +228,12 @@ export default function App() {
   const nextSentence = () => {
     if (currentIndex < sentences.length - 1) {
       setCurrentIndex(prev => prev + 1);
+    } else {
+      // Если это было последнее предложение:
+      setView('input');
+      setText(''); // Очищаем текст для новой порции
+      setSentences([]); // Сбрасываем массив предложений
+      setCurrentIndex(0); // Сбрасываем индекс
     }
   };
 
@@ -245,7 +251,7 @@ export default function App() {
 
   if (view === 'input') {
     return (
-      <div className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col items-center justify-center p-6">
+      <div className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col items-center justify-center p-6 animate-in fade-in duration-500">
         <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 border border-stone-200">
 
 		  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -307,7 +313,7 @@ export default function App() {
 
   // Reader View
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col p-6">
+    <div className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col p-6 animate-in fade-in duration-500">
       {/* Header */}
       <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 md:mb-12 max-w-5xl mx-auto w-full">
         <div className="w-full md:w-auto flex justify-between md:justify-start items-center">
@@ -440,10 +446,18 @@ export default function App() {
 
             <button
               onClick={nextSentence}
-              disabled={currentIndex === sentences.length - 1 || isSentenceLoading}
+              disabled={isSentenceLoading}
               className="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full font-medium text-lg shadow-lg shadow-indigo-200 hover:shadow-indigo-300 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              La prossima frase <ArrowRight className="w-5 h-5" />
+              {currentIndex === sentences.length - 1 ? (
+                <>
+                  Nuovo Testo <RotateCcw className="w-5 h-5" />
+                </>
+              ) : (
+                <>
+                  La prossima frase <ArrowRight className="w-5 h-5" />
+                </>
+              )}
             </button>
           </div>
         </div>
