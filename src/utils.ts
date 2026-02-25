@@ -23,13 +23,22 @@ export const loadState = (): AppState | null => {
 };
 
 export const splitIntoSentences = (text: string): string[] => {
-  // Basic sentence splitting (can be improved)
-  // Matches periods, exclamation marks, question marks followed by space or end of string
-  // Also handles newlines as delimiters
   if (!text) return [];
-  return text
-    .replace(/([.?!])\s*(?=[A-Z])/g, "$1|")
+
+  // 1. Убираем лишние пробелы и склеенные переносы строк
+  let processedText = text.replace(/\s+/g, ' ').trim();
+
+  // 2. Временно "прячем" многоточия, заменяя их на спецсимвол,
+  // чтобы алгоритм не воспринимал их как конец предложения.
+  processedText = processedText.replace(/\.\.\./g, '@@@');
+
+  // 3. Разбиваем по знакам препинания (. ? !), за которыми следует пробел и Заглавная буква.
+  // Обратите внимание: убрали плюс после [.?!], теперь ищем строго один знак.
+  const sentences = processedText
+    .replace(/([.?!][»"']?)\s+(?=[«"']?\p{Lu})/gu, "$1|")
     .split("|")
-    .map(s => s.trim())
+    .map(s => s.replace(/@@@/g, '...').trim()) // Возвращаем многоточия обратно
     .filter(s => s.length > 0);
+
+  return sentences;
 };
