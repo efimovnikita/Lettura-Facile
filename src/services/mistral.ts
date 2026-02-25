@@ -2,6 +2,7 @@ import { Mistral } from '@mistralai/mistralai';
 
 let cachedClient: Mistral | null = null;
 let cachedKey: string = "";
+const wordTranslationCache = new Map<string, string>();
 
 const getMistralClient = (apiKey: string) => {
   const cleanKey = apiKey ? apiKey.trim() : "";
@@ -26,6 +27,14 @@ const getMistralClient = (apiKey: string) => {
 };
 
 export async function translateWord(apiKey: string, word: string, sentence: string) {
+  // 1. Формируем уникальный ключ, связывая слово и контекст
+  const cacheKey = `${word.toLowerCase().trim()}|||${sentence.trim()}`;
+
+  // 2. Проверяем, есть ли уже перевод в кэше
+  if (wordTranslationCache.has(cacheKey)) {
+    return wordTranslationCache.get(cacheKey)!;
+  }
+
   const client = getMistralClient(apiKey);
 
   const response = await client.chat.complete({
@@ -52,15 +61,23 @@ export async function translateWord(apiKey: string, word: string, sentence: stri
   });
 
   const content = response.choices?.[0]?.message?.content;
+
+  // Создаем переменную для хранения итогового результата
+  let result = "";
+
   if (typeof content === 'string') {
     // Дополнительная зачистка на случай, если модель все же ослушается
-    return content.trim().replace(/^["']|["']$/g, '').replace(/\.$/, '');
+    result = content.trim().replace(/^["']|["']$/g, '').replace(/\.$/, '');
+  } else if (Array.isArray(content)) {
+    result = content.map(c => ('text' in c ? c.text : '')).join('').trim().replace(/^["']|["']$/g, '').replace(/\.$/, '');
   }
 
-  if (Array.isArray(content)) {
-    return content.map(c => ('text' in c ? c.text : '')).join('').trim().replace(/^["']|["']$/g, '').replace(/\.$/, '');
+  // 3. Если мы получили не пустой результат, сохраняем его в кэш
+  if (result) {
+    wordTranslationCache.set(cacheKey, result);
   }
-  return "";
+
+  return result;
 }
 
 export async function translateSentence(apiKey: string, sentence: string) {
