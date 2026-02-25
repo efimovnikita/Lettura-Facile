@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Settings, BookOpen, ArrowRight, RotateCcw, Languages, Loader2, X } from 'lucide-react';
+import { Settings, BookOpen, ArrowRight, RotateCcw, Languages, Loader2, X, ClipboardPaste } from 'lucide-react';
 import { AppState, saveState, loadState, splitIntoSentences, Difficulty } from './utils';
 import { translateWord, translateSentence, simplifySentence } from './services/mistral';
 
@@ -95,6 +95,19 @@ export default function App() {
     setSentences(split);
     setCurrentIndex(0);
     setView('reader');
+  };
+
+  const handlePaste = async () => {
+    try {
+      const clipboardText = await navigator.clipboard.readText();
+      if (clipboardText) {
+        setText(clipboardText);
+      }
+    } catch (err) {
+      console.error('Failed to read clipboard:', err);
+      // Опционально: выведи ошибку пользователю, если доступ к буферу запрещен
+      setError("Не удалось прочитать буфер обмена. Пожалуйста, разрешите доступ.");
+    }
   };
 
   const performTranslation = async (phrase: string, rect: DOMRect) => {
@@ -257,6 +270,19 @@ export default function App() {
           <p className="mb-4 text-stone-600">
             Incolla il tuo testo italiano qui sotto per iniziare a leggere senza distrazioni.
           </p>
+
+          <div className="flex justify-between items-end mb-2">
+            <p className="text-stone-600 text-sm">
+              Incolla il tuo testo italiano qui sotto:
+            </p>
+            <button
+              onClick={handlePaste}
+              className="flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors bg-indigo-50 px-2 py-1 rounded-md border border-indigo-100"
+            >
+              <ClipboardPaste className="w-3 h-3" /> {/* Не забудь импортировать ClipboardPaste из lucide-react */}
+              Incolla
+            </button>
+          </div>
 
           <textarea
             className="w-full h-64 p-4 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none font-mono text-sm mb-6"
