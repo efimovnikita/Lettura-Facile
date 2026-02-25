@@ -1,0 +1,26 @@
+steps:
+  # 1. Сборка образа (используем кэш для скорости)
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/lettura-facile:$COMMIT_SHA', '-t', 'gcr.io/$PROJECT_ID/lettura-facile:latest', '.']
+
+  # 2. Публикация образа в Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/lettura-facile:$COMMIT_SHA']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/lettura-facile:latest']
+
+  # 3. Деплой в Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'lettura-facile' # Имя твоего сервиса в Cloud Run
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/lettura-facile:$COMMIT_SHA'
+      - '--region'
+      - 'us-central1' # Замени на свой регион
+      - '--allow-unauthenticated'
+
+images:
+  - 'gcr.io/$PROJECT_ID/lettura-facile:$COMMIT_SHA'
