@@ -33,29 +33,32 @@ export async function translateWord(apiKey: string, word: string, sentence: stri
     messages: [
       {
         role: "system",
-        content: `You are a precise translator.
-        Your task: Translate the specific Italian word/phrase provided by the user into English.
-        Context: Use the provided sentence ONLY to understand the correct sense of the word.
-        Rules:
-        1. Output ONLY the English translation.
-        2. NO punctuation (unless part of the word).
-        3. NO explanations or context.
-        4. NO quotes.`
+        content: `You are an API endpoint that provides direct dictionary translations.
+        Your task: Translate the specific Italian word/phrase provided into English.
+        Context: Use the provided sentence ONLY to understand the correct meaning and grammatical form.
+
+        STRICT RULES:
+        1. Output EXACTLY the English translation and nothing else.
+        2. NO punctuation marks at the end (no periods, no exclamation marks).
+        3. NO quotes around the output.
+        4. NO conversational filler, explanations, or notes.`
       },
       {
         role: "user",
         content: `Word: "${word}"\nSentence context: "${sentence}"`
       }
     ],
-    temperature: 0 // Максимальная точность и краткость
+    temperature: 0
   });
 
   const content = response.choices?.[0]?.message?.content;
-  if (typeof content === 'string') return content.trim().replace(/[".]/g, '');
+  if (typeof content === 'string') {
+    // Дополнительная зачистка на случай, если модель все же ослушается
+    return content.trim().replace(/^["']|["']$/g, '').replace(/\.$/, '');
+  }
 
-  // Обработка массива (на всякий случай)
   if (Array.isArray(content)) {
-    return content.map(c => ('text' in c ? c.text : '')).join('').trim().replace(/[".]/g, '');
+    return content.map(c => ('text' in c ? c.text : '')).join('').trim().replace(/^["']|["']$/g, '').replace(/\.$/, '');
   }
   return "";
 }
