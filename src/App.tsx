@@ -3,7 +3,7 @@ import { Settings, BookOpen, ArrowRight, RotateCcw, Languages, Loader2, X, Clipb
 import { AppState, saveState, loadState, splitIntoSentences, Difficulty } from './utils';
 import { translateWord, translateSentence, simplifySentence } from './services/mistral';
 
-const APP_VERSION = 'v1.1.0';
+const APP_VERSION = 'v1.1.1';
 
 export default function App() {
   const [mistralKey, setMistralKey] = useState('');
@@ -228,6 +228,9 @@ export default function App() {
   };
 
   const nextSentence = () => {
+    // Сбрасываем сложность на оригинал при переходе вперед
+    setDifficulty('original');
+
     if (currentIndex < sentences.length - 1) {
       setCurrentIndex(prev => prev + 1);
     } else {
@@ -241,6 +244,8 @@ export default function App() {
 
   const prevSentence = () => {
     if (currentIndex > 0) {
+      // Сбрасываем сложность на оригинал при возврате назад
+      setDifficulty('original');
       setCurrentIndex(prev => prev - 1);
     }
   };
