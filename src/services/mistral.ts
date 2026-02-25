@@ -5,7 +5,7 @@ let cachedKey: string = "";
 
 const getMistralClient = (apiKey: string) => {
   const cleanKey = apiKey ? apiKey.trim() : "";
-  
+
   if (!cleanKey) {
     throw new Error("Mistral API Key is missing");
   }
@@ -27,22 +27,35 @@ const getMistralClient = (apiKey: string) => {
 
 export async function translateWord(apiKey: string, word: string, sentence: string) {
   const client = getMistralClient(apiKey);
-  const prompt = `Translate ONLY the Italian word or phrase "${word}" into English. Do NOT translate the entire sentence. Use the sentence "${sentence}" ONLY for context to choose the correct meaning. Return JUST the English translation of "${word}".`;
-  
+
   const response = await client.chat.complete({
     model: "mistral-medium-latest",
-    messages: [{ role: "user", content: prompt }],
-    temperature: 0.7
+    messages: [
+      {
+        role: "system",
+        content: `You are a precise translator.
+        Your task: Translate the specific Italian word/phrase provided by the user into English.
+        Context: Use the provided sentence ONLY to understand the correct sense of the word.
+        Rules:
+        1. Output ONLY the English translation.
+        2. NO punctuation (unless part of the word).
+        3. NO explanations or context.
+        4. NO quotes.`
+      },
+      {
+        role: "user",
+        content: `Word: "${word}"\nSentence context: "${sentence}"`
+      }
+    ],
+    temperature: 0 // Максимальная точность и краткость
   });
 
   const content = response.choices?.[0]?.message?.content;
-  if (typeof content === 'string') return content;
-  // Handle array content (e.g. multimodal) if necessary, though unlikely for this model/use-case
+  if (typeof content === 'string') return content.trim().replace(/[".]/g, '');
+
+  // Обработка массива (на всякий случай)
   if (Array.isArray(content)) {
-    return content.map(c => {
-      if ('text' in c) return c.text;
-      return '';
-    }).join('');
+    return content.map(c => ('text' in c ? c.text : '')).join('').trim().replace(/[".]/g, '');
   }
   return "";
 }
@@ -50,7 +63,7 @@ export async function translateWord(apiKey: string, word: string, sentence: stri
 export async function translateSentence(apiKey: string, sentence: string) {
   const client = getMistralClient(apiKey);
   const prompt = `Translate the following Italian sentence into English: "${sentence}". Provide ONLY the English translation.`;
-  
+
   const response = await client.chat.complete({
     model: "mistral-small-latest",
     messages: [{ role: "user", content: prompt }],
@@ -70,15 +83,27 @@ export async function translateSentence(apiKey: string, sentence: string) {
 
 export async function simplifySentence(apiKey: string, sentence: string, level: string) {
   if (level === 'original') return sentence;
-  
+
   const client = getMistralClient(apiKey);
-  const prompt = `Rewrite the following Italian sentence for a "${level}" level learner. Keep the original meaning but adjust vocabulary and grammar. Sentence: "${sentence}". Provide ONLY the rewritten Italian sentence.`;
-  
+
   const response = await client.chat.complete({
-    model: "mistral-small-latest",
-    messages: [{ role: "user", content: prompt }],
-    temperature: 0.7
-  });
+      model: "mistral-small-latest",
+      messages: [
+        {
+          role: "system",
+          content: `You are a linguistic processor. Your ONLY task is to rewrite Italian sentences for a ${level} level learner.
+          Rules:
+          1. Output ONLY the rewritten sentence.
+          2. NO explanations, NO comments, NO parentheses, NO introductory text.
+          3. Do not quote the output.`
+        },
+        {
+          role: "user",
+          content: sentence
+        }
+      ],
+      temperature: 0 // Делает модель максимально строгой и последовательной
+    });
 
   const content = response.choices?.[0]?.message?.content;
   if (typeof content === 'string') return content;

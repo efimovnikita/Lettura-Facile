@@ -10,7 +10,7 @@ export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [view, setView] = useState<'input' | 'reader'>('input');
   const [difficulty, setDifficulty] = useState<Difficulty>('original');
-  
+
   // Reader State
   const [currentSentenceText, setCurrentSentenceText] = useState('');
   const [translation, setTranslation] = useState<string | null>(null);
@@ -56,7 +56,7 @@ export default function App() {
   useEffect(() => {
     const fetchSentenceVersion = async () => {
       if (sentences.length === 0) return;
-      
+
       const original = sentences[currentIndex];
       setTranslation(null);
       setWordTranslation(null);
@@ -70,7 +70,14 @@ export default function App() {
         setIsSentenceLoading(true);
         try {
           const simplified = await simplifySentence(mistralKey, original, difficulty);
-          setCurrentSentenceText(simplified.replace(/"/g, '')); // Remove quotes if AI adds them
+
+          // Очистка: удаляем кавычки и любой текст в круглых скобках
+          const finalSentence = simplified
+            .replace(/["']/g, '')           // Убирает кавычки
+            .replace(/\s*\([^)]*\)/g, '')   // Убирает (текст в скобках)
+            .trim();
+
+          setCurrentSentenceText(finalSentence);
         } catch (err: any) {
           setError(err.message);
           setCurrentSentenceText(original); // Fallback
@@ -100,14 +107,14 @@ export default function App() {
 
     // Decide placement (default top, fallback bottom)
     const placement = relativeTop > 100 ? 'top' : 'bottom';
-    
+
     setTooltipPosition({
       top: placement === 'top' ? relativeTop - 10 : relativeTop + rect.height + 10,
       left: relativeLeft,
       placement
     });
 
-    setWordTranslation({ word: phrase, translation: '' }); 
+    setWordTranslation({ word: phrase, translation: '' });
     setIsWordLoading(true);
     try {
       const trans = await translateWord(mistralKey, phrase, currentSentenceText);
@@ -140,7 +147,7 @@ export default function App() {
         newIndices = [...selectedIndices, index].sort((a, b) => a - b);
       }
       setSelectedIndices(newIndices);
-      
+
       if (newIndices.length > 0) {
         const allWords = currentSentenceText.split(' ');
         const phrase = newIndices.map(i => allWords[i].replace(/[.,!?;:"«»()]/g, '')).join(' ');
@@ -155,7 +162,7 @@ export default function App() {
     // Delay for double-tap detection on mobile/standard click
     clickTimeoutRef.current = setTimeout(() => {
       let indicesToTranslate = [index];
-      
+
       // If clicking on an already selected word in a group, translate the whole group
       if (selectedIndices.includes(index) && selectedIndices.length > 0) {
         indicesToTranslate = selectedIndices;
@@ -166,7 +173,7 @@ export default function App() {
 
       const allWords = currentSentenceText.split(' ');
       const phrase = indicesToTranslate.map(i => allWords[i].replace(/[.,!?;:"«»()]/g, '')).join(' ');
-      
+
       if (phrase) {
         performTranslation(phrase, rect);
       }
@@ -187,7 +194,7 @@ export default function App() {
       newIndices = [...selectedIndices, index].sort((a, b) => a - b);
     }
     setSelectedIndices(newIndices);
-    
+
     // Hide tooltip during selection manipulation
     setWordTranslation(null);
     setTooltipPosition(null);
@@ -227,15 +234,15 @@ export default function App() {
     return (
       <div className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col items-center justify-center p-6">
         <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 border border-stone-200">
-          
+
 		  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <h1 className="text-3xl font-serif font-bold text-stone-800 flex items-center gap-2">
               <BookOpen className="w-8 h-8 text-indigo-600 shrink-0" />
               Lettura Facile
             </h1>
             <div className="relative group w-full sm:w-auto">
-               <input 
-                 type="password" 
+               <input
+                 type="password"
                  placeholder="Mistral API Key"
                  value={mistralKey}
                  onChange={(e) => setMistralKey(e.target.value)}
@@ -246,7 +253,7 @@ export default function App() {
                </div>
             </div>
           </div>
-          
+
           <p className="mb-4 text-stone-600">
             Incolla il tuo testo italiano qui sotto per iniziare a leggere senza distrazioni.
           </p>
@@ -265,7 +272,7 @@ export default function App() {
           >
             Importa Testo <ArrowRight className="w-5 h-5" />
           </button>
-          
+
           {!mistralKey && (
             <p className="text-red-500 text-xs mt-2 text-center">
               * È necessaria una chiave API Mistral per procedere.
@@ -289,7 +296,7 @@ export default function App() {
             {currentIndex + 1} / {sentences.length}
           </span>
         </div>
-        
+
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
           <span className="hidden md:inline text-sm text-stone-500 font-mono">
             {currentIndex + 1} / {sentences.length}
@@ -300,8 +307,8 @@ export default function App() {
                 key={lvl}
                 onClick={() => setDifficulty(lvl)}
                 className={`px-3 py-1 text-xs rounded-md capitalize transition-colors whitespace-nowrap flex-1 md:flex-none text-center ${
-                  difficulty === lvl 
-                    ? 'bg-indigo-100 text-indigo-700 font-medium' 
+                  difficulty === lvl
+                    ? 'bg-indigo-100 text-indigo-700 font-medium'
                     : 'text-stone-500 hover:bg-stone-50'
                 }`}
               >
@@ -314,7 +321,7 @@ export default function App() {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center max-w-4xl mx-auto w-full relative" ref={containerRef}>
-        
+
         {/* Error Message */}
         {error && (
           <div className="absolute top-0 left-0 right-0 bg-red-50 text-red-600 p-3 rounded-lg text-sm text-center mb-4 border border-red-100 z-50">
@@ -325,13 +332,13 @@ export default function App() {
 
         {/* Tooltip */}
         {wordTranslation && tooltipPosition && (
-          <div 
+          <div
             className={`absolute z-20 bg-indigo-600 text-white px-4 py-3 rounded-xl shadow-lg animate-in fade-in zoom-in-95 duration-200 max-w-xs transform -translate-x-1/2 ${
               tooltipPosition.placement === 'top' ? '-translate-y-full mb-2' : 'mt-2'
             }`}
-            style={{ 
-              top: tooltipPosition.top, 
-              left: tooltipPosition.left 
+            style={{
+              top: tooltipPosition.top,
+              left: tooltipPosition.left
             }}
           >
             <div className="flex justify-between items-start gap-4">
@@ -348,7 +355,7 @@ export default function App() {
               </button>
             </div>
             {/* Arrow */}
-            <div 
+            <div
               className={`absolute left-1/2 -translate-x-1/2 w-3 h-3 bg-indigo-600 rotate-45 ${
                 tooltipPosition.placement === 'top' ? '-bottom-1.5' : '-top-1.5'
               }`}
@@ -408,7 +415,7 @@ export default function App() {
             >
               <ArrowRight className="w-6 h-6 rotate-180" />
             </button>
-            
+
             <button
               onClick={nextSentence}
               disabled={currentIndex === sentences.length - 1 || isSentenceLoading}
