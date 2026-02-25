@@ -267,13 +267,9 @@ export default function App() {
             </div>
           </div>
 
-          <p className="mb-4 text-stone-600">
-            Incolla il tuo testo italiano qui sotto per iniziare a leggere senza distrazioni.
-          </p>
-
           <div className="flex justify-between items-end mb-2">
             <p className="text-stone-600 text-sm">
-              Incolla il tuo testo italiano qui sotto:
+              Incolla il tuo testo:
             </p>
             <button
               onClick={handlePaste}
