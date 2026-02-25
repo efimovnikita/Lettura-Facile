@@ -227,20 +227,21 @@ export default function App() {
     return (
       <div className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col items-center justify-center p-6">
         <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 border border-stone-200">
-          <div className="flex items-center justify-between mb-6">
+          
+		  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <h1 className="text-3xl font-serif font-bold text-stone-800 flex items-center gap-2">
-              <BookOpen className="w-8 h-8 text-indigo-600" />
+              <BookOpen className="w-8 h-8 text-indigo-600 shrink-0" />
               Lettura Facile
             </h1>
-            <div className="relative group">
+            <div className="relative group w-full sm:w-auto">
                <input 
                  type="password" 
                  placeholder="Mistral API Key"
                  value={mistralKey}
                  onChange={(e) => setMistralKey(e.target.value)}
-                 className="pl-3 pr-8 py-1 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-40 transition-all focus:w-64"
+                 className="pl-3 pr-8 py-2 sm:py-1 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-40 transition-all sm:focus:w-64"
                />
-               <div className="absolute right-2 top-1.5 text-stone-400">
+               <div className="absolute right-3 top-2.5 sm:right-2 sm:top-1.5 text-stone-400">
                  <Settings className="w-4 h-4" />
                </div>
             </div>
