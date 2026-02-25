@@ -3,6 +3,8 @@ import { Settings, BookOpen, ArrowRight, RotateCcw, Languages, Loader2, X, Clipb
 import { AppState, saveState, loadState, splitIntoSentences, Difficulty } from './utils';
 import { translateWord, translateSentence, simplifySentence } from './services/mistral';
 
+const APP_VERSION = 'v1.1.0';
+
 export default function App() {
   const [mistralKey, setMistralKey] = useState('');
   const [text, setText] = useState('');
@@ -307,6 +309,12 @@ export default function App() {
             </p>
           )}
         </div>
+
+        {/* Добавляем номер версии здесь */}
+        <div className="mt-6 text-stone-400 text-xs font-mono">
+          {APP_VERSION}
+        </div>
+
       </div>
     );
   }
