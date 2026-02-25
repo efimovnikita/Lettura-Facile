@@ -3,7 +3,7 @@ import { Settings, BookOpen, ArrowRight, RotateCcw, Languages, Loader2, X, Clipb
 import { AppState, saveState, loadState, splitIntoSentences, Difficulty } from './utils';
 import { translateWord, translateSentence, simplifySentence } from './services/mistral';
 
-const APP_VERSION = 'v1.1.1';
+const APP_VERSION = 'v1.1.2';
 
 export default function App() {
   const [mistralKey, setMistralKey] = useState('');
@@ -258,7 +258,7 @@ export default function App() {
 
   if (view === 'input') {
     return (
-      <div className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col items-center justify-center p-6 animate-in fade-in duration-500">
+      <div key="input-view" className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col items-center justify-center p-6 animate-in fade-in duration-500">
         <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 border border-stone-200">
 
 		  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -326,7 +326,7 @@ export default function App() {
 
   // Reader View
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col p-6 animate-in fade-in duration-500">
+    <div key="reader-view" className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col p-6 animate-in fade-in duration-500">
       {/* Header */}
       <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 md:mb-12 max-w-5xl mx-auto w-full">
         <div className="w-full md:w-auto flex justify-between md:justify-start items-center">
