@@ -79,6 +79,15 @@ export default defineConfig(({ mode }) => {
               purpose: "any maskable", // <-- Добавили для красивого отображения на Android
             },
           ],
+          share_target: {
+            action: "/",
+            method: "GET",
+            params: {
+              title: "title",
+              text: "text",
+              url: "url"
+            }
+          }
         },
       }),
     ],

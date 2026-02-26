@@ -92,6 +92,29 @@ export default function App() {
     fetchSentenceVersion();
   }, [currentIndex, difficulty, sentences, mistralKey]);
 
+  // Перехват данных из Share Target
+  useEffect(() => {
+    // Читаем параметры из URL
+    const params = new URLSearchParams(window.location.search);
+    const sharedTitle = params.get('title');
+    const sharedText = params.get('text');
+    const sharedUrl = params.get('url');
+
+    // Разные приложения могут отправлять текст в разных полях.
+    // Собираем всё, что пришло, в одну строку.
+    const combinedText = [sharedTitle, sharedText, sharedUrl]
+      .filter(Boolean) // Убираем пустые значения (null)
+      .join('\n\n');   // Разделяем пустыми строками, если пришло несколько полей
+
+    if (combinedText.trim()) {
+      // Если текст есть, вставляем его в поле ввода
+      setText(combinedText);
+
+      // Очищаем URL (убираем /?text=...), чтобы не засорять историю
+      window.history.replaceState(null, '', '/');
+    }
+  }, []);
+
   const handleImport = () => {
     const split = splitIntoSentences(text);
     setSentences(split);
