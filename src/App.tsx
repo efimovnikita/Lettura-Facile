@@ -3,7 +3,7 @@ import { Settings, BookOpen, ArrowRight, RotateCcw, Languages, Loader2, X, Clipb
 import { AppState, saveState, loadState, splitIntoSentences, Difficulty } from './utils';
 import { translateWord, translateSentence, simplifySentence } from './services/mistral';
 
-const APP_VERSION = 'v1.1.2';
+const APP_VERSION = 'v1.1.3';
 
 export default function App() {
   const [mistralKey, setMistralKey] = useState('');
