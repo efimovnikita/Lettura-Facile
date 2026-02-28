@@ -4,15 +4,32 @@
   .animate-fade-in {
     animation: fadeIn 0.5s ease-out forwards;
   }
+
+  /* Добавляем класс для выпадающей панели */
+  .animate-fade-in-down {
+    animation: fadeInDown 0.3s ease-out forwards;
+  }
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px); /* Легкое движение снизу вверх для плавности */
+    transform: translateY(10px); /* Легкое движение снизу вверх */
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Добавляем кадры для движения сверху вниз */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px); /* Начинаем чуть выше */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);   /* Опускаемся на место */
   }
 }

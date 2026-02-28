@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Settings, BookOpen, ArrowRight, RotateCcw, Languages, Loader2, X, ClipboardPaste } from 'lucide-react';
 import { AppState, saveState, loadState, splitIntoSentences, Difficulty } from './utils';
 import { translateWord, translateSentence, simplifySentence } from './services/mistral';
+import { useDictionary } from './hooks/useDictionary';
+import { WordRenderer } from './components/WordRenderer';
 
-const APP_VERSION = 'v1.1.4';
+const APP_VERSION = 'v1.2.0';
 
 export default function App() {
   const [mistralKey, setMistralKey] = useState('');
@@ -12,6 +14,10 @@ export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [view, setView] = useState<'input' | 'reader'>('input');
   const [difficulty, setDifficulty] = useState<Difficulty>('original');
+  const { saveWordClick, clearDictionary, getWordIntensity, dictionary } = useDictionary();
+  const lastClickTimeRef = useRef<number>(0);
+
+  const [showSettings, setShowSettings] = useState(false);
 
   // Reader State
   const [currentSentenceText, setCurrentSentenceText] = useState('');
@@ -174,56 +180,74 @@ export default function App() {
   };
 
   const handleWordClick = (word: string, index: number, event: React.MouseEvent<HTMLSpanElement>) => {
-    // Persist event for async usage
-    const rect = event.currentTarget.getBoundingClientRect();
-    const isCtrlKey = event.ctrlKey || event.metaKey;
+      // 1. Фиксируем время текущего клика для определения двойного тапа
+      const now = Date.now();
+      const timeSinceLastClick = now - lastClickTimeRef.current;
+      lastClickTimeRef.current = now;
 
-    if (clickTimeoutRef.current) {
-      clearTimeout(clickTimeoutRef.current);
-      clickTimeoutRef.current = null;
-    }
+      // Сохраняем координаты для тултипа
+      const rect = event.currentTarget.getBoundingClientRect();
 
-    // If Ctrl key is pressed, handle immediately (desktop power user)
-    if (isCtrlKey) {
-      let newIndices: number[] = [];
-      if (selectedIndices.includes(index)) {
-        newIndices = selectedIndices.filter(i => i !== index);
-      } else {
-        newIndices = [...selectedIndices, index].sort((a, b) => a - b);
+      // Проверяем, нажат ли Ctrl (для десктопа)
+      const isCtrlKey = event.ctrlKey || event.metaKey;
+
+      // ==========================================
+      // ЛОГИКА МУЛЬТИВЫДЕЛЕНИЯ (Ctrl+Click ИЛИ Двойной тап на мобилке)
+      // ==========================================
+      if (isCtrlKey || timeSinceLastClick < 300) {
+        // Отменяем одиночный клик, если он был запланирован
+        if (clickTimeoutRef.current) {
+          clearTimeout(clickTimeoutRef.current);
+          clickTimeoutRef.current = null;
+        }
+
+        // Выделяем или снимаем выделение со слова
+        let newIndices: number[] = [];
+        if (selectedIndices.includes(index)) {
+          newIndices = selectedIndices.filter(i => i !== index); // Снимаем
+        } else {
+          newIndices = [...selectedIndices, index].sort((a, b) => a - b); // Добавляем
+        }
+        setSelectedIndices(newIndices);
+
+        // Если есть выделенные слова, переводим фразу
+        if (newIndices.length > 0) {
+          const allWords = currentSentenceText.split(' ');
+          const phrase = newIndices.map(i => allWords[i].replace(/[.,!?;:"«»()]/g, '')).join(' ');
+          performTranslation(phrase, rect);
+        } else {
+          // Если ничего не выделено, прячем тултип
+          setWordTranslation(null);
+          setTooltipPosition(null);
+        }
+        return; // Завершаем выполнение, дальше не идем
       }
-      setSelectedIndices(newIndices);
 
-      if (newIndices.length > 0) {
-        const allWords = currentSentenceText.split(' ');
-        const phrase = newIndices.map(i => allWords[i].replace(/[.,!?;:"«»()]/g, '')).join(' ');
-        performTranslation(phrase, rect);
-      } else {
-        setWordTranslation(null);
-        setTooltipPosition(null);
+      // ==========================================
+      // ЛОГИКА ОДИНОЧНОГО КЛИКА (с задержкой)
+      // ==========================================
+
+      // Сбрасываем предыдущий таймаут на всякий случай
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current);
       }
-      return;
-    }
 
-    // Delay for double-tap detection on mobile/standard click
-    clickTimeoutRef.current = setTimeout(() => {
-      let indicesToTranslate = [index];
+      // Ждем 300мс. Если второго клика не будет, значит это точно одиночный
+      clickTimeoutRef.current = window.setTimeout(() => {
 
-      // If clicking on an already selected word in a group, translate the whole group
-      if (selectedIndices.includes(index) && selectedIndices.length > 0) {
-        indicesToTranslate = selectedIndices;
-      } else {
-        // Otherwise, reset selection to just this word
+        // 1. Сохраняем слово в словарь (ТОЛЬКО при одиночном клике!)
+        saveWordClick(word);
+
+        // 2. Снимаем мультивыделение, если оно было (чтобы одиночный клик его сбрасывал)
         setSelectedIndices([index]);
-      }
 
-      const allWords = currentSentenceText.split(' ');
-      const phrase = indicesToTranslate.map(i => allWords[i].replace(/[.,!?;:"«»()]/g, '')).join(' ');
+        // 3. Вызываем перевод для одного слова
+        // Замени на твою функцию перевода одиночного слова, если она отличается:
+        performTranslation(word.replace(/[.,!?;:"«»()]/g, ''), rect);
 
-      if (phrase) {
-        performTranslation(phrase, rect);
-      }
-    }, 250);
-  };
+        clickTimeoutRef.current = null;
+      }, 300);
+    };
 
   const handleWordDoubleClick = (index: number) => {
     if (clickTimeoutRef.current) {
@@ -287,72 +311,115 @@ export default function App() {
   };
 
   if (view === 'input') {
-    return (
-      <div key="input-view" className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col items-center justify-center p-6 animate-fade-in">
-        <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 border border-stone-200">
+      return (
+        <div key="input-view" className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col items-center justify-center p-6 animate-fade-in">
+          <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 border border-stone-200">
 
-		  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            <h1 className="text-3xl font-serif font-bold text-stone-800 flex items-center gap-2">
-              <BookOpen className="w-8 h-8 text-indigo-600 shrink-0" />
-              Lettura Facile
-            </h1>
-            <div className="relative group w-full sm:w-auto">
-               <input
-                 type="password"
-                 placeholder="Mistral API Key"
-                 value={mistralKey}
-                 onChange={(e) => setMistralKey(e.target.value)}
-                 className="pl-3 pr-8 py-2 sm:py-1 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-40 transition-all sm:focus:w-64"
-               />
-               <div className="absolute right-3 top-2.5 sm:right-2 sm:top-1.5 text-stone-400">
-                 <Settings className="w-4 h-4" />
-               </div>
+            {/* === ШАПКА === */}
+            <div className="flex items-center justify-between gap-4 mb-6 w-full">
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-800 flex items-center gap-2">
+                <BookOpen className="w-7 h-7 sm:w-8 sm:h-8 text-indigo-600 shrink-0" />
+                Lettura Facile
+              </h1>
+
+              <button
+                onClick={() => setShowSettings(!showSettings)}
+                // Добавили shrink-0, чтобы кнопка не сплющивалась, если заголовок длинный
+                className={`p-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium shrink-0 ${
+                  showSettings
+                    ? 'bg-stone-200 text-stone-800'
+                    : 'bg-stone-100 text-stone-500 hover:bg-stone-200 hover:text-stone-700'
+                }`}
+                title="Impostazioni"
+              >
+                <Settings className="w-5 h-5" />
+                <span className="hidden sm:inline">Impostazioni</span>
+              </button>
             </div>
-          </div>
 
-          <div className="flex justify-between items-end mb-2">
-            <p className="text-stone-600 text-sm">
-              Incolla il tuo testo:
-            </p>
+            {/* === ИЗМЕНЕНИЕ 2: Выпадающая панель настроек === */}
+            {showSettings && (
+              <div className="mb-6 p-5 bg-stone-50 border border-stone-200 rounded-xl animate-fade-in-down">
+                <h3 className="text-sm font-semibold text-stone-700 mb-3 uppercase tracking-wider">
+                  Configurazione
+                </h3>
+
+                <div className="mb-4">
+                  <label className="block text-xs font-medium text-stone-500 mb-1">
+                    Mistral API Key
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="Inserisci la tua API Key..."
+                    value={mistralKey}
+                    onChange={(e) => setMistralKey(e.target.value)}
+                    className="w-full px-3 py-2 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white"
+                  />
+                </div>
+
+                {/* Кнопка управления словарем теперь живет здесь */}
+                {Object.keys(dictionary).length > 0 && (
+                  <div className="pt-4 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <span className="text-sm text-stone-600">
+                      Parole in memoria: <strong>{Object.keys(dictionary).length}</strong>
+                    </span>
+                    <button
+                      onClick={clearDictionary}
+                      className="text-sm text-red-500 hover:text-red-700 font-medium transition-colors"
+                    >
+                      Svuota dizionario
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+            {/* === КОНЕЦ ПАНЕЛИ НАСТРОЕК === */}
+
+            {/* === БЛОК ВВОДА ТЕКСТА === */}
+            <div className="flex justify-between items-end mb-2">
+              <p className="text-stone-600 text-sm">
+                Incolla il tuo testo:
+              </p>
+              <button
+                onClick={handlePaste}
+                className="flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors bg-indigo-50 px-2 py-1 rounded-md border border-indigo-100"
+              >
+                <ClipboardPaste className="w-3 h-3" />
+                Incolla
+              </button>
+            </div>
+
+            <textarea
+              className="w-full h-64 p-4 bg-white border border-stone-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none font-mono text-sm mb-6 shadow-inner"
+              placeholder="Incolla qui il testo..."
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+
             <button
-              onClick={handlePaste}
-              className="flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors bg-indigo-50 px-2 py-1 rounded-md border border-indigo-100"
+              onClick={handleImport}
+              disabled={!text.trim() || !mistralKey}
+              className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium text-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
             >
-              <ClipboardPaste className="w-3 h-3" /> {/* Не забудь импортировать ClipboardPaste из lucide-react */}
-              Incolla
+              Importa Testo <ArrowRight className="w-5 h-5" />
             </button>
+
+            {!mistralKey && (
+              <p className="text-red-500 text-xs mt-3 text-center">
+                * È necessaria una chiave API Mistral nelle Impostazioni per procedere.
+              </p>
+            )}
+
           </div>
 
-          <textarea
-            className="w-full h-64 p-4 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none font-mono text-sm mb-6"
-            placeholder="Incolla qui il testo..."
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
+          {/* Номер версии */}
+          <div className="mt-6 text-stone-400 text-xs font-mono">
+            {APP_VERSION}
+          </div>
 
-          <button
-            onClick={handleImport}
-            disabled={!text.trim() || !mistralKey}
-            className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium text-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Importa Testo <ArrowRight className="w-5 h-5" />
-          </button>
-
-          {!mistralKey && (
-            <p className="text-red-500 text-xs mt-2 text-center">
-              * È necessaria una chiave API Mistral per procedere.
-            </p>
-          )}
         </div>
-
-        {/* Добавляем номер версии здесь */}
-        <div className="mt-6 text-stone-400 text-xs font-mono">
-          {APP_VERSION}
-        </div>
-
-      </div>
-    );
-  }
+      );
+    }
 
   // Reader View
   return (
@@ -442,17 +509,16 @@ export default function App() {
              </div>
           ) : (
             <div className="text-4xl md:text-5xl font-serif leading-tight text-stone-800 select-none">
-              {currentSentenceText.split(' ').map((word, idx) => (
-                <span
-                  key={idx}
-                  onClick={(e) => handleWordClick(word, idx, e)}
-                  onDoubleClick={() => handleWordDoubleClick(idx)}
-                  className={`inline-block cursor-pointer hover:text-indigo-600 hover:bg-indigo-50 rounded px-1 transition-colors duration-200 ${
-                    selectedIndices.includes(idx) ? 'bg-indigo-100 text-indigo-700' : ''
-                  }`}
-                >
-                  {word}{' '}
-                </span>
+              {currentSentenceText.split(' ').map((word, index) => (
+                <WordRenderer
+                  key={`${index}-${word}`}
+                  word={word}
+                  index={index}
+                  intensity={getWordIntensity(word)}
+                  isSelected={selectedIndices.includes(index)} // ДОБАВЛЕНО: проверяем, выделено ли слово
+                  onClick={handleWordClick}
+                  onDoubleClick={handleWordDoubleClick}
+                />
               ))}
             </div>
           )}
