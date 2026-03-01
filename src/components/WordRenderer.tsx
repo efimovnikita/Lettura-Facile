@@ -18,7 +18,7 @@ export const WordRenderer: React.FC<WordRendererProps> = ({ word, index, intensi
   };
 
   const selectionClass = isSelected
-    ? 'bg-blue-200 text-blue-900 rounded px-1'
+    ? 'bg-blue-200 text-blue-900 rounded px-1 -mx-1'
     : 'hover:text-blue-600';
 
   const match = word.match(/^([^\p{L}]*)([\p{L}’'-]+)([^\p{L}]*)$/u);
