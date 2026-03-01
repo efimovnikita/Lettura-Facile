@@ -5,7 +5,7 @@ import { translateWord, translateSentence, simplifySentence } from './services/m
 import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
 
-const APP_VERSION = 'v1.2.0';
+const APP_VERSION = 'v1.2.1';
 
 export default function App() {
   const [mistralKey, setMistralKey] = useState('');
