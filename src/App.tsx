@@ -5,7 +5,7 @@ import { translateWord, translateSentence, simplifySentence } from './services/m
 import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
 
-const APP_VERSION = 'v1.2.1';
+const APP_VERSION = 'v1.2.2';
 
 export default function App() {
   const [mistralKey, setMistralKey] = useState('');
@@ -270,6 +270,7 @@ export default function App() {
   };
 
   const handleTranslateSentence = async () => {
+    closeTooltip();
     setIsTranslationLoading(true);
     try {
       const trans = await translateSentence(mistralKey, currentSentenceText);
