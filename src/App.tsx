@@ -9,7 +9,7 @@ import { translateWord, translateSentence, simplifySentence, getSentiments } fro
 import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
 
-const APP_VERSION = 'v1.3.0';
+const APP_VERSION = 'v1.3.1';
 
 const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: boolean }) => {
   if (isLoading) return <Loader2 className="w-4 h-4 text-stone-300 animate-spin" />;
@@ -651,7 +651,7 @@ export default function App() {
         {/* Full Sentence Translation */}
         {translation && (
           <div className="mb-12 text-xl text-stone-500 font-light italic max-w-2xl text-center border-t border-stone-200 pt-6 animate-in fade-in slide-in-from-top-4">
-            "{translation}"
+            {translation}
           </div>
         )}
 

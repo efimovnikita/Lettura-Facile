@@ -92,14 +92,18 @@ export async function translateSentence(apiKey: string, sentence: string) {
   });
 
   const content = response.choices?.[0]?.message?.content;
-  if (typeof content === 'string') return content;
-  if (Array.isArray(content)) {
-    return content.map(c => {
+  let result = "";
+
+  if (typeof content === 'string') {
+    result = content;
+  } else if (Array.isArray(content)) {
+    result = content.map(c => {
       if ('text' in c) return c.text;
       return '';
     }).join('');
   }
-  return "";
+
+  return result.trim().replace(/^["']|["']$/g, '');
 }
 
 export async function simplifySentence(apiKey: string, sentence: string, level: string) {
