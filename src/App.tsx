@@ -1,26 +1,70 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Settings, BookOpen, ArrowRight, RotateCcw, Languages, Loader2, X, ClipboardPaste, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
-import { AppState, saveState, loadState, splitIntoSentences, Difficulty } from './utils';
-import { translateWord, translateSentence, simplifySentence } from './services/mistral';
+import {
+  Settings, BookOpen, ArrowRight, RotateCcw, Languages, Loader2, X,
+  ClipboardPaste, ChevronDown, ChevronUp, Trash2, Zap, Heart,
+  Sun, Theater, Flame, CloudRain, AlertCircle, Swords, History, CloudLightning
+} from 'lucide-react';
+import { AppState, saveState, loadState, splitIntoSentences, Difficulty, SentimentData } from './utils';
+import { translateWord, translateSentence, simplifySentence, getSentiments } from './services/mistral';
 import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
 
-const APP_VERSION = 'v1.2.3';
+const APP_VERSION = 'v1.3.0';
+
+const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: boolean }) => {
+  if (isLoading) return <Loader2 className="w-4 h-4 text-stone-300 animate-spin" />;
+
+  const config: Record<string, { icon: React.ReactNode, color: string, label: string }> = {
+    neutral: { icon: <Zap className="w-4 h-4" />, color: 'text-slate-300', label: 'Neutrale' },
+    positive: { icon: <Sun className="w-4 h-4" />, color: 'text-emerald-500', label: 'Felice' },
+    irony: { icon: <Theater className="w-4 h-4" />, color: 'text-violet-500', label: 'Ironia' },
+    aggressive: { icon: <Swords className="w-4 h-4" />, color: 'text-rose-600', label: 'Conflitto' },
+    sad: { icon: <CloudRain className="w-4 h-4" />, color: 'text-sky-500', label: 'Triste' },
+    urgent: { icon: <AlertCircle className="w-4 h-4" />, color: 'text-amber-500', label: 'Urgente' },
+    romantic: { icon: <Heart className="w-4 h-4" />, color: 'text-rose-400', label: 'Romantico' },
+    sexual: { icon: <Flame className="w-4 h-4" />, color: 'text-fuchsia-500', label: 'Passionale' },
+    nostalgic: { icon: <History className="w-4 h-4" />, color: 'text-indigo-400', label: 'Nostalgico' },
+    tension: { icon: <CloudLightning className="w-4 h-4" />, color: 'text-orange-400', label: 'Tensione' },
+  };
+
+  const current = data ? config[data.tone] : config.neutral;
+  const color = data ? current.color : 'text-stone-200';
+
+  return (
+    <div className="flex flex-col items-center gap-1 min-h-[40px]">
+      <div className={`transition-colors duration-500 ${color}`}>
+        {current.icon}
+      </div>
+
+      {data && (
+        <div className="flex flex-col items-center animate-fade-in">
+          <span className={`text-[10px] font-bold uppercase tracking-tighter ${color} opacity-80`}>
+            {current.label} {Math.round(data.score * 100)}%
+          </span>
+          <p className="text-[9px] text-stone-400 font-light leading-none text-center max-w-[120px] mt-0.5 italic">
+            {data.explanation}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default function App() {
   const [mistralKey, setMistralKey] = useState('');
   const [text, setText] = useState('');
   const [sentences, setSentences] = useState<string[]>([]);
+  const [sentiments, setSentiments] = useState<Record<number, SentimentData>>({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [view, setView] = useState<'input' | 'reader'>('input');
   const [difficulty, setDifficulty] = useState<Difficulty>('original');
   const { saveWordClick, clearDictionary, getWordIntensity, dictionary } = useDictionary();
   const lastClickTimeRef = useRef<number>(0);
+  const isAnalyzingRef = useRef(false);
 
   const [showSettings, setShowSettings] = useState(false);
   const [showWordList, setShowWordList] = useState(false);
-
-  // Reader State
+// ... reader state ...
   const [currentSentenceText, setCurrentSentenceText] = useState('');
   const [translation, setTranslation] = useState<string | null>(null);
   const [wordTranslation, setWordTranslation] = useState<{word: string, translation: string} | null>(null);
@@ -42,6 +86,7 @@ export default function App() {
       setMistralKey(loaded.mistralKey || '');
       setText(loaded.text || '');
       setSentences(loaded.sentences || []);
+      setSentiments(loaded.sentiments || {});
       setCurrentIndex(loaded.currentSentenceIndex || 0);
       setDifficulty(loaded.difficulty || 'original');
       if (loaded.sentences && loaded.sentences.length > 0) {
@@ -57,11 +102,11 @@ export default function App() {
       sentences,
       currentSentenceIndex: currentIndex,
       mistralKey,
-      difficulty
+      difficulty,
+      sentiments
     });
-  }, [text, sentences, currentIndex, mistralKey, difficulty]);
-
-  // Effect to handle difficulty changes or sentence navigation
+  }, [text, sentences, currentIndex, mistralKey, difficulty, sentiments]);
+// ... fetchSentenceVersion effect ...
   useEffect(() => {
     const fetchSentenceVersion = async () => {
       if (sentences.length === 0) return;
@@ -117,6 +162,7 @@ export default function App() {
       // 2. Автоматически разбиваем на предложения (используем импортированную функцию)
       const split = splitIntoSentences(combinedText);
       setSentences(split);
+      setSentiments({}); // Сбрасываем старые данные
 
       // 3. Сбрасываем прогресс чтения на начало
       setCurrentIndex(0);
@@ -132,6 +178,7 @@ export default function App() {
   const handleImport = () => {
     const split = splitIntoSentences(text);
     setSentences(split);
+    setSentiments({}); // Сбрасываем старые данные
     setCurrentIndex(0);
     setView('reader');
   };
@@ -148,6 +195,54 @@ export default function App() {
       setError("Не удалось прочитать буфер обмена. Пожалуйста, разрешите доступ.");
     }
   };
+
+  // Background Sentiment Analysis
+  useEffect(() => {
+    if (view !== 'reader' || !mistralKey || sentences.length === 0 || isAnalyzingRef.current) return;
+
+    const findNextBatch = () => {
+      const batchSize = 5;
+      const unanalyzedIndices: number[] = [];
+
+      // Сначала проверяем текущее предложение и ближайшие к нему
+      // Но для простоты реализации пройдемся по всему списку
+      for (let i = 0; i < sentences.length; i++) {
+        if (!sentiments[i]) {
+          unanalyzedIndices.push(i);
+          if (unanalyzedIndices.length === batchSize) break;
+        }
+      }
+      return unanalyzedIndices;
+    };
+
+    const batch = findNextBatch();
+    if (batch.length === 0) return;
+
+    const analyze = async () => {
+      isAnalyzingRef.current = true;
+      try {
+        const batchSentences = batch.map(i => sentences[i]);
+        const results = await getSentiments(mistralKey, batchSentences);
+
+        setSentiments(prev => {
+          const next = { ...prev };
+          results.forEach((res, idx) => {
+            if (batch[idx] !== undefined) {
+              next[batch[idx]] = res;
+            }
+          });
+          return next;
+        });
+      } catch (err) {
+        console.error("Sentiment analysis error:", err);
+      } finally {
+        isAnalyzingRef.current = false;
+      }
+    };
+
+    const timeout = setTimeout(analyze, 2000); // Пауза 2 секунды между батчами
+    return () => clearTimeout(timeout);
+  }, [view, mistralKey, sentences, sentiments]);
 
   const performTranslation = async (phrase: string, rect: DOMRect) => {
     const containerRect = containerRef.current?.getBoundingClientRect();
@@ -383,7 +478,7 @@ export default function App() {
                       <div className="mt-4 p-3 bg-white border border-stone-200 rounded-lg max-h-48 overflow-y-auto animate-fade-in">
                         <div className="flex flex-wrap gap-2">
                           {Object.entries(dictionary)
-                            .sort((a, b) => b[1] - a[1])
+                            .sort((a, b) => (b[1] as number) - (a[1] as number))
                             .map(([stem, count]) => (
                               <div key={stem} className="flex items-center gap-1.5 px-2 py-1 bg-stone-100 text-stone-700 rounded-md text-xs border border-stone-200">
                                 <span className="font-medium">{stem}</span>
@@ -483,6 +578,11 @@ export default function App() {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center max-w-4xl mx-auto w-full relative" ref={containerRef}>
+
+        {/* Sentiment Barometer */}
+        <div className="mb-6">
+          <ToneIndicator data={sentiments[currentIndex]} />
+        </div>
 
         {/* Error Message */}
         {error && (

@@ -1,4 +1,5 @@
 import { Mistral } from '@mistralai/mistralai';
+import { SentimentData } from '../utils';
 
 let cachedClient: Mistral | null = null;
 let cachedKey: string = "";
@@ -134,4 +135,68 @@ export async function simplifySentence(apiKey: string, sentence: string, level: 
     }).join('');
   }
   return "";
+}
+
+export async function getSentiments(apiKey: string, sentences: string[]): Promise<SentimentData[]> {
+  const client = getMistralClient(apiKey);
+
+  const response = await client.chat.complete({
+    model: "mistral-small-latest",
+    messages: [
+      {
+        role: "system",
+        content: `Analizza la tonalità e il sottotesto delle frasi italiane forните.
+        Restituisci STRETTAMENTE un oggetto JSON con una chiave "results" che contiene un array di объектов.
+        Categorie AMMESSE per "tone":
+        - "neutral": narrazione piatta, fatti, descrizioni oggettive.
+        - "positive": gioia, felicità, entusiasmo, successo.
+        - "irony": sarcasmo, sottile umorismo, gioco di parole.
+        - "aggressive": rabbia, conflitto, ostilità, odio.
+        - "sad": dolore profondo, tristezza, lutto.
+        - "urgent": ansia, pericolo, necessità immediata.
+        - "romantic": affetto, tenerezza, amore dolce, gesti romantici.
+        - "sexual": passione intensa, attrazione fisica, erotismo.
+        - "nostalgic": ricordo del passato, mancanza di qualcuno, malinconia per il tempo andato.
+        - "tension": imbarazzo, dubbio, gelosia, sottile conflitto relazionale.
+
+        Per ogni frase, fornisci:
+        - "tone": una delle categorie sopra.
+        - "score": un numero da 0 a 1 che indica l'intensità.
+        - "explanation": una brevissima spiegazione (max 10 parole) in italiano del perché.
+
+        Esempio output:
+        {
+          "results": [
+            {"tone": "romantic", "score": 0.9, "explanation": "Gesto di affetto profondo."},
+            {"tone": "nostalgic", "score": 0.7, "explanation": "Ricordo malinconico di un amore passato."}
+          ]
+        }`
+      },
+
+
+      {
+        role: "user",
+        content: JSON.stringify(sentences)
+      }
+    ],
+    temperature: 0,
+    responseFormat: { type: "json_object" }
+  });
+
+  const content = response.choices?.[0]?.message?.content;
+  let jsonString = "";
+
+  if (typeof content === 'string') {
+    jsonString = content;
+  } else if (Array.isArray(content)) {
+    jsonString = content.map(c => ('text' in c ? c.text : '')).join('');
+  }
+
+  try {
+    const parsed = JSON.parse(jsonString);
+    return parsed.results || [];
+  } catch (e) {
+    console.error("Failed to parse sentiments JSON:", e);
+    return [];
+  }
 }

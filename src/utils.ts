@@ -2,6 +2,13 @@ import { useState, useEffect } from 'react';
 
 // Types
 export type Difficulty = 'original' | 'beginner' | 'intermediate' | 'advanced';
+export type SentimentTone = 'neutral' | 'positive' | 'irony' | 'aggressive' | 'sad' | 'urgent' | 'sexual' | 'romantic' | 'nostalgic' | 'tension';
+
+export interface SentimentData {
+  tone: SentimentTone;
+  score: number;
+  explanation?: string;
+}
 
 export interface AppState {
   text: string;
@@ -9,6 +16,7 @@ export interface AppState {
   currentSentenceIndex: number;
   mistralKey: string;
   difficulty: Difficulty;
+  sentiments?: Record<number, SentimentData>;
 }
 
 export const STORAGE_KEY = 'lettura_facile_state';
