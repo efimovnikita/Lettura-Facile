@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Settings, BookOpen, ArrowRight, RotateCcw, Languages, Loader2, X, ClipboardPaste } from 'lucide-react';
+import { Settings, BookOpen, ArrowRight, RotateCcw, Languages, Loader2, X, ClipboardPaste, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
 import { AppState, saveState, loadState, splitIntoSentences, Difficulty } from './utils';
 import { translateWord, translateSentence, simplifySentence } from './services/mistral';
 import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
 
-const APP_VERSION = 'v1.2.2';
+const APP_VERSION = 'v1.2.3';
 
 export default function App() {
   const [mistralKey, setMistralKey] = useState('');
@@ -18,6 +18,7 @@ export default function App() {
   const lastClickTimeRef = useRef<number>(0);
 
   const [showSettings, setShowSettings] = useState(false);
+  const [showWordList, setShowWordList] = useState(false);
 
   // Reader State
   const [currentSentenceText, setCurrentSentenceText] = useState('');
@@ -360,16 +361,38 @@ export default function App() {
 
                 {/* Кнопка управления словарем теперь живет здесь */}
                 {Object.keys(dictionary).length > 0 && (
-                  <div className="pt-4 border-t border-stone-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                    <span className="text-sm text-stone-600">
-                      Parole in memoria: <strong>{Object.keys(dictionary).length}</strong>
-                    </span>
-                    <button
-                      onClick={clearDictionary}
-                      className="text-sm text-red-500 hover:text-red-700 font-medium transition-colors"
-                    >
-                      Svuota dizionario
-                    </button>
+                  <div className="pt-4 border-t border-stone-200">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                      <button
+                        onClick={() => setShowWordList(!showWordList)}
+                        className="flex items-center gap-2 text-sm text-stone-600 hover:text-indigo-600 transition-colors group"
+                      >
+                        Radici in memoria: <strong className="group-hover:text-indigo-700">{Object.keys(dictionary).length}</strong>
+                        {showWordList ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                      </button>
+                      <button
+                        onClick={clearDictionary}
+                        className="flex items-center gap-1.5 text-sm text-red-500 hover:text-red-700 font-medium transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        Svuota dizionario
+                      </button>
+                    </div>
+
+                    {showWordList && (
+                      <div className="mt-4 p-3 bg-white border border-stone-200 rounded-lg max-h-48 overflow-y-auto animate-fade-in">
+                        <div className="flex flex-wrap gap-2">
+                          {Object.entries(dictionary)
+                            .sort((a, b) => b[1] - a[1])
+                            .map(([stem, count]) => (
+                              <div key={stem} className="flex items-center gap-1.5 px-2 py-1 bg-stone-100 text-stone-700 rounded-md text-xs border border-stone-200">
+                                <span className="font-medium">{stem}</span>
+                                <span className="text-[10px] bg-stone-200 text-stone-500 px-1 rounded font-mono">{count}</span>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
