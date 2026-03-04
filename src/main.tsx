@@ -3,6 +3,7 @@ import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import { registerSW } from 'virtual:pwa-register';
+import { ThemeProvider } from './hooks/useTheme.tsx';
 
 // Регистрируем Service Worker и настраиваем простое уведомление об обновлении
 const updateSW = registerSW({
@@ -20,6 +21,8 @@ const updateSW = registerSW({
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
   </StrictMode>,
 );
