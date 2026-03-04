@@ -10,7 +10,7 @@ import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
 import { SettingsPanel } from './components/SettingsPanel';
 
-const APP_VERSION = 'v1.3.3';
+const APP_VERSION = 'v1.4.0';
 
 const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: boolean }) => {
   if (isLoading) return <Loader2 className="w-4 h-4 text-stone-300 animate-spin" />;
@@ -458,12 +458,12 @@ export default function App() {
 
             {/* === БЛОК ВВОДА ТЕКСТА === */}
             <div className="flex justify-between items-end mb-2">
-              <p className="text-stone-600 text-sm">
+              <p className="text-stone-600 dark:text-stone-400 text-sm font-medium">
                 Incolla il tuo testo:
               </p>
               <button
                 onClick={handlePaste}
-                className="flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors bg-indigo-50 px-2 py-1 rounded-md border border-indigo-100"
+                className="flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded-md border border-indigo-100 dark:border-indigo-800 shadow-sm"
               >
                 <ClipboardPaste className="w-3 h-3" />
                 Incolla
@@ -471,7 +471,7 @@ export default function App() {
             </div>
 
             <textarea
-              className="w-full h-64 p-4 bg-white border border-stone-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none font-mono text-sm mb-6 shadow-inner"
+              className="w-full h-64 p-4 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 border border-stone-200 dark:border-stone-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none font-mono text-sm mb-6 shadow-inner transition-colors"
               placeholder="Incolla qui il testo..."
               value={text}
               onChange={(e) => setText(e.target.value)}
