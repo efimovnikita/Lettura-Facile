@@ -4,6 +4,12 @@
   --dark-mode: class;
 }
 
+@layer base {
+  body {
+    @apply transition-colors duration-500;
+  }
+}
+
 @layer utilities {
   .animate-fade-in {
     animation: fadeIn 0.5s ease-out forwards;

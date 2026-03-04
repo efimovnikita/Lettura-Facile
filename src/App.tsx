@@ -418,13 +418,13 @@ export default function App() {
 
   if (view === 'input') {
       return (
-        <div key="input-view" className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col items-center justify-center p-6 animate-fade-in">
-          <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 border border-stone-200">
+        <div key="input-view" className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans flex flex-col items-center justify-center p-6 animate-fade-in transition-colors duration-500">
+          <div className="w-full max-w-2xl bg-white dark:bg-stone-900 rounded-2xl shadow-xl p-8 border border-stone-200 dark:border-stone-800">
 
             {/* === ШАПКА === */}
             <div className="flex items-center justify-between gap-4 mb-6 w-full">
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-800 flex items-center gap-2">
-                <BookOpen className="w-7 h-7 sm:w-8 sm:h-8 text-indigo-600 shrink-0" />
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-800 dark:text-stone-100 flex items-center gap-2">
+                <BookOpen className="w-7 h-7 sm:w-8 sm:h-8 text-indigo-600 dark:text-indigo-400 shrink-0" />
                 Lettura Facile
               </h1>
 
@@ -433,8 +433,8 @@ export default function App() {
                 // Добавили shrink-0, чтобы кнопка не сплющивалась, если заголовок длинный
                 className={`p-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium shrink-0 ${
                   showSettings
-                    ? 'bg-stone-200 text-stone-800'
-                    : 'bg-stone-100 text-stone-500 hover:bg-stone-200 hover:text-stone-700'
+                    ? 'bg-stone-200 dark:bg-stone-700 text-stone-800 dark:text-stone-100'
+                    : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700 hover:text-stone-700 dark:hover:text-stone-200'
                 }`}
                 title="Impostazioni"
               >
@@ -504,31 +504,31 @@ export default function App() {
 
   // Reader View
   return (
-    <div key="reader-view" className="min-h-screen bg-stone-50 text-stone-900 font-sans flex flex-col p-6 animate-fade-in">
+    <div key="reader-view" className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans flex flex-col p-6 animate-fade-in transition-colors duration-500">
       {/* Header */}
       <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 md:mb-12 max-w-5xl mx-auto w-full">
         <div className="w-full md:w-auto flex justify-between md:justify-start items-center">
-          <button onClick={() => setView('input')} className="text-stone-500 hover:text-stone-800 flex items-center gap-2 transition-colors">
+          <button onClick={() => setView('input')} className="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2 transition-colors">
             <RotateCcw className="w-4 h-4" /> Nuovo Testo
           </button>
-          <span className="md:hidden text-sm text-stone-500 font-mono">
+          <span className="md:hidden text-sm text-stone-500 dark:text-stone-400 font-mono">
             {currentIndex + 1} / {sentences.length}
           </span>
         </div>
 
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-          <span className="hidden md:inline text-sm text-stone-500 font-mono">
+          <span className="hidden md:inline text-sm text-stone-500 dark:text-stone-400 font-mono">
             {currentIndex + 1} / {sentences.length}
           </span>
-          <div className="flex bg-white rounded-lg border border-stone-200 p-1 overflow-x-auto max-w-full w-full md:w-auto">
+          <div className="flex bg-white dark:bg-stone-900 rounded-lg border border-stone-200 dark:border-stone-800 p-1 overflow-x-auto max-w-full w-full md:w-auto">
             {(['original', 'simplified'] as Difficulty[]).map((lvl) => (
               <button
                 key={lvl}
                 onClick={() => setDifficulty(lvl)}
                 className={`px-4 py-1.5 text-xs rounded-md capitalize transition-all whitespace-nowrap flex-1 md:flex-none text-center flex items-center justify-center gap-2 ${
                   difficulty === lvl
-                    ? 'bg-indigo-600 text-white font-semibold shadow-sm'
-                    : 'text-stone-500 hover:bg-stone-50'
+                    ? 'bg-indigo-600 dark:bg-indigo-500 text-white font-semibold shadow-sm'
+                    : 'text-stone-500 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800'
                 }`}
               >
                 {lvl === 'original' ? 'Originale' : 'Semplificato'}
@@ -551,7 +551,7 @@ export default function App() {
 
         {/* Error Message */}
         {error && (
-          <div className="absolute top-0 left-0 right-0 bg-red-50 text-red-600 p-3 rounded-lg text-sm text-center mb-4 border border-red-100 z-50">
+          <div className="absolute top-0 left-0 right-0 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-lg text-sm text-center mb-4 border border-red-100 dark:border-red-900/30 z-50">
             {error}
             <button onClick={() => setError(null)} className="ml-2 underline">Chiudi</button>
           </div>
@@ -560,7 +560,7 @@ export default function App() {
         {/* Tooltip */}
         {wordTranslation && tooltipPosition && (
           <div
-            className={`absolute z-20 bg-indigo-600 text-white px-4 py-3 rounded-xl shadow-lg animate-in fade-in zoom-in-95 duration-200 max-w-xs transform -translate-x-1/2 ${
+            className={`absolute z-20 bg-indigo-600 dark:bg-indigo-700 text-white px-4 py-3 rounded-xl shadow-lg animate-in fade-in zoom-in-95 duration-200 max-w-xs transform -translate-x-1/2 ${
               tooltipPosition.placement === 'top' ? '-translate-y-full mb-2' : 'mt-2'
             }`}
             style={{
@@ -583,7 +583,7 @@ export default function App() {
             </div>
             {/* Arrow */}
             <div
-              className={`absolute left-1/2 -translate-x-1/2 w-3 h-3 bg-indigo-600 rotate-45 ${
+              className={`absolute left-1/2 -translate-x-1/2 w-3 h-3 bg-indigo-600 dark:bg-indigo-700 rotate-45 ${
                 tooltipPosition.placement === 'top' ? '-bottom-1.5' : '-top-1.5'
               }`}
             />
@@ -592,7 +592,7 @@ export default function App() {
 
         {/* Sentence Display */}
         <div className="text-center mb-12 w-full min-h-[120px] flex items-center justify-center">
-          <div className="text-4xl md:text-5xl font-serif leading-tight text-stone-800 select-none">
+          <div className="text-4xl md:text-5xl font-serif leading-tight text-stone-800 dark:text-stone-100 select-none">
             {currentSentenceText.split(' ').map((word, index) => (
               <WordRenderer
                 key={`${index}-${word}`}
@@ -609,7 +609,7 @@ export default function App() {
 
         {/* Full Sentence Translation */}
         {translation && (
-          <div className="mb-12 text-xl text-stone-500 font-light italic max-w-2xl text-center border-t border-stone-200 pt-6 animate-in fade-in slide-in-from-top-4">
+          <div className="mb-12 text-xl text-stone-500 dark:text-stone-400 font-light italic max-w-2xl text-center border-t border-stone-200 dark:border-stone-800 pt-6 animate-in fade-in slide-in-from-top-4">
             {translation}
           </div>
         )}
@@ -620,7 +620,7 @@ export default function App() {
             <button
               onClick={handleTranslateSentence}
               disabled={isTranslationLoading || isSentenceLoading}
-              className="px-6 py-3 bg-white border border-stone-200 hover:border-indigo-300 hover:text-indigo-600 text-stone-600 rounded-xl font-medium transition-all shadow-sm flex items-center gap-2 disabled:opacity-50"
+              className="px-6 py-3 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 hover:border-indigo-300 dark:hover:border-indigo-700 hover:text-indigo-600 dark:hover:text-indigo-400 text-stone-600 dark:text-stone-300 rounded-xl font-medium transition-all shadow-sm flex items-center gap-2 disabled:opacity-50"
             >
               {isTranslationLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Languages className="w-4 h-4" />}
               Traduci Frase
@@ -631,7 +631,7 @@ export default function App() {
             <button
               onClick={prevSentence}
               disabled={currentIndex === 0 || isSentenceLoading}
-              className="p-4 rounded-full bg-white border border-stone-200 text-stone-400 hover:text-stone-800 hover:border-stone-300 disabled:opacity-30 transition-all"
+              className="p-4 rounded-full bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-400 dark:text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 hover:border-stone-300 dark:hover:border-stone-700 disabled:opacity-30 transition-all"
             >
               <ArrowRight className="w-6 h-6 rotate-180" />
             </button>
@@ -639,7 +639,7 @@ export default function App() {
             <button
               onClick={nextSentence}
               disabled={isSentenceLoading}
-              className="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full font-medium text-lg shadow-lg shadow-indigo-200 hover:shadow-indigo-300 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-8 py-4 bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 text-white rounded-full font-medium text-lg shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 hover:shadow-indigo-300 dark:hover:shadow-indigo-900/50 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {currentIndex === sentences.length - 1 ? (
                 <>
