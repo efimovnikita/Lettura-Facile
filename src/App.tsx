@@ -141,7 +141,8 @@ export default function App() {
           setCurrentSentenceText(finalSentence);
         } catch (err: any) {
           setError(err.message);
-          setCurrentSentenceText(original); // Fallback
+          // If we fail, we keep showing the original (which is already set or was the base)
+          setCurrentSentenceText(original);
         } finally {
           setIsSentenceLoading(false);
         }
@@ -570,13 +571,16 @@ export default function App() {
               <button
                 key={lvl}
                 onClick={() => setDifficulty(lvl)}
-                className={`px-4 py-1.5 text-xs rounded-md capitalize transition-all whitespace-nowrap flex-1 md:flex-none text-center ${
+                className={`px-4 py-1.5 text-xs rounded-md capitalize transition-all whitespace-nowrap flex-1 md:flex-none text-center flex items-center justify-center gap-2 ${
                   difficulty === lvl
                     ? 'bg-indigo-600 text-white font-semibold shadow-sm'
                     : 'text-stone-500 hover:bg-stone-50'
                 }`}
               >
                 {lvl === 'original' ? 'Originale' : 'Semplificato'}
+                {lvl === 'simplified' && isSentenceLoading && (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                )}
               </button>
             ))}
           </div>
@@ -634,25 +638,19 @@ export default function App() {
 
         {/* Sentence Display */}
         <div className="text-center mb-12 w-full min-h-[120px] flex items-center justify-center">
-          {isSentenceLoading ? (
-             <div className="flex justify-center py-12">
-               <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
-             </div>
-          ) : (
-            <div className="text-4xl md:text-5xl font-serif leading-tight text-stone-800 select-none">
-              {currentSentenceText.split(' ').map((word, index) => (
-                <WordRenderer
-                  key={`${index}-${word}`}
-                  word={word}
-                  index={index}
-                  intensity={getWordIntensity(word)}
-                  isSelected={selectedIndices.includes(index)} // ДОБАВЛЕНО: проверяем, выделено ли слово
-                  onClick={handleWordClick}
-                  onDoubleClick={handleWordDoubleClick}
-                />
-              ))}
-            </div>
-          )}
+          <div className="text-4xl md:text-5xl font-serif leading-tight text-stone-800 select-none">
+            {currentSentenceText.split(' ').map((word, index) => (
+              <WordRenderer
+                key={`${index}-${word}`}
+                word={word}
+                index={index}
+                intensity={getWordIntensity(word)}
+                isSelected={selectedIndices.includes(index)} // ДОБАВЛЕНО: проверяем, выделено ли слово
+                onClick={handleWordClick}
+                onDoubleClick={handleWordDoubleClick}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Full Sentence Translation */}
