@@ -5,12 +5,12 @@
 - [x] Task: Identify the state management logic for sentence simplification levels. (095d02a)
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Analysis and Component Selection' (Protocol in workflow.md) (095d02a)
 
-## Phase 2: Implementation of the New Toggle
-- [x] Task: Remove the "Beginner, Intermediate, Advanced" UI elements.
-- [x] Task: Create a new toggle component (Original / Simplified).
-- [x] Task: Update the state to handle only two states (Original, Simplified).
-- [x] Task: Connect the toggle to the existing Mistral AI simplification service.
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Implementation of the New Toggle' (Protocol in workflow.md)
+## Phase 2: Implementation of the New Toggle [checkpoint: 582e1a6]
+- [x] Task: Remove the "Beginner, Intermediate, Advanced" UI elements. (582e1a6)
+- [x] Task: Create a new toggle component (Original / Simplified). (582e1a6)
+- [x] Task: Update the state to handle only two states (Original, Simplified). (582e1a6)
+- [x] Task: Connect the toggle to the existing Mistral AI simplification service. (582e1a6)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation of the New Toggle' (Protocol in workflow.md) (582e1a6)
 
 ## Phase 3: Final Verification and UI Polish
 - [ ] Task: Verify the toggle correctly switches text.
