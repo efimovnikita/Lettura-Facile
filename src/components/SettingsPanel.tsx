@@ -55,7 +55,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
         <div className="flex justify-end shrink-0">
           <button
             onClick={toggleTheme}
-            className={`group relative inline-flex h-8 w-16 items-center rounded-full transition-all duration-300 focus:outline-none shadow-inner border-2 ${
+            className={`group relative flex h-8 w-16 items-center rounded-full transition-all duration-300 focus:outline-none shadow-inner border-2 ${
               theme === 'dark' 
                 ? 'bg-indigo-600 border-indigo-500' 
                 : 'bg-stone-200 border-stone-100'
@@ -63,23 +63,23 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
             aria-label="Cambia tema"
           >
             {/* Track Icons */}
-            <div className="absolute inset-0 flex justify-between px-2 items-center pointer-events-none">
+            <div className="absolute inset-0 flex items-center justify-between px-2 pointer-events-none">
               <Sun className={`w-3.5 h-3.5 ${theme === 'light' ? 'opacity-0' : 'text-white opacity-40'}`} />
               <Moon className={`w-3.5 h-3.5 ${theme === 'dark' ? 'opacity-0' : 'text-stone-400 opacity-60'}`} />
             </div>
 
             {/* Sliding Knob */}
-            <span
-              className={`inline-block h-6 w-6 transform rounded-full bg-white shadow-xl transition-all duration-300 ease-in-out ${
+            <div
+              className={`h-6 w-6 rounded-full bg-white shadow-lg transition-all duration-300 ease-in-out ${
                 theme === 'dark' ? 'translate-x-8.5' : 'translate-x-0.5'
-              } flex items-center justify-center border border-stone-100/50`}
+              } flex items-center justify-center border border-stone-100/50 overflow-hidden`}
             >
               {theme === 'light' ? (
-                <Sun className="w-4 h-4 text-amber-500 transition-colors shrink-0" />
+                <Sun className="w-4 h-4 text-amber-500 transition-colors" />
               ) : (
-                <Moon className="w-4 h-4 text-indigo-600 transition-colors shrink-0" />
+                <Moon className="w-4 h-4 text-indigo-600 transition-colors" />
               )}
-            </span>
+            </div>
           </button>
         </div>
       </div>
