@@ -10,6 +10,10 @@
 - **AI Primary Engine:** Mistral AI (`@mistralai/mistralai`)
 - **Linguistics:** Snowball-stemmers (for word analysis/stemming)
 
+## Testing
+- **Test Runner:** Vitest
+- **Testing Library:** React Testing Library, JSDOM
+
 ## Data and Persistence
 - **Storage:** Browser Local Storage (for application state, imported texts, and user preferences)
 - **API/Server (Dev):** Express (used for local development/handling requests if necessary)
