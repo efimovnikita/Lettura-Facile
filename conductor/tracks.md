@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Simplify Sentence View Toggle**
+- [x] **Track: Simplify Sentence View Toggle**
   *Link: [./tracks/simplify_sentence_20260304/](./tracks/simplify_sentence_20260304/)*
