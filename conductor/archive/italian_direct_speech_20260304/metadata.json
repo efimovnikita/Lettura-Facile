@@ -1,0 +1,8 @@
+{
+  "track_id": "italian_direct_speech_20260304",
+  "type": "improvement",
+  "status": "new",
+  "created_at": "2026-03-04T12:32:00Z",
+  "updated_at": "2026-03-04T12:32:00Z",
+  "description": "Correct sentence splitting for Italian text with direct speech and dialogue."
+}
