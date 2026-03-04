@@ -41,47 +41,45 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
         />
       </div>
 
-      {/* Theme Toggle Switch */}
-      <div className="mb-5 flex flex-col sm:flex-row sm:items-center justify-between bg-white dark:bg-stone-800/50 p-4 rounded-lg border border-stone-100 dark:border-stone-800 shadow-sm gap-4">
-        <div className="flex flex-col gap-0.5">
+      {/* Compact Theme Toggle Switch */}
+      <div className="mb-5 flex items-center justify-between bg-white dark:bg-stone-800/50 p-4 rounded-lg border border-stone-100 dark:border-stone-800 shadow-sm">
+        <div className="flex flex-col">
           <span className="text-sm font-bold text-stone-700 dark:text-stone-200">
-            Tema dell'applicazione
+            Tema
           </span>
-          <span className="text-[11px] text-stone-400 dark:text-stone-500 font-medium leading-tight">
-            Passa dalla modalità chiara a quella scura
+          <span className="text-[10px] text-stone-400 dark:text-stone-500 font-medium leading-none mt-0.5">
+            Chiaro / Scuro
           </span>
         </div>
         
-        <div className="flex justify-end shrink-0">
-          <button
-            onClick={toggleTheme}
-            className={`group relative flex h-8 w-16 items-center rounded-full transition-all duration-300 focus:outline-none shadow-inner border-2 ${
-              theme === 'dark' 
-                ? 'bg-indigo-600 border-indigo-500' 
-                : 'bg-stone-200 border-stone-100'
-            }`}
-            aria-label="Cambia tema"
-          >
-            {/* Track Icons */}
-            <div className="absolute inset-0 flex items-center justify-between px-2 pointer-events-none">
-              <Sun className={`w-3.5 h-3.5 ${theme === 'light' ? 'opacity-0' : 'text-white opacity-40'}`} />
-              <Moon className={`w-3.5 h-3.5 ${theme === 'dark' ? 'opacity-0' : 'text-stone-400 opacity-60'}`} />
-            </div>
+        <button
+          onClick={toggleTheme}
+          className={`group relative flex h-7 w-14 items-center rounded-full transition-all duration-300 focus:outline-none shadow-inner border-2 shrink-0 ${
+            theme === 'dark' 
+              ? 'bg-indigo-600 border-indigo-500' 
+              : 'bg-stone-200 border-stone-100'
+          }`}
+          aria-label="Cambia tema"
+        >
+          {/* Track Icons */}
+          <div className="absolute inset-0 flex items-center justify-between px-1.5 pointer-events-none">
+            <Sun className={`w-3 h-3 ${theme === 'light' ? 'opacity-0' : 'text-white opacity-40'}`} />
+            <Moon className={`w-3 h-3 ${theme === 'dark' ? 'opacity-0' : 'text-stone-400 opacity-60'}`} />
+          </div>
 
-            {/* Sliding Knob */}
-            <div
-              className={`h-6 w-6 rounded-full bg-white shadow-lg transition-all duration-300 ease-in-out ${
-                theme === 'dark' ? 'translate-x-8.5' : 'translate-x-0.5'
-              } flex items-center justify-center border border-stone-100/50 overflow-hidden`}
-            >
-              {theme === 'light' ? (
-                <Sun className="w-4 h-4 text-amber-500 transition-colors" />
-              ) : (
-                <Moon className="w-4 h-4 text-indigo-600 transition-colors" />
-              )}
-            </div>
-          </button>
-        </div>
+          {/* Sliding Knob */}
+          <div
+            className={`h-5 w-5 rounded-full bg-white shadow-lg transition-all duration-300 ease-in-out ${
+              theme === 'dark' ? 'translate-x-7.5' : 'translate-x-0.5'
+            } flex items-center justify-center border border-stone-100/50 overflow-hidden`}
+          >
+            {theme === 'light' ? (
+              <Sun className="w-3.5 h-3.5 text-amber-500 transition-colors" />
+            ) : (
+              <Moon className="w-3.5 h-3.5 text-indigo-600 transition-colors" />
+            )}
+          </div>
+        </button>
       </div>
 
       {/* Dictionary Management */}
