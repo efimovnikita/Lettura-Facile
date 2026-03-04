@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Correct sentence splitting for Italian text with direct speech and dialogue.**
+- [x] **Track: Correct sentence splitting for Italian text with direct speech and dialogue.**
 *Link: [./tracks/italian_direct_speech_20260304/](./tracks/italian_direct_speech_20260304/)*
