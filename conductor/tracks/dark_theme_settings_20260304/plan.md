@@ -1,10 +1,10 @@
 # Implementation Plan: Dark Theme & Settings Panel
 
 ## Phase 1: Theme Management & Persistence
-- [ ] Task: Create `ThemeContext` and `useTheme` hook
-    - [ ] Create `src/hooks/useTheme.tsx` to manage light/dark state
-    - [ ] Implement persistence logic using `LocalStorage`
-    - [ ] Write unit tests for the theme state and persistence
+- [x] Task: Create `ThemeContext` and `useTheme` hook [8e208af]
+    - [x] Create `src/hooks/useTheme.tsx` to manage light/dark state
+    - [x] Implement persistence logic using `LocalStorage`
+    - [x] Write unit tests for the theme state and persistence
 - [ ] Task: Configure Tailwind for manual dark mode
     - [ ] Update `index.css` or root component to apply the `.dark` class based on state
     - [ ] Write tests to verify the class is applied correctly to the `<html>` or root element
