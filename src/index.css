@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --dark-mode: class;
+}
+
 @layer utilities {
   .animate-fade-in {
     animation: fadeIn 0.5s ease-out forwards;
