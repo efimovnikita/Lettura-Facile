@@ -4,6 +4,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Показ оригинального предложения во время загрузки упрощенной версии этого предложения.**
+- [x] **Track: Показ оригинального предложения во время загрузки упрощенной версии этого предложения.**
 *Link: [./tracks/persistent_original_sentence_20260304/](./tracks/persistent_original_sentence_20260304/)*
 
