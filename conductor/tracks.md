@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Темная тема для приложения и панель настроек с ключом Мистраль.**
+- [x] **Track: Темная тема для приложения и панель настроек с ключом Мистраль.**
 *Link: [./tracks/dark_theme_settings_20260304/](./tracks/dark_theme_settings_20260304/)*
