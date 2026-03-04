@@ -5,9 +5,9 @@
     - [x] Create `src/hooks/useTheme.tsx` to manage light/dark state
     - [x] Implement persistence logic using `LocalStorage`
     - [x] Write unit tests for the theme state and persistence
-- [ ] Task: Configure Tailwind for manual dark mode
-    - [ ] Update `index.css` or root component to apply the `.dark` class based on state
-    - [ ] Write tests to verify the class is applied correctly to the `<html>` or root element
+- [x] Task: Configure Tailwind for manual dark mode [743a247]
+    - [x] Update `index.css` or root component to apply the `.dark` class based on state
+    - [x] Write tests to verify the class is applied correctly to the `<html>` or root element
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Theme Management' (Protocol in workflow.md)
 
 ## Phase 2: Settings Panel & API Key Management
