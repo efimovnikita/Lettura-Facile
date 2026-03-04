@@ -1,9 +1,9 @@
 # Implementation Plan: Simplify Sentence View Toggle
 
-## Phase 1: Analysis and Component Selection
-- [x] Task: Identify the React component responsible for the sentence view and the complexity switch.
-- [x] Task: Identify the state management logic for sentence simplification levels.
-- [x] Task: Conductor - User Manual Verification 'Phase 1: Analysis and Component Selection' (Protocol in workflow.md)
+## Phase 1: Analysis and Component Selection [checkpoint: 095d02a]
+- [x] Task: Identify the React component responsible for the sentence view and the complexity switch. (095d02a)
+- [x] Task: Identify the state management logic for sentence simplification levels. (095d02a)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Analysis and Component Selection' (Protocol in workflow.md) (095d02a)
 
 ## Phase 2: Implementation of the New Toggle
 - [ ] Task: Remove the "Beginner, Intermediate, Advanced" UI elements.
