@@ -27,29 +27,6 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
         Configurazione
       </h3>
 
-      {/* Theme Toggle */}
-      <div className="mb-5 flex items-center justify-between">
-        <span className="text-xs font-medium text-stone-500 dark:text-stone-400">
-          Tema dell'applicazione
-        </span>
-        <button
-          onClick={toggleTheme}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-200 hover:bg-stone-50 dark:hover:bg-stone-700 transition-all text-sm font-medium"
-        >
-          {theme === 'light' ? (
-            <>
-              <Sun className="w-4 h-4 text-amber-500" />
-              Chiaro
-            </>
-          ) : (
-            <>
-              <Moon className="w-4 h-4 text-indigo-400" />
-              Scuro
-            </>
-          )}
-        </button>
-      </div>
-
       {/* API Key Input */}
       <div className="mb-4">
         <label className="block text-xs font-medium text-stone-500 dark:text-stone-400 mb-1">
@@ -60,8 +37,47 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
           placeholder="Inserisci la tua API Key..."
           value={mistralKey}
           onChange={(e) => setMistralKey(e.target.value)}
-          className="w-full px-3 py-2 border border-stone-300 dark:border-stone-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100"
+          className="w-full px-3 py-2 border border-stone-300 dark:border-stone-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-inner"
         />
+      </div>
+
+      {/* Theme Toggle Switch */}
+      <div className="mb-5 flex items-center justify-between bg-white dark:bg-stone-800/50 p-3 rounded-lg border border-stone-100 dark:border-stone-800">
+        <div className="flex flex-col gap-0.5">
+          <span className="text-xs font-semibold text-stone-700 dark:text-stone-200">
+            Tema dell'applicazione
+          </span>
+          <span className="text-[10px] text-stone-400 dark:text-stone-500">
+            Passa dalla modalità chiara a quella scura
+          </span>
+        </div>
+        
+        <button
+          onClick={toggleTheme}
+          className={`group relative inline-flex h-6 w-12 items-center rounded-full transition-all duration-300 focus:outline-none shadow-inner ${
+            theme === 'dark' ? 'bg-indigo-600' : 'bg-stone-200'
+          }`}
+          aria-label="Cambia tema"
+        >
+          {/* Track Icons */}
+          <div className="absolute inset-0 flex justify-between px-1 items-center pointer-events-none">
+            <Sun className={`w-3 h-3 ${theme === 'light' ? 'opacity-0' : 'text-white opacity-40'}`} />
+            <Moon className={`w-3 h-3 ${theme === 'dark' ? 'opacity-0' : 'text-stone-400 opacity-60'}`} />
+          </div>
+
+          {/* Sliding Knob */}
+          <span
+            className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition-all duration-300 ease-in-out ${
+              theme === 'dark' ? 'translate-x-6' : 'translate-x-1'
+            } flex items-center justify-center`}
+          >
+            {theme === 'light' ? (
+              <Sun className="w-3 h-3 text-amber-500 transition-colors" />
+            ) : (
+              <Moon className="w-3 h-3 text-indigo-600 transition-colors" />
+            )}
+          </span>
+        </button>
       </div>
 
       {/* Dictionary Management */}
