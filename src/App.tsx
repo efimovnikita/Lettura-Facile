@@ -9,7 +9,7 @@ import { translateWord, translateSentence, simplifySentence, getSentiments } fro
 import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
 
-const APP_VERSION = 'v1.3.1';
+const APP_VERSION = 'v1.3.2';
 
 const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: boolean }) => {
   if (isLoading) return <Loader2 className="w-4 h-4 text-stone-300 animate-spin" />;
