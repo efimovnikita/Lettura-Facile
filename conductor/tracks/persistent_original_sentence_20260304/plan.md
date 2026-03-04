@@ -19,8 +19,8 @@ This plan outlines the steps to display the original sentence while the simplifi
     - [x] Update the difficulty selection buttons to include a `Loader2` icon when `isSentenceLoading` is true and `difficulty === 'simplified'`.
     - [x] Style the spinner to be small and adjacent to the button text.
 
-## Phase 3: Verification and Quality Assurance
+## Phase 3: Verification and Quality Assurance [checkpoint: 57dff0a]
 - [x] Task: Update tests to verify new behavior. [8756140]
     - [x] Update `src/SimplifiedLoading.test.tsx` to assert that text remains visible during loading.
     - [x] Assert that the spinner is visible on the button during loading.
-- [~] Task: Conductor - User Manual Verification 'Show Original Sentence During Simplification Loading' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Show Original Sentence During Simplification Loading' (Protocol in workflow.md) [57dff0a]
