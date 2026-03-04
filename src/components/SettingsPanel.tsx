@@ -42,39 +42,41 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
       </div>
 
       {/* Theme Toggle Switch */}
-      <div className="mb-5 flex items-center justify-between bg-white dark:bg-stone-800/50 p-3 rounded-lg border border-stone-100 dark:border-stone-800">
+      <div className="mb-5 flex items-center justify-between bg-white dark:bg-stone-800/50 p-4 rounded-lg border border-stone-100 dark:border-stone-800 shadow-sm">
         <div className="flex flex-col gap-0.5">
-          <span className="text-xs font-semibold text-stone-700 dark:text-stone-200">
+          <span className="text-sm font-bold text-stone-700 dark:text-stone-200">
             Tema dell'applicazione
           </span>
-          <span className="text-[10px] text-stone-400 dark:text-stone-500">
+          <span className="text-[11px] text-stone-400 dark:text-stone-500 font-medium">
             Passa dalla modalità chiara a quella scura
           </span>
         </div>
         
         <button
           onClick={toggleTheme}
-          className={`group relative inline-flex h-6 w-12 items-center rounded-full transition-all duration-300 focus:outline-none shadow-inner ${
-            theme === 'dark' ? 'bg-indigo-600' : 'bg-stone-200'
+          className={`group relative inline-flex h-9 w-18 items-center rounded-full transition-all duration-300 focus:outline-none shadow-inner border-2 ${
+            theme === 'dark' 
+              ? 'bg-indigo-600 border-indigo-500' 
+              : 'bg-stone-200 border-stone-100'
           }`}
           aria-label="Cambia tema"
         >
           {/* Track Icons */}
-          <div className="absolute inset-0 flex justify-between px-1 items-center pointer-events-none">
-            <Sun className={`w-3 h-3 ${theme === 'light' ? 'opacity-0' : 'text-white opacity-40'}`} />
-            <Moon className={`w-3 h-3 ${theme === 'dark' ? 'opacity-0' : 'text-stone-400 opacity-60'}`} />
+          <div className="absolute inset-0 flex justify-between px-2 items-center pointer-events-none">
+            <Sun className={`w-4 h-4 ${theme === 'light' ? 'opacity-0' : 'text-white opacity-30'}`} />
+            <Moon className={`w-4 h-4 ${theme === 'dark' ? 'opacity-0' : 'text-stone-400 opacity-40'}`} />
           </div>
 
           {/* Sliding Knob */}
           <span
-            className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition-all duration-300 ease-in-out ${
-              theme === 'dark' ? 'translate-x-6' : 'translate-x-1'
-            } flex items-center justify-center`}
+            className={`inline-block h-7 w-7 transform rounded-full bg-white shadow-xl transition-all duration-300 ease-in-out ${
+              theme === 'dark' ? 'translate-x-9.5' : 'translate-x-0.5'
+            } flex items-center justify-center border border-stone-100`}
           >
             {theme === 'light' ? (
-              <Sun className="w-3 h-3 text-amber-500 transition-colors" />
+              <Sun className="w-4.5 h-4.5 text-amber-500 transition-colors shrink-0" />
             ) : (
-              <Moon className="w-3 h-3 text-indigo-600 transition-colors" />
+              <Moon className="w-4.5 h-4.5 text-indigo-600 transition-colors shrink-0" />
             )}
           </span>
         </button>
