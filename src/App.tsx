@@ -559,17 +559,17 @@ export default function App() {
             {currentIndex + 1} / {sentences.length}
           </span>
           <div className="flex bg-white rounded-lg border border-stone-200 p-1 overflow-x-auto max-w-full w-full md:w-auto">
-            {(['original', 'beginner', 'intermediate', 'advanced'] as Difficulty[]).map((lvl) => (
+            {(['original', 'simplified'] as Difficulty[]).map((lvl) => (
               <button
                 key={lvl}
                 onClick={() => setDifficulty(lvl)}
-                className={`px-3 py-1 text-xs rounded-md capitalize transition-colors whitespace-nowrap flex-1 md:flex-none text-center ${
+                className={`px-4 py-1.5 text-xs rounded-md capitalize transition-all whitespace-nowrap flex-1 md:flex-none text-center ${
                   difficulty === lvl
-                    ? 'bg-indigo-100 text-indigo-700 font-medium'
+                    ? 'bg-indigo-600 text-white font-semibold shadow-sm'
                     : 'text-stone-500 hover:bg-stone-50'
                 }`}
               >
-                {lvl}
+                {lvl === 'original' ? 'Originale' : 'Semplificato'}
               </button>
             ))}
           </div>

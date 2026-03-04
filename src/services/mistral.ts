@@ -110,13 +110,14 @@ export async function simplifySentence(apiKey: string, sentence: string, level: 
   if (level === 'original') return sentence;
 
   const client = getMistralClient(apiKey);
+  const targetLevel = level === 'simplified' ? 'beginner (A1/A2)' : level;
 
   const response = await client.chat.complete({
       model: "mistral-small-latest",
       messages: [
         {
           role: "system",
-          content: `You are a linguistic processor. Your ONLY task is to rewrite Italian sentences for a ${level} level learner.
+          content: `You are a linguistic processor. Your ONLY task is to rewrite Italian sentences for a ${targetLevel} level learner.
           Rules:
           1. Output ONLY the rewritten sentence.
           2. NO explanations, NO comments, NO parentheses, NO introductory text.

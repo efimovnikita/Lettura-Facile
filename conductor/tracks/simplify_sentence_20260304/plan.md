@@ -6,11 +6,11 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Analysis and Component Selection' (Protocol in workflow.md) (095d02a)
 
 ## Phase 2: Implementation of the New Toggle
-- [ ] Task: Remove the "Beginner, Intermediate, Advanced" UI elements.
-- [ ] Task: Create a new toggle component (Original / Simplified).
-- [ ] Task: Update the state to handle only two states (Original, Simplified).
-- [ ] Task: Connect the toggle to the existing Mistral AI simplification service.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Implementation of the New Toggle' (Protocol in workflow.md)
+- [x] Task: Remove the "Beginner, Intermediate, Advanced" UI elements.
+- [x] Task: Create a new toggle component (Original / Simplified).
+- [x] Task: Update the state to handle only two states (Original, Simplified).
+- [x] Task: Connect the toggle to the existing Mistral AI simplification service.
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Implementation of the New Toggle' (Protocol in workflow.md)
 
 ## Phase 3: Final Verification and UI Polish
 - [ ] Task: Verify the toggle correctly switches text.
