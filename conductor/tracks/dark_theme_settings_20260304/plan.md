@@ -11,17 +11,17 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Theme Management' (Protocol in workflow.md)
 
 ## Phase 2: Settings Panel & API Key Management
-- [ ] Task: Implement `SettingsPanel` component
-    - [ ] Create a `SettingsPanel.tsx` component that toggles visibility
-    - [ ] Add a "gear" settings icon to `App.tsx` on the main screen
-    - [ ] Write tests for the panel's open/close functionality
-- [ ] Task: Integrate Mistral API Key input
-    - [ ] Add a text input in the settings panel for the API key
-    - [ ] Implement persistence logic for the key in `LocalStorage`
-    - [ ] Write tests for the API key input and persistence
-- [ ] Task: Integrate Theme Toggle switch
-    - [ ] Add a toggle switch in the settings panel that calls `useTheme`
-    - [ ] Write tests to verify the toggle correctly changes the theme state
+- [x] Task: Implement `SettingsPanel` component [748bf96]
+    - [x] Create a `SettingsPanel.tsx` component that toggles visibility
+    - [x] Add a "gear" settings icon to `App.tsx` on the main screen
+    - [x] Write tests for the panel's open/close functionality
+- [x] Task: Integrate Mistral API Key input [748bf96]
+    - [x] Add a text input in the settings panel for the API key
+    - [x] Implement persistence logic for the key in `LocalStorage`
+    - [x] Write tests for the API key input and persistence
+- [x] Task: Integrate Theme Toggle switch [748bf96]
+    - [x] Add a toggle switch in the settings panel that calls `useTheme`
+    - [x] Write tests to verify the toggle correctly changes the theme state
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Settings Panel' (Protocol in workflow.md)
 
 ## Phase 3: Comprehensive Dark Mode Styling
