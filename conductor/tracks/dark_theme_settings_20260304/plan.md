@@ -25,17 +25,17 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Settings Panel' (Protocol in workflow.md)
 
 ## Phase 3: Comprehensive Dark Mode Styling
-- [ ] Task: Update Global Layout and App Styling
-    - [ ] Apply `dark:` variants to `App.tsx` and global background colors
-    - [ ] Ensure the "soft dark" (grey/navy) palette is used consistently
-    - [ ] Write visual/regression tests or component tests for dark mode styles
-- [ ] Task: Update `WordRenderer` and UI Components
-    - [ ] Apply dark mode styling to word highlights and dictionary popups
-    - [ ] Update `SimplifiedLoading` and sentiment indicators
-    - [ ] Write tests to verify visibility and contrast in dark mode
-- [ ] Task: Add smooth transitions and polishing
-    - [ ] Implement CSS transitions for background and text color changes
-    - [ ] Verify WCAG AA contrast ratios for dark mode text
+- [x] Task: Update Global Layout and App Styling [19a1972]
+    - [x] Apply `dark:` variants to `App.tsx` and global background colors
+    - [x] Ensure the "soft dark" (grey/navy) palette is used consistently
+    - [x] Write visual/regression tests or component tests for dark mode styles
+- [x] Task: Update `WordRenderer` and UI Components [19a1972]
+    - [x] Apply dark mode styling to word highlights and dictionary popups
+    - [x] Update `SimplifiedLoading` and sentiment indicators
+    - [x] Write tests to verify visibility and contrast in dark mode
+- [x] Task: Add smooth transitions and polishing [19a1972]
+    - [x] Implement CSS transitions for background and text color changes
+    - [x] Verify WCAG AA contrast ratios for dark mode text
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Dark Mode Styling' (Protocol in workflow.md)
 
 ## Phase 4: Final Verification
