@@ -13,6 +13,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation of the New Toggle' (Protocol in workflow.md) (582e1a6)
 
 ## Phase 3: Final Verification and UI Polish
-- [ ] Task: Verify the toggle correctly switches text.
-- [ ] Task: Ensure any PWA/Local Storage logic is updated to reflect the new toggle state if necessary.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Verification and UI Polish' (Protocol in workflow.md)
+- [x] Task: Verify the toggle correctly switches text.
+- [x] Task: Ensure any PWA/Local Storage logic is updated to reflect the new toggle state if necessary.
+- [~] Task: Conductor - User Manual Verification 'Phase 3: Final Verification and UI Polish' (Protocol in workflow.md)

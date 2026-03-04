@@ -63,4 +63,10 @@ describe('App Component - Difficulty Toggle', () => {
     expect(screen.queryByText(/intermediate/i)).toBeNull();
     expect(screen.queryByText(/advanced/i)).toBeNull();
   });
+
+  it('should show Originale and Semplificato buttons', () => {
+    render(<App />);
+    expect(screen.getByText(/originale/i)).toBeInTheDocument();
+    expect(screen.getByText(/semplificato/i)).toBeInTheDocument();
+  });
 });

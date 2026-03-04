@@ -88,7 +88,14 @@ export default function App() {
       setSentences(loaded.sentences || []);
       setSentiments(loaded.sentiments || {});
       setCurrentIndex(loaded.currentSentenceIndex || 0);
-      setDifficulty(loaded.difficulty || 'original');
+      
+      // Migrate old difficulty values
+      let initialDifficulty = loaded.difficulty || 'original';
+      if (initialDifficulty !== 'original' && initialDifficulty !== 'simplified') {
+        initialDifficulty = 'original';
+      }
+      setDifficulty(initialDifficulty as Difficulty);
+
       if (loaded.sentences && loaded.sentences.length > 0) {
         setView('reader');
       }
