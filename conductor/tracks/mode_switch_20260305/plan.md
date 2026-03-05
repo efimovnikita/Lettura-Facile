@@ -1,12 +1,12 @@
 # Implementation Plan: 3-State Display Mode Switch
 
-## Phase 1: Preparation & UI Cleanup
+## Phase 1: Preparation & UI Cleanup [checkpoint: 3fcaea8]
 Goal: Prepare the codebase for the new switch by removing legacy UI elements and researching state management.
 
 - [x] Task: Research current sentence state management and AI triggering logic. [ea1e1e1]
 - [x] Task: Remove the existing 2-position switch (Originale/Semplificato) from the top UI. [dd9ca10]
 - [x] Task: Remove the "Traduci Frase" button above "La prossima frase". [dd9ca10]
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Preparation & UI Cleanup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Preparation & UI Cleanup' (Protocol in workflow.md) [3fcaea8]
 
 ## Phase 2: New Switch Component Development
 Goal: Create the UI component for the 3-state sliding switch.
