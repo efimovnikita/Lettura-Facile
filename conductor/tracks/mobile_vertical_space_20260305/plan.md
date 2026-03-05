@@ -11,7 +11,7 @@
 - [x] Task: Update `App.tsx` Reader view to use responsive padding: `pt-4 md:pt-16` on `<main>`. 5c3633e
 - [x] Task: Update `App.tsx` Reader view header to use `mb-4 md:mb-12`. b305f01
 - [x] Task: Update `App.tsx` Reader view to use `mb-6 md:mb-12` on `SentenceDisplay`. cf0af20
-- [ ] Task: Update `App.tsx` Reader view `ToneIndicator` container to use `mb-4 md:mb-10`.
+- [x] Task: Update `App.tsx` Reader view `ToneIndicator` container to use `mb-4 md:mb-10`. 09c5db9
 - [ ] Task: Update `App.tsx` Reader view `<main>` bottom padding to `pb-10 md:pb-20`.
 - [ ] Task: Verify that all tests pass for the margin changes.
 - [ ] Task: Conductor - User Manual Verification 'Optimize Margins and Paddings' (Protocol in workflow.md)
