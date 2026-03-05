@@ -7,18 +7,18 @@
     - [ ] Ensure all existing functionality remains intact
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Component Extraction' (Protocol in workflow.md) (manual)
 
-## Phase 2: Animation Integration (TDD)
-- [ ] Task: Write tests for `SentenceDisplay` animations
-    - [ ] Create `src/components/SentenceDisplay.test.tsx`
-    - [ ] Verify that the component uses `motion.div` and `AnimatePresence`
-    - [ ] Verify that it supports a loading state
-- [ ] Task: Implement animations in `SentenceDisplay.tsx`
-    - [ ] Wrap content in `AnimatePresence`
-    - [ ] Add cross-fade transitions (`opacity`) between content changes
-    - [ ] Implement smooth height morphing using `layout`
-    - [ ] Set transition duration to 0.2s (Snappy)
-    - [ ] Implement "Keep Old Content" visual style (opacity/blur) during loading
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Animation Integration' (Protocol in workflow.md)
+## Phase 2: Animation Integration (TDD) [checkpoint: 94ab6b4]
+- [x] Task: Write tests for `SentenceDisplay` animations (94ab6b4)
+    - [x] Create `src/components/SentenceDisplay.test.tsx`
+    - [x] Verify that the component uses `motion.div` and `AnimatePresence`
+    - [x] Verify that it supports a loading state
+- [x] Task: Implement animations in `SentenceDisplay.tsx` (94ab6b4)
+    - [x] Wrap content in `AnimatePresence`
+    - [x] Add cross-fade transitions (`opacity`) between content changes
+    - [x] Implement smooth height morphing using `layout` (Attempted, but removed to fix double-click; kept snappy feel with opacity)
+    - [x] Set transition duration to 0.2s (Snappy)
+    - [x] Implement "Keep Old Content" visual style (opacity/blur) during loading
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Animation Integration' (Protocol in workflow.md) (manual)
 
 ## Phase 3: Final Verification and Cleanup
 - [ ] Task: Verify overall app behavior and performance
