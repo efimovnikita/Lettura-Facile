@@ -17,8 +17,8 @@ Lettura-Facile is a language-learning reading assistant designed to make complex
 
 ## Core Features
 1. **Sentence-by-Sentence Mode:** Focus on one sentence at a time to reduce cognitive load.
-2. **AI Text Simplification (Mistral):** Dynamically rewrite complex sentences into simpler language.
-3. **Interactive Dictionary/Translation:** Instant translation for single words or multi-word phrases.
+2. **Unified Display Modes:** A 3-state control to switch instantly between Original, AI-Simplified, and Translated versions of the current sentence.
+3. **Interactive Word/Phrase Dictionary:** Instant translation for single words or multi-word phrases via direct interaction with the text.
 4. **Sentiment Analysis:** Reveal the "mood" or tone of the current sentence to improve emotional comprehension.
 5. **Text Import:** Support for pasting or uploading custom text for analysis.
 
