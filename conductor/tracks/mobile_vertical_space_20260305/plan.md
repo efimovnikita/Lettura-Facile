@@ -3,7 +3,7 @@
 ## Phase 1: Environment & Test Preparation
 - [x] Task: Review existing tests for `App.tsx` and `SentenceDisplay.tsx` to ensure a baseline for layout tests. f3c71e7
 - [x] Task: Create a new test file `src/MobileLayout.test.tsx` to specifically test responsive layout changes. 23bbb18
-- [ ] Task: Write failing tests in `src/MobileLayout.test.tsx` to verify current large margins and sentence height on mobile (should fail after implementation).
+- [x] Task: Write failing tests in `src/MobileLayout.test.tsx` to verify current large margins and sentence height on mobile (should fail after implementation). 88f88ce
 - [ ] Task: Conductor - User Manual Verification 'Environment & Test Preparation' (Protocol in workflow.md)
 
 ## Phase 2: Optimize Margins and Paddings (Reader View)

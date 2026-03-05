@@ -36,7 +36,7 @@ vi.mock('lucide-react', () => ({
   Languages: () => <div data-testid="icon-languages" />,
 }));
 
-describe('Mobile Layout Spacing', () => {
+describe('Mobile Layout Spacing (Failing Phase)', () => {
   beforeEach(() => {
     localStorage.clear();
     const state = {
@@ -49,36 +49,46 @@ describe('Mobile Layout Spacing', () => {
   });
 
   describe('Reader View Margins (App.tsx)', () => {
-    it('should verify reader view main container padding', () => {
+    it('should have reduced top padding on mobile', () => {
       const { container } = render(<App />);
       const main = container.querySelector('main');
-      // Current: pt-8 md:pt-16
-      // Future: pt-4 md:pt-16
-      expect(main?.className).toContain('pt-8');
-      expect(main?.className).toContain('md:pt-16');
+      // Should be pt-4 for mobile
+      expect(main?.className).toContain('pt-4');
     });
 
-    it('should verify reader view header margin', () => {
+    it('should have reduced header margin on mobile', () => {
       const { container } = render(<App />);
       const header = container.querySelector('header');
-      // Current: mb-8 md:mb-12
-      // Future: mb-4 md:mb-12
-      expect(header?.className).toContain('mb-8');
-      expect(header?.className).toContain('md:mb-12');
+      // Should be mb-4 for mobile
+      expect(header?.className).toContain('mb-4');
     });
 
-    it('should verify sentence display area margin', () => {
-      // SentenceDisplay is rendered inside App, let's find it by its testid or class
-      // In App.tsx: <SentenceDisplay ... /> is rendered. 
-      // Actually, SentenceDisplay doesn't have its own margin in its component, 
-      // it's likely applied in App.tsx or SentenceDisplay.tsx.
-      // Looking at App.tsx: SentenceDisplay doesn't have margin class passed to it.
-      // But looking at SentenceDisplay.tsx: it has mb-12.
+    it('should have reduced sentence display margin on mobile', () => {
+        // This is applied in App.tsx on the SentenceDisplay container or component
+        // Current: mb-12. Future: mb-6 md:mb-12
+        const { container } = render(<App />);
+        // SentenceDisplay has mb-12 internally, but we want App to control it or update SentenceDisplay.
+        // Let's check SentenceDisplay's own class.
+        const sentenceArea = container.querySelector('.text-center.mb-12'); 
+        expect(sentenceArea?.className).toContain('mb-6');
+    });
+
+    it('should have reduced tone indicator margin on mobile', () => {
+        const { container } = render(<App />);
+        // <div className="mb-10 sticky ...">
+        const toneContainer = container.querySelector('.sticky.top-0');
+        expect(toneContainer?.className).toContain('mb-4');
+    });
+
+    it('should have reduced bottom padding on mobile', () => {
+        const { container } = render(<App />);
+        const main = container.querySelector('main');
+        expect(main?.className).toContain('pb-10');
     });
   });
 
   describe('SentenceDisplay Height (SentenceDisplay.tsx)', () => {
-    it('should verify sentence display minimum height', () => {
+    it('should have reduced minimum height on mobile', () => {
       const { container } = render(
         <SentenceDisplay
           sentenceText="Test"
@@ -89,9 +99,8 @@ describe('Mobile Layout Spacing', () => {
         />
       );
       const div = container.firstChild as HTMLElement;
-      // Current: min-h-[240px]
-      // Future: min-h-[160px] md:min-h-[240px]
-      expect(div.className).toContain('min-h-[240px]');
+      // Should be min-h-[160px] for mobile
+      expect(div.className).toContain('min-h-[160px]');
     });
   });
 });
