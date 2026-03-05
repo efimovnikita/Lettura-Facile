@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: более плавный переход при отображении упрощенной или переведенной версии предложения.**
+- [x] **Track: более плавный переход при отображении упрощенной или переведенной версии предложения.**
 *Link: [./tracks/smooth_transitions_20260305/](./tracks/smooth_transitions_20260305/)*
