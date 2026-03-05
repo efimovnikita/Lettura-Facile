@@ -36,7 +36,7 @@ vi.mock('lucide-react', () => ({
   Languages: () => <div data-testid="icon-languages" />,
 }));
 
-describe('Mobile Layout Spacing (Failing Phase)', () => {
+describe('Mobile Layout Spacing', () => {
   beforeEach(() => {
     localStorage.clear();
     const state = {
@@ -49,46 +49,45 @@ describe('Mobile Layout Spacing (Failing Phase)', () => {
   });
 
   describe('Reader View Margins (App.tsx)', () => {
-    it('should have reduced top padding on mobile', () => {
+    it('should have responsive top padding on main container', () => {
       const { container } = render(<App />);
       const main = container.querySelector('main');
-      // Should be pt-4 for mobile
       expect(main?.className).toContain('pt-4');
+      expect(main?.className).toContain('md:pt-16');
     });
 
-    it('should have reduced header margin on mobile', () => {
+    it('should have responsive header margin', () => {
       const { container } = render(<App />);
       const header = container.querySelector('header');
-      // Should be mb-4 for mobile
       expect(header?.className).toContain('mb-4');
+      expect(header?.className).toContain('md:mb-12');
     });
 
-    it('should have reduced sentence display margin on mobile', () => {
-        // This is applied in App.tsx on the SentenceDisplay container or component
-        // Current: mb-12. Future: mb-6 md:mb-12
+    it('should have responsive sentence display margin', () => {
         const { container } = render(<App />);
-        // SentenceDisplay has mb-12 internally, but we want App to control it or update SentenceDisplay.
-        // Let's check SentenceDisplay's own class.
-        const sentenceArea = container.querySelector('.text-center.mb-12'); 
+        // We will update SentenceDisplay.tsx to use responsive mb
+        const sentenceArea = container.querySelector('.text-center'); 
         expect(sentenceArea?.className).toContain('mb-6');
+        expect(sentenceArea?.className).toContain('md:mb-12');
     });
 
-    it('should have reduced tone indicator margin on mobile', () => {
+    it('should have responsive tone indicator margin', () => {
         const { container } = render(<App />);
-        // <div className="mb-10 sticky ...">
         const toneContainer = container.querySelector('.sticky.top-0');
         expect(toneContainer?.className).toContain('mb-4');
+        expect(toneContainer?.className).toContain('md:mb-10');
     });
 
-    it('should have reduced bottom padding on mobile', () => {
+    it('should have responsive bottom padding on main container', () => {
         const { container } = render(<App />);
         const main = container.querySelector('main');
         expect(main?.className).toContain('pb-10');
+        expect(main?.className).toContain('md:pb-20');
     });
   });
 
   describe('SentenceDisplay Height (SentenceDisplay.tsx)', () => {
-    it('should have reduced minimum height on mobile', () => {
+    it('should have responsive minimum height', () => {
       const { container } = render(
         <SentenceDisplay
           sentenceText="Test"
@@ -99,8 +98,8 @@ describe('Mobile Layout Spacing (Failing Phase)', () => {
         />
       );
       const div = container.firstChild as HTMLElement;
-      // Should be min-h-[160px] for mobile
       expect(div.className).toContain('min-h-[160px]');
+      expect(div.className).toContain('md:min-h-[240px]');
     });
   });
 });

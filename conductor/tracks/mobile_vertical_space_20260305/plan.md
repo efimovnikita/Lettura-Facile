@@ -7,7 +7,7 @@
 - [x] Task: Conductor - User Manual Verification 'Environment & Test Preparation' (Protocol in workflow.md) 4fc421a
 
 ## Phase 2: Optimize Margins and Paddings (Reader View)
-- [ ] Task: Write TDD tests for `App.tsx` Reader view to ensure specific Tailwind classes are applied on mobile/desktop.
+- [x] Task: Write TDD tests for `App.tsx` Reader view to ensure specific Tailwind classes are applied on mobile/desktop. e563a0d
 - [ ] Task: Update `App.tsx` Reader view to use responsive padding: `pt-4 md:pt-16` on `<main>`.
 - [ ] Task: Update `App.tsx` Reader view header to use `mb-4 md:mb-12`.
 - [ ] Task: Update `App.tsx` Reader view to use `mb-6 md:mb-12` on `SentenceDisplay`.
