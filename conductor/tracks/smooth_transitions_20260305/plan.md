@@ -1,6 +1,6 @@
 # Implementation Plan: Smooth Sentence Mode Transitions
 
-## Phase 1: Setup and Component Extraction
+## Phase 1: Setup and Component Extraction [checkpoint: 6d4afac]
 - [x] Task: Extract Sentence Display into a separate component `SentenceDisplay.tsx` (3d909fd)
     - [ ] Create `src/components/SentenceDisplay.tsx`
     - [ ] Update `App.tsx` to use `SentenceDisplay`
