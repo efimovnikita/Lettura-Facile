@@ -20,9 +20,9 @@
     - [x] Implement "Keep Old Content" visual style (opacity/blur) during loading
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Animation Integration' (Protocol in workflow.md) (manual)
 
-## Phase 3: Final Verification and Cleanup
-- [ ] Task: Verify overall app behavior and performance
-    - [ ] Ensure no regressions in word selection or translation logic
-    - [ ] Check performance on mobile devices (if possible)
-    - [ ] Verify that coverage is >80% for new code
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Verification' (Protocol in workflow.md)
+## Phase 3: Final Verification and Cleanup [checkpoint: final]
+- [x] Task: Verify overall app behavior and performance (manual)
+    - [x] Ensure no regressions in word selection or translation logic
+    - [x] Check performance on mobile devices (if possible)
+    - [x] Verify that coverage is >80% for new code (SentenceDisplay.tsx is 100%)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Final Verification' (Protocol in workflow.md) (manual)
