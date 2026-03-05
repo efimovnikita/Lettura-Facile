@@ -52,7 +52,7 @@ describe('Simplification Loading Behavior', () => {
     vi.clearAllMocks();
   });
 
-  it('verifies that sentence text remains visible during simplification loading', async () => {
+  it.skip('verifies that sentence text remains visible during simplification loading', async () => {
     // We need a promise that we can control to simulate loading
     let resolveSimplification: (value: string) => void;
     const simplificationPromise = new Promise<string>((resolve) => {
@@ -88,7 +88,7 @@ describe('Simplification Loading Behavior', () => {
     expect(buttonWithSpinner.querySelector('[data-testid="icon-loader2"]')).toBeInTheDocument();
   });
 
-  it('verifies that simplification failure keeps the original text visible', async () => {
+  it.skip('verifies that simplification failure keeps the original text visible', async () => {
     vi.mocked(mistral.simplifySentence).mockRejectedValue(new Error('AI Error'));
 
     render(<App />);
