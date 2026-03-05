@@ -536,7 +536,7 @@ const [translation, setTranslation] = useState<string | null>(null);
       <main className="flex-1 flex flex-col items-center justify-start pt-4 md:pt-16 max-w-4xl mx-auto w-full relative pb-10 md:pb-20" ref={containerRef}>
 
         {/* Sentiment Barometer */}
-        <div className="mb-4 md:mb-10 sticky top-0 z-10 py-2 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-sm w-full flex justify-center">
+        <div className="mb-2 md:mb-10 sticky top-0 z-10 py-1 md:py-2 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-sm w-full flex justify-center">
           <ToneIndicator data={sentiments[currentIndex]} />
         </div>
 
@@ -592,10 +592,10 @@ const [translation, setTranslation] = useState<string | null>(null);
         />
 
         {/* Controls */}
-        <div className="flex flex-col items-center gap-6 w-full">
+        <div className="flex flex-col items-center gap-3 md:gap-6 w-full">
           <ModeSwitch currentMode={displayMode} onChange={setDisplayMode} isLoading={isSentenceLoading || isTranslationLoading} />
 
-          <div className="flex items-center gap-4 mt-8">
+          <div className="flex items-center gap-4 mt-4 md:mt-8">
             <button
               onClick={prevSentence}
               disabled={currentIndex === 0 || isSentenceLoading}

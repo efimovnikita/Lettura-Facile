@@ -14,6 +14,7 @@
 - [x] Task: Update `App.tsx` Reader view `ToneIndicator` container to use `mb-4 md:mb-10`. 09c5db9
 - [x] Task: Update `App.tsx` Reader view `<main>` bottom padding to `pb-10 md:pb-20`. 3ef5442
 - [x] Task: Verify that all tests pass for the margin changes. c0c5999
+- [x] Task: Further reduce internal ToneIndicator and control spacings on mobile. f2ae27e
 - [ ] Task: Conductor - User Manual Verification 'Optimize Margins and Paddings' (Protocol in workflow.md)
 
 ## Phase 3: Responsive Sentence Area Height

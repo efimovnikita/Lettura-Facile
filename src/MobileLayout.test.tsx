@@ -65,17 +65,38 @@ describe('Mobile Layout Spacing', () => {
 
     it('should have responsive sentence display margin', () => {
         const { container } = render(<App />);
-        // We will update SentenceDisplay.tsx to use responsive mb
         const sentenceArea = container.querySelector('.text-center'); 
-        expect(sentenceArea?.className).toContain('mb-6');
+        expect(sentenceArea?.className).toContain('mb-4');
         expect(sentenceArea?.className).toContain('md:mb-12');
     });
 
     it('should have responsive tone indicator margin', () => {
         const { container } = render(<App />);
         const toneContainer = container.querySelector('.sticky.top-0');
-        expect(toneContainer?.className).toContain('mb-4');
+        expect(toneContainer?.className).toContain('mb-2');
         expect(toneContainer?.className).toContain('md:mb-10');
+    });
+
+    it('should have responsive tone indicator padding', () => {
+        const { container } = render(<App />);
+        const toneContainer = container.querySelector('.sticky.top-0');
+        expect(toneContainer?.className).toContain('py-1');
+        expect(toneContainer?.className).toContain('md:py-2');
+    });
+
+    it('should have responsive controls gap', () => {
+        const { container } = render(<App />);
+        // Controls wrapper is the div with ModeSwitch. Its classes in App.tsx: gap-3 md:gap-6
+        // Let's find it by gap-3
+        const controls = container.querySelector('.flex-col.items-center.gap-3');
+        expect(controls?.className).toContain('md:gap-6');
+    });
+
+    it('should have responsive nav buttons margin', () => {
+        const { container } = render(<App />);
+        // Navigation buttons div: mt-4 md:mt-8
+        const nav = container.querySelector('.mt-4');
+        expect(nav?.className).toContain('md:mt-8');
     });
 
     it('should have responsive bottom padding on main container', () => {
