@@ -25,11 +25,11 @@ Goal: Wire the new switch into the application's state and Mistral AI services.
 - [x] Task: Implement the requirement: "Show the original sentence while waiting for AI results in 'Semplificato' and 'Traduzione' modes." [44a3ef3]
 - [x] Task: Conductor - User Manual Verification 'Phase 3: State Integration & AI Logic' (Protocol in workflow.md) [44a3ef3]
 
-## Phase 4: Testing & Final Polishing
+## Phase 4: Testing & Final Polishing [checkpoint: 44a3ef3]
 Goal: Verify all requirements and perform final UI refinements.
 
-- [ ] Task: Add unit tests for the `ModeSwitch` component and state updates.
-- [ ] Task: Add integration tests for the "show original while loading" behavior.
-- [ ] Task: Verify that the switch state resets on page reload.
-- [ ] Task: Final UI/UX refinement based on user feedback.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Testing & Final Polishing' (Protocol in workflow.md)
+- [x] Task: Add unit tests for the `ModeSwitch` component and state updates. [44a3ef3]
+- [x] Task: Add integration tests for the "show original while loading" behavior. [44a3ef3]
+- [x] Task: Verify that the switch state resets on page reload. [44a3ef3]
+- [x] Task: Final UI/UX refinement based on user feedback. [44a3ef3]
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Testing & Final Polishing' (Protocol in workflow.md) [44a3ef3]
