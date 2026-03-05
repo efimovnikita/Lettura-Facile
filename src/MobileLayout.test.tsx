@@ -36,7 +36,7 @@ vi.mock('lucide-react', () => ({
   Languages: () => <div data-testid="icon-languages" />,
 }));
 
-describe('Mobile Layout Spacing', () => {
+describe('Responsive Layout Verification', () => {
   beforeEach(() => {
     localStorage.clear();
     const state = {
@@ -48,79 +48,73 @@ describe('Mobile Layout Spacing', () => {
     localStorage.setItem('lettura_facile_state', JSON.stringify(state));
   });
 
-  describe('Reader View Margins (App.tsx)', () => {
-    it('should have responsive top padding on main container', () => {
+  describe('Mobile Classes (Responsive)', () => {
+    it('should have mobile-specific classes', () => {
       const { container } = render(<App />);
       const main = container.querySelector('main');
-      expect(main?.className).toContain('pt-4');
-      expect(main?.className).toContain('md:pt-16');
-    });
-
-    it('should have responsive header margin', () => {
-      const { container } = render(<App />);
       const header = container.querySelector('header');
+      const sentenceArea = container.querySelector('.text-center');
+      const toneContainer = container.querySelector('.sticky.top-0');
+      const controls = container.querySelector('.flex-col.items-center.gap-3');
+      const nav = container.querySelector('.mt-4');
+
+      expect(main?.className).toContain('pt-4');
+      expect(main?.className).toContain('pb-10');
       expect(header?.className).toContain('mb-4');
-      expect(header?.className).toContain('md:mb-12');
+      expect(sentenceArea?.className).toContain('mb-4');
+      expect(toneContainer?.className).toContain('mb-2');
+      expect(toneContainer?.className).toContain('py-1');
+      expect(controls?.className).toContain('gap-3');
+      expect(nav?.className).toContain('mt-4');
     });
 
-    it('should have responsive sentence display margin', () => {
-        const { container } = render(<App />);
-        const sentenceArea = container.querySelector('.text-center'); 
-        expect(sentenceArea?.className).toContain('mb-4');
-        expect(sentenceArea?.className).toContain('md:mb-12');
-    });
-
-    it('should have responsive tone indicator margin', () => {
-        const { container } = render(<App />);
-        const toneContainer = container.querySelector('.sticky.top-0');
-        expect(toneContainer?.className).toContain('mb-2');
-        expect(toneContainer?.className).toContain('md:mb-10');
-    });
-
-    it('should have responsive tone indicator padding', () => {
-        const { container } = render(<App />);
-        const toneContainer = container.querySelector('.sticky.top-0');
-        expect(toneContainer?.className).toContain('py-1');
-        expect(toneContainer?.className).toContain('md:py-2');
-    });
-
-    it('should have responsive controls gap', () => {
-        const { container } = render(<App />);
-        // Controls wrapper is the div with ModeSwitch. Its classes in App.tsx: gap-3 md:gap-6
-        // Let's find it by gap-3
-        const controls = container.querySelector('.flex-col.items-center.gap-3');
-        expect(controls?.className).toContain('md:gap-6');
-    });
-
-    it('should have responsive nav buttons margin', () => {
-        const { container } = render(<App />);
-        // Navigation buttons div: mt-4 md:mt-8
-        const nav = container.querySelector('.mt-4');
-        expect(nav?.className).toContain('md:mt-8');
-    });
-
-    it('should have responsive bottom padding on main container', () => {
-        const { container } = render(<App />);
-        const main = container.querySelector('main');
-        expect(main?.className).toContain('pb-10');
-        expect(main?.className).toContain('md:pb-20');
+    it('should have responsive min-height on SentenceDisplay', () => {
+        const { container } = render(
+          <SentenceDisplay
+            sentenceText="Test"
+            displayMode="original"
+            selectedIndices={[]}
+            getWordIntensity={() => 0}
+            onWordClick={() => {}}
+          />
+        );
+        const div = container.firstChild as HTMLElement;
+        expect(div.className).toContain('min-h-[160px]');
     });
   });
 
-  describe('SentenceDisplay Height (SentenceDisplay.tsx)', () => {
-    it('should have responsive minimum height', () => {
-      const { container } = render(
-        <SentenceDisplay
-          sentenceText="Test"
-          displayMode="original"
-          selectedIndices={[]}
-          getWordIntensity={() => 0}
-          onWordClick={() => {}}
-        />
-      );
-      const div = container.firstChild as HTMLElement;
-      expect(div.className).toContain('min-h-[160px]');
-      expect(div.className).toContain('md:min-h-[240px]');
+  describe('Desktop Classes (Responsive)', () => {
+    it('should preserve desktop-specific classes', () => {
+      const { container } = render(<App />);
+      const main = container.querySelector('main');
+      const header = container.querySelector('header');
+      const sentenceArea = container.querySelector('.text-center');
+      const toneContainer = container.querySelector('.sticky.top-0');
+      const controls = container.querySelector('.flex-col.items-center.gap-3');
+      const nav = container.querySelector('.mt-4');
+
+      expect(main?.className).toContain('md:pt-16');
+      expect(main?.className).toContain('md:pb-20');
+      expect(header?.className).toContain('md:mb-12');
+      expect(sentenceArea?.className).toContain('md:mb-12');
+      expect(toneContainer?.className).toContain('md:mb-10');
+      expect(toneContainer?.className).toContain('md:py-2');
+      expect(controls?.className).toContain('md:gap-6');
+      expect(nav?.className).toContain('md:mt-8');
+    });
+
+    it('should preserve desktop min-height on SentenceDisplay', () => {
+        const { container } = render(
+          <SentenceDisplay
+            sentenceText="Test"
+            displayMode="original"
+            selectedIndices={[]}
+            getWordIntensity={() => 0}
+            onWordClick={() => {}}
+          />
+        );
+        const div = container.firstChild as HTMLElement;
+        expect(div.className).toContain('md:min-h-[240px]');
     });
   });
 });
