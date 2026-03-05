@@ -339,6 +339,9 @@ const [translation, setTranslation] = useState<string | null>(null);
       // ЛОГИКА МУЛЬТИВЫДЕЛЕНИЯ (Ctrl+Click ИЛИ Двойной тап на мобилке)
       // ==========================================
       if (isCtrlKey || timeSinceLastClick < 400) { // Increased to 400ms
+        // Prevent default browser behavior (like text selection on double click)
+        event.preventDefault();
+
         // Отменяем одиночный клик, если он был запланирован
         if (clickTimeoutRef.current) {
           clearTimeout(clickTimeoutRef.current);
@@ -392,26 +395,6 @@ const [translation, setTranslation] = useState<string | null>(null);
         clickTimeoutRef.current = null;
       }, 400); // Increased to 400ms
     };
-
-  const handleWordDoubleClick = (index: number) => {
-    if (clickTimeoutRef.current) {
-      clearTimeout(clickTimeoutRef.current);
-      clickTimeoutRef.current = null;
-    }
-
-    // Toggle selection
-    let newIndices: number[] = [];
-    if (selectedIndices.includes(index)) {
-      newIndices = selectedIndices.filter(i => i !== index);
-    } else {
-      newIndices = [...selectedIndices, index].sort((a, b) => a - b);
-    }
-    setSelectedIndices(newIndices);
-
-    // Hide tooltip during selection manipulation
-    setWordTranslation(null);
-    setTooltipPosition(null);
-  };
 
   const nextSentence = () => {
     // Сбрасываем сложность на оригинал при переходе вперед
@@ -605,7 +588,6 @@ const [translation, setTranslation] = useState<string | null>(null);
           selectedIndices={selectedIndices}
           getWordIntensity={getWordIntensity}
           onWordClick={handleWordClick}
-          onWordDoubleClick={handleWordDoubleClick}
           isLoading={isSentenceLoading || isTranslationLoading}
         />
 

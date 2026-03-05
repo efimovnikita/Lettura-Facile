@@ -9,7 +9,6 @@ describe('SentenceDisplay', () => {
     selectedIndices: [],
     getWordIntensity: () => 0,
     onWordClick: vi.fn(),
-    onWordDoubleClick: vi.fn(),
     isLoading: false,
   };
 
@@ -25,13 +24,6 @@ describe('SentenceDisplay', () => {
     const word = screen.getByText('Test');
     fireEvent.click(word);
     expect(defaultProps.onWordClick).toHaveBeenCalled();
-  });
-
-  it('calls onWordDoubleClick when a word is double-clicked', () => {
-    render(<SentenceDisplay {...defaultProps} />);
-    const word = screen.getByText('Test');
-    fireEvent.doubleClick(word);
-    expect(defaultProps.onWordDoubleClick).toHaveBeenCalled();
   });
 
   it('applies blur class when isLoading is true', () => {

@@ -7,10 +7,9 @@ interface WordRendererProps {
   isSelected: boolean;
   isClickable?: boolean;
   onClick: (word: string, index: number, event: React.MouseEvent<HTMLSpanElement>) => void;
-  onDoubleClick: (index: number) => void;
 }
 
-export const WordRenderer: React.FC<WordRendererProps> = ({ word, index, intensity, isSelected, isClickable = true, onClick, onDoubleClick }) => {
+export const WordRenderer: React.FC<WordRendererProps> = ({ word, index, intensity, isSelected, isClickable = true, onClick }) => {
   const getHighlightClass = (clicks: number) => {
     if (!isClickable || clicks === 0) return '';
     if (clicks < 3) return 'underline decoration-dotted decoration-gray-300 dark:decoration-gray-700 decoration-2 underline-offset-4';
@@ -29,7 +28,6 @@ export const WordRenderer: React.FC<WordRendererProps> = ({ word, index, intensi
     return (
       <span
         onClick={(e) => isClickable && onClick(word, index, e)}
-        onDoubleClick={() => isClickable && onDoubleClick(index)}
         className={`${isClickable ? 'cursor-pointer' : 'cursor-default'} select-none touch-manipulation transition-colors ${isSelected ? selectionClass : isClickable ? 'hover:text-gray-600 dark:hover:text-gray-400' : ''}`}
       >
         {word}{' '}
@@ -44,7 +42,6 @@ export const WordRenderer: React.FC<WordRendererProps> = ({ word, index, intensi
       {prefix}
       <span
         onClick={(e) => isClickable && onClick(coreWord, index, e)}
-        onDoubleClick={() => isClickable && onDoubleClick(index)}
         className={`${isClickable ? 'cursor-pointer' : 'cursor-default'} select-none touch-manipulation transition-colors ${getHighlightClass(intensity)} ${selectionClass}`}
       >
         {coreWord}

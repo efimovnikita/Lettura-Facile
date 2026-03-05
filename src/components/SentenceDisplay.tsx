@@ -8,7 +8,6 @@ interface SentenceDisplayProps {
   selectedIndices: number[];
   getWordIntensity: (word: string) => number;
   onWordClick: (word: string, index: number, event: React.MouseEvent<HTMLSpanElement>) => void;
-  onWordDoubleClick: (index: number) => void;
   isLoading?: boolean;
 }
 
@@ -18,7 +17,6 @@ export const SentenceDisplay: React.FC<SentenceDisplayProps> = ({
   selectedIndices,
   getWordIntensity,
   onWordClick,
-  onWordDoubleClick,
   isLoading = false,
 }) => {
   return (
@@ -43,7 +41,6 @@ export const SentenceDisplay: React.FC<SentenceDisplayProps> = ({
               isSelected={selectedIndices.includes(index)}
               isClickable={displayMode !== 'translated'}
               onClick={onWordClick}
-              onDoubleClick={onWordDoubleClick}
             />
           ))}
         </motion.div>
