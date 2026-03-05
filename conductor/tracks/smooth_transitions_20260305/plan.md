@@ -1,11 +1,11 @@
 # Implementation Plan: Smooth Sentence Mode Transitions
 
 ## Phase 1: Setup and Component Extraction
-- [ ] Task: Extract Sentence Display into a separate component `SentenceDisplay.tsx`
+- [x] Task: Extract Sentence Display into a separate component `SentenceDisplay.tsx` (3d909fd)
     - [ ] Create `src/components/SentenceDisplay.tsx`
     - [ ] Update `App.tsx` to use `SentenceDisplay`
     - [ ] Ensure all existing functionality remains intact
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Component Extraction' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Component Extraction' (Protocol in workflow.md) (manual)
 
 ## Phase 2: Animation Integration (TDD)
 - [ ] Task: Write tests for `SentenceDisplay` animations
