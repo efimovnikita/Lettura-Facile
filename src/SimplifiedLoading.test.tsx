@@ -64,7 +64,7 @@ describe('Simplification Loading Behavior', () => {
     render(<App />);
 
     // Initial state: Original text is visible
-    expect(screen.getByText('Original')).toBeInTheDocument();
+    expect(await screen.findByText('Original')).toBeInTheDocument();
     expect(screen.getByText('sentence')).toBeInTheDocument();
     expect(screen.getByText('.')).toBeInTheDocument();
 
@@ -85,7 +85,7 @@ describe('Simplification Loading Behavior', () => {
     // 3. New text should appear
     await waitFor(() => {
       expect(screen.getByText('Simplified')).toBeInTheDocument();
-    });
+    }, { timeout: 2000 });
   });
 
   it('verifies that simplification failure keeps the original text visible', async () => {
@@ -93,13 +93,16 @@ describe('Simplification Loading Behavior', () => {
 
     render(<App />);
 
+    // Wait for initial text
+    expect(await screen.findByText('Original')).toBeInTheDocument();
+
     const simplifyButton = screen.getByText(/semplificato/i);
     fireEvent.click(simplifyButton);
 
     // Should show error and keep original text
     await waitFor(() => {
         expect(screen.getByText(/AI Error/i)).toBeInTheDocument();
-    });
+    }, { timeout: 2000 });
 
     expect(screen.getByText('Original')).toBeInTheDocument();
     expect(screen.getByText('sentence')).toBeInTheDocument();

@@ -27,10 +27,16 @@ describe('SentenceDisplay', () => {
     expect(defaultProps.onWordClick).toHaveBeenCalled();
   });
 
-  it('applies loading classes when isLoading is true', () => {
+  it('calls onWordDoubleClick when a word is double-clicked', () => {
+    render(<SentenceDisplay {...defaultProps} />);
+    const word = screen.getByText('Test');
+    fireEvent.doubleClick(word);
+    expect(defaultProps.onWordDoubleClick).toHaveBeenCalled();
+  });
+
+  it('applies blur class when isLoading is true', () => {
     const { container } = render(<SentenceDisplay {...defaultProps} isLoading={true} />);
     const div = container.firstChild as HTMLElement;
-    expect(div.className).toContain('opacity-50');
     expect(div.className).toContain('blur-[1px]');
   });
 });

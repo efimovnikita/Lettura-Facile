@@ -4,7 +4,7 @@ import {
   ClipboardPaste, ChevronDown, ChevronUp, Trash2, Zap, Heart,
   Sun, Theater, Flame, CloudRain, AlertCircle, Swords, History, CloudLightning
 } from 'lucide-react';
-import { AppState, saveState, loadState, splitIntoSentences, Difficulty, SentimentData } from './utils';
+import { AppState, saveState, loadState, splitIntoSentences, Difficulty, SentimentData, DisplayMode } from './utils';
 import { translateWord, translateSentence, simplifySentence, getSentiments } from './services/mistral';
 import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
@@ -113,7 +113,7 @@ const [translation, setTranslation] = useState<string | null>(null);
       sentiments
     });
   }, [text, sentences, currentIndex, mistralKey, sentiments]);
-// ... fetchSentenceVersion effect ...
+
   useEffect(() => {
     const fetchSentenceVersion = async () => {
       if (sentences.length === 0) return;
@@ -338,7 +338,7 @@ const [translation, setTranslation] = useState<string | null>(null);
       // ==========================================
       // ЛОГИКА МУЛЬТИВЫДЕЛЕНИЯ (Ctrl+Click ИЛИ Двойной тап на мобилке)
       // ==========================================
-      if (isCtrlKey || timeSinceLastClick < 300) {
+      if (isCtrlKey || timeSinceLastClick < 400) { // Increased to 400ms
         // Отменяем одиночный клик, если он был запланирован
         if (clickTimeoutRef.current) {
           clearTimeout(clickTimeoutRef.current);
@@ -376,7 +376,7 @@ const [translation, setTranslation] = useState<string | null>(null);
         clearTimeout(clickTimeoutRef.current);
       }
 
-      // Ждем 300мс. Если второго клика не будет, значит это точно одиночный
+      // Ждем 400мс. Если второго клика не будет, значит это точно одиночный
       clickTimeoutRef.current = window.setTimeout(() => {
 
         // 1. Сохраняем слово в словарь (ТОЛЬКО при одиночном клике!)
@@ -390,7 +390,7 @@ const [translation, setTranslation] = useState<string | null>(null);
         performTranslation(word.replace(/[.,!?;:"«»()]/g, ''), rect);
 
         clickTimeoutRef.current = null;
-      }, 300);
+      }, 400); // Increased to 400ms
     };
 
   const handleWordDoubleClick = (index: number) => {
