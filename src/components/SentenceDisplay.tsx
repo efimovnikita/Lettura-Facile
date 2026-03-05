@@ -21,7 +21,7 @@ export const SentenceDisplay: React.FC<SentenceDisplayProps> = ({
 }) => {
   return (
     <div 
-      className={`text-center mb-12 w-full min-h-[240px] flex items-center justify-center transition-all duration-300 ${isLoading ? 'blur-[1px]' : 'blur-0'}`}
+      className={`text-center mb-6 md:mb-12 w-full min-h-[240px] flex items-center justify-center transition-all duration-300 ${isLoading ? 'blur-[1px]' : 'blur-0'}`}
     >
       <AnimatePresence mode="wait">
         <motion.div
