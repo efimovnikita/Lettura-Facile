@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 // Types
 export type Difficulty = 'original' | 'simplified';
+export type DisplayMode = 'original' | 'simplified' | 'translated';
 export type SentimentTone = 'neutral' | 'positive' | 'irony' | 'aggressive' | 'sad' | 'urgent' | 'sexual' | 'romantic' | 'nostalgic' | 'tension';
 
 export interface SentimentData {

@@ -59,7 +59,7 @@ export default function App() {
   const [sentiments, setSentiments] = useState<Record<number, SentimentData>>({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [view, setView] = useState<'input' | 'reader'>('input');
-  const [difficulty, setDifficulty] = useState<Difficulty>('original');
+  const [displayMode, setDisplayMode] = useState<DisplayMode>('original');
   const { saveWordClick, clearDictionary, getWordIntensity, dictionary } = useDictionary();
   const lastClickTimeRef = useRef<number>(0);
   const isAnalyzingRef = useRef(false);
@@ -72,7 +72,6 @@ export default function App() {
   const [wordTranslation, setWordTranslation] = useState<{word: string, translation: string} | null>(null);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [isSentenceLoading, setIsSentenceLoading] = useState(false);
-  const [tempMode, setTempMode] = useState<Mode>('original');
   const [isWordLoading, setIsWordLoading] = useState(false);
   const [isTranslationLoading, setIsTranslationLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -92,12 +91,7 @@ export default function App() {
       setSentiments(loaded.sentiments || {});
       setCurrentIndex(loaded.currentSentenceIndex || 0);
       
-      // Migrate old difficulty values
-      let initialDifficulty = loaded.difficulty || 'original';
-      if (initialDifficulty !== 'original' && initialDifficulty !== 'simplified') {
-        initialDifficulty = 'original';
-      }
-      setDifficulty(initialDifficulty as Difficulty);
+      // displayMode is NOT loaded from state, it resets to 'original'
 
       if (loaded.sentences && loaded.sentences.length > 0) {
         setView('reader');
@@ -112,10 +106,10 @@ export default function App() {
       sentences,
       currentSentenceIndex: currentIndex,
       mistralKey,
-      difficulty,
+      difficulty: 'original', // Placeholder for backward compatibility
       sentiments
     });
-  }, [text, sentences, currentIndex, mistralKey, difficulty, sentiments]);
+  }, [text, sentences, currentIndex, mistralKey, sentiments]);
 // ... fetchSentenceVersion effect ...
   useEffect(() => {
     const fetchSentenceVersion = async () => {
@@ -128,32 +122,42 @@ export default function App() {
       setSelectedIndices([]);
       setError(null);
 
-      if (difficulty === 'original') {
+      if (displayMode === 'original') {
         setCurrentSentenceText(original);
-      } else {
+      } else if (displayMode === 'simplified') {
+        setCurrentSentenceText(original); // Show original while loading
         setIsSentenceLoading(true);
         try {
-          const simplified = await simplifySentence(mistralKey, original, difficulty);
-
-          // Очистка: удаляем кавычки и любой текст в круглых скобках
+          const simplified = await simplifySentence(mistralKey, original, 'simplified');
           const finalSentence = simplified
-            .replace(/["']/g, '')           // Убирает кавычки
-            .replace(/\s*\([^)]*\)/g, '')   // Убирает (текст в скобках)
+            .replace(/["']/g, '')
+            .replace(/\s*\([^)]*\)/g, '')
             .trim();
-
           setCurrentSentenceText(finalSentence);
         } catch (err: any) {
           setError(err.message);
-          // If we fail, we keep showing the original (which is already set or was the base)
           setCurrentSentenceText(original);
         } finally {
           setIsSentenceLoading(false);
+        }
+      } else if (displayMode === 'translated') {
+        setCurrentSentenceText(original); // Show original while loading
+        setIsTranslationLoading(true);
+        try {
+          const trans = await translateSentence(mistralKey, original);
+          setCurrentSentenceText(trans);
+          setTranslation(trans);
+        } catch (err: any) {
+          setError(err.message);
+          setCurrentSentenceText(original);
+        } finally {
+          setIsTranslationLoading(false);
         }
       }
     };
 
     fetchSentenceVersion();
-  }, [currentIndex, difficulty, sentences, mistralKey]);
+  }, [currentIndex, displayMode, sentences, mistralKey]);
 
   // Перехват данных из Share Target и автоматический старт чтения
   useEffect(() => {
@@ -376,22 +380,9 @@ export default function App() {
     setTooltipPosition(null);
   };
 
-  const handleTranslateSentence = async () => {
-    closeTooltip();
-    setIsTranslationLoading(true);
-    try {
-      const trans = await translateSentence(mistralKey, currentSentenceText);
-      setTranslation(trans);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setIsTranslationLoading(false);
-    }
-  };
-
   const nextSentence = () => {
     // Сбрасываем сложность на оригинал при переходе вперед
-    setDifficulty('original');
+    setDisplayMode('original');
 
     if (currentIndex < sentences.length - 1) {
       setCurrentIndex(prev => prev + 1);
@@ -407,7 +398,7 @@ export default function App() {
   const prevSentence = () => {
     if (currentIndex > 0) {
       // Сбрасываем сложность на оригинал при возврате назад
-      setDifficulty('original');
+      setDisplayMode('original');
       setCurrentIndex(prev => prev - 1);
     }
   };
@@ -600,7 +591,7 @@ export default function App() {
 
         {/* Controls */}
         <div className="flex flex-col items-center gap-6 w-full">
-          <ModeSwitch currentMode={tempMode} onChange={setTempMode} isLoading={isSentenceLoading || isTranslationLoading} />
+          <ModeSwitch currentMode={displayMode} onChange={setDisplayMode} isLoading={isSentenceLoading || isTranslationLoading} />
 
           <div className="flex items-center gap-4 mt-8">
             <button
