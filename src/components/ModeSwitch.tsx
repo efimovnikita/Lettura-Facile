@@ -109,11 +109,6 @@ export const ModeSwitch: React.FC<ModeSwitchProps> = ({ currentMode, onChange, i
           <span style={getLabelStyle('simplified')}>
             Semplificato
           </span>
-          {currentMode === 'simplified' && isLoading && (
-            <div className="inline-block ml-2">
-              <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse shadow-[0_0_5px_rgba(99,102,241,0.8)]" />
-            </div>
-          )}
         </button>
       </div>
     </div>

@@ -62,13 +62,15 @@ export default function App() {
   const [displayMode, setDisplayMode] = useState<DisplayMode>('original');
   const { saveWordClick, clearDictionary, getWordIntensity, dictionary } = useDictionary();
   const lastClickTimeRef = useRef<number>(0);
+  const lastProcessedIndexRef = useRef<number>(-1);
   const isAnalyzingRef = useRef(false);
 
   const [showSettings, setShowSettings] = useState(false);
   const [showWordList, setShowWordList] = useState(false);
-// ... reader state ...
-  const [currentSentenceText, setCurrentSentenceText] = useState('');
-  const [translation, setTranslation] = useState<string | null>(null);
+// Reader State
+const [currentSentenceText, setCurrentSentenceText] = useState('');
+const [cachedVersions, setCachedVersions] = useState<Record<string, { simplified?: string, translated?: string }>>({});
+const [translation, setTranslation] = useState<string | null>(null);
   const [wordTranslation, setWordTranslation] = useState<{word: string, translation: string} | null>(null);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [isSentenceLoading, setIsSentenceLoading] = useState(false);
@@ -116,16 +118,30 @@ export default function App() {
       if (sentences.length === 0) return;
 
       const original = sentences[currentIndex];
-      setTranslation(null);
+      
+      // Always clear tooltips and selection when mode or index changes
       setWordTranslation(null);
       setTooltipPosition(null);
       setSelectedIndices([]);
       setError(null);
 
+      // If index changed, we reset tracking and clear translation state
+      if (lastProcessedIndexRef.current !== currentIndex) {
+        setCurrentSentenceText(original);
+        setTranslation(null);
+        lastProcessedIndexRef.current = currentIndex;
+      }
+
       if (displayMode === 'original') {
         setCurrentSentenceText(original);
       } else if (displayMode === 'simplified') {
-        setCurrentSentenceText(original); // Show original while loading
+        // Check cache
+        if (cachedVersions[original]?.simplified) {
+          setCurrentSentenceText(cachedVersions[original].simplified!);
+          return;
+        }
+
+        // Requirement: Show previous until ready
         setIsSentenceLoading(true);
         try {
           const simplified = await simplifySentence(mistralKey, original, 'simplified');
@@ -133,23 +149,39 @@ export default function App() {
             .replace(/["']/g, '')
             .replace(/\s*\([^)]*\)/g, '')
             .trim();
+          
+          setCachedVersions(prev => ({
+            ...prev,
+            [original]: { ...prev[original], simplified: finalSentence }
+          }));
           setCurrentSentenceText(finalSentence);
         } catch (err: any) {
           setError(err.message);
-          setCurrentSentenceText(original);
+          if (!currentSentenceText) setCurrentSentenceText(original);
         } finally {
           setIsSentenceLoading(false);
         }
       } else if (displayMode === 'translated') {
-        setCurrentSentenceText(original); // Show original while loading
+        // Check cache
+        if (cachedVersions[original]?.translated) {
+          setCurrentSentenceText(cachedVersions[original].translated!);
+          return;
+        }
+
+        // Requirement: Show previous until ready
         setIsTranslationLoading(true);
         try {
           const trans = await translateSentence(mistralKey, original);
+          
+          setCachedVersions(prev => ({
+            ...prev,
+            [original]: { ...prev[original], translated: trans }
+          }));
           setCurrentSentenceText(trans);
           setTranslation(trans);
         } catch (err: any) {
           setError(err.message);
-          setCurrentSentenceText(original);
+          if (!currentSentenceText) setCurrentSentenceText(original);
         } finally {
           setIsTranslationLoading(false);
         }
@@ -157,7 +189,7 @@ export default function App() {
     };
 
     fetchSentenceVersion();
-  }, [currentIndex, displayMode, sentences, mistralKey]);
+  }, [currentIndex, displayMode, sentences, mistralKey, cachedVersions]);
 
   // Перехват данных из Share Target и автоматический старт чтения
   useEffect(() => {
@@ -517,10 +549,10 @@ export default function App() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-center max-w-4xl mx-auto w-full relative" ref={containerRef}>
+      <main className="flex-1 flex flex-col items-center justify-start pt-8 md:pt-16 max-w-4xl mx-auto w-full relative pb-20" ref={containerRef}>
 
         {/* Sentiment Barometer */}
-        <div className="mb-6">
+        <div className="mb-10 sticky top-0 z-10 py-2 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-sm w-full flex justify-center">
           <ToneIndicator data={sentiments[currentIndex]} />
         </div>
 
@@ -566,7 +598,7 @@ export default function App() {
         )}
 
         {/* Sentence Display */}
-        <div className="text-center mb-12 w-full min-h-[120px] flex items-center justify-center">
+        <div className="text-center mb-12 w-full min-h-[240px] flex items-center justify-center transition-all duration-500">
           <div className="text-4xl md:text-5xl font-serif leading-tight text-stone-800 dark:text-stone-100 select-none">
             {currentSentenceText.split(' ').map((word, index) => (
               <WordRenderer
@@ -574,20 +606,14 @@ export default function App() {
                 word={word}
                 index={index}
                 intensity={getWordIntensity(word)}
-                isSelected={selectedIndices.includes(index)} // ДОБАВЛЕНО: проверяем, выделено ли слово
+                isSelected={selectedIndices.includes(index)}
+                isClickable={displayMode !== 'translated'}
                 onClick={handleWordClick}
                 onDoubleClick={handleWordDoubleClick}
               />
             ))}
           </div>
         </div>
-
-        {/* Full Sentence Translation */}
-        {translation && (
-          <div className="mb-12 text-xl text-stone-500 dark:text-stone-400 font-light italic max-w-2xl text-center border-t border-stone-200 dark:border-stone-800 pt-6 animate-in fade-in slide-in-from-top-4">
-            {translation}
-          </div>
-        )}
 
         {/* Controls */}
         <div className="flex flex-col items-center gap-6 w-full">
