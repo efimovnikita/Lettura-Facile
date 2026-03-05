@@ -515,7 +515,7 @@ const [translation, setTranslation] = useState<string | null>(null);
   return (
     <div key="reader-view" className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans flex flex-col p-6 animate-fade-in transition-colors duration-500">
       {/* Header */}
-      <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 md:mb-12 max-w-5xl mx-auto w-full">
+      <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4 md:mb-12 max-w-5xl mx-auto w-full">
         <div className="w-full md:w-auto flex justify-between md:justify-start items-center">
           <button onClick={() => setView('input')} className="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2 transition-colors">
             <RotateCcw className="w-4 h-4" /> Nuovo Testo
