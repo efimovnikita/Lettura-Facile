@@ -23,10 +23,13 @@ describe('ModeSwitch Component', () => {
 
   it('highlights the current mode', () => {
     const { rerender } = render(<ModeSwitch currentMode="original" onChange={onChange} />);
-    // Check for indigo text color (ignoring exact shade to be flexible with dark mode)
+    // Check for indigo text color on the button/span
     expect(screen.getByText(/originale/i).closest('button')).toHaveClass('text-indigo-600');
     
     rerender(<ModeSwitch currentMode="simplified" onChange={onChange} />);
     expect(screen.getByText(/semplificato/i).closest('button')).toHaveClass('text-indigo-600');
+    
+    rerender(<ModeSwitch currentMode="translated" onChange={onChange} />);
+    expect(screen.getByText(/traduzione/i).closest('button')).toHaveClass('text-indigo-600');
   });
 });

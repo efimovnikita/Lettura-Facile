@@ -9,6 +9,7 @@ import { translateWord, translateSentence, simplifySentence, getSentiments } fro
 import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
 import { SettingsPanel } from './components/SettingsPanel';
+import { ModeSwitch, Mode } from './components/ModeSwitch';
 
 const APP_VERSION = 'v1.4.0';
 
@@ -71,6 +72,7 @@ export default function App() {
   const [wordTranslation, setWordTranslation] = useState<{word: string, translation: string} | null>(null);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [isSentenceLoading, setIsSentenceLoading] = useState(false);
+  const [tempMode, setTempMode] = useState<Mode>('original');
   const [isWordLoading, setIsWordLoading] = useState(false);
   const [isTranslationLoading, setIsTranslationLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -598,6 +600,8 @@ export default function App() {
 
         {/* Controls */}
         <div className="flex flex-col items-center gap-6 w-full">
+          <ModeSwitch currentMode={tempMode} onChange={setTempMode} isLoading={isSentenceLoading || isTranslationLoading} />
+
           <div className="flex items-center gap-4 mt-8">
             <button
               onClick={prevSentence}

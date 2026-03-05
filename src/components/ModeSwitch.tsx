@@ -9,55 +9,112 @@ interface ModeSwitchProps {
 }
 
 export const ModeSwitch: React.FC<ModeSwitchProps> = ({ currentMode, onChange, isLoading }) => {
-  const modes: { id: Mode; label: string }[] = [
-    { id: 'original', label: 'Originale' },
-    { id: 'simplified', label: 'Semplificato' },
-    { id: 'translated', label: 'Traduzione' },
-  ];
+  const getSliderLeft = () => {
+    if (currentMode === 'original') return '4px';
+    if (currentMode === 'simplified') return '50%';
+    if (currentMode === 'translated') return 'calc(100% - 28px)';
+    return '4px';
+  };
+
+  const getSliderTransform = () => {
+    if (currentMode === 'simplified') return 'translateX(-50%)';
+    return 'none';
+  };
+
+  const getLabelStyle = (mode: Mode) => {
+    const isActive = currentMode === mode;
+    if (isActive) {
+      return {
+        textShadow: '0 0 15px rgba(99,102,241,0.6), 0 0 5px rgba(99,102,241,0.2)',
+        opacity: 1
+      };
+    } else {
+      return {
+        textShadow: 'none',
+        opacity: 0.5
+      };
+    }
+  };
 
   return (
-    <div className="flex flex-col items-center gap-3 w-full max-w-md mx-auto my-8">
-      <div className="relative w-full bg-stone-100 dark:bg-stone-900/50 p-1.5 rounded-2xl border border-stone-200/50 dark:border-stone-800/50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_2px_10px_rgba(0,0,0,0.3)] flex">
-        {/* Animated Background Slider */}
-        <div 
-          className="absolute top-1.5 bottom-1.5 transition-all duration-300 ease-out bg-white dark:bg-stone-800 rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.5)] border border-stone-200/50 dark:border-stone-700/50"
-          style={{
-            width: `calc(100% / 3 - 8px)`,
-            left: `calc(${modes.findIndex(m => m.id === currentMode)} * (100% / 3) + 4px)`,
-          }}
-        />
-
-        {modes.map((mode) => (
-          <button
-            key={mode.id}
-            onClick={() => onChange(mode.id)}
-            className={`relative flex-1 py-3 text-sm font-bold tracking-tight transition-all duration-500 z-10 rounded-xl ${
-              currentMode === mode.id
-                ? 'text-indigo-600 dark:text-indigo-400'
-                : 'text-stone-400 dark:text-stone-600 hover:text-stone-500 dark:hover:text-stone-500'
+    <div className="flex flex-col items-center gap-1 w-full max-w-lg mx-auto mt-8 mb-16 relative">
+      {/* Central Slider Control */}
+      <div className="flex items-center gap-4 relative">
+        
+        {/* Left Label (Originale) */}
+        <div className="absolute right-full mr-2 flex items-center">
+          <button 
+            onClick={() => onChange('original')}
+            className={`text-[15px] font-extrabold tracking-tight transition-all duration-500 whitespace-nowrap cursor-pointer ${
+              currentMode === 'original' ? 'text-indigo-600 dark:text-indigo-300' : 'text-stone-400 dark:text-stone-500'
             }`}
           >
-            <span 
-              className="transition-all duration-500"
-              style={currentMode !== mode.id ? {
-                // "Embossed" / "Pressed in" look for inactive states
-                textShadow: 'rgba(255,255,255,0.6) 0px 1px 1px, rgba(0,0,0,0.15) 0px -1px 0px',
-                opacity: 0.7
-              } : {
-                // "Glow" look for active state
-                textShadow: '0 0 15px rgba(99,102,241,0.6), 0 0 5px rgba(99,102,241,0.2)',
-                filter: 'drop-shadow(0 0 2px rgba(99,102,241,0.3))'
-              }}
-            >
-              {mode.label}
+            <span style={getLabelStyle('original')}>
+              Originale
             </span>
-            {currentMode === mode.id && mode.id !== 'original' && isLoading && (
-              <div className="absolute top-1 right-2">
-                <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse shadow-[0_0_5px_rgba(99,102,241,0.8)]" />
-              </div>
-            )}
           </button>
-        ))}
+          <div className={`h-[0.5px] w-4 bg-indigo-300 dark:bg-indigo-700 ml-1 transition-opacity duration-500 ${currentMode === 'original' ? 'opacity-100' : 'opacity-20'}`} />
+        </div>
+
+        {/* The Track */}
+        <div className="relative w-28 h-8 bg-stone-100 dark:bg-stone-900 rounded-full border border-stone-200/50 dark:border-stone-800 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]">
+          {/* Slider Thumb */}
+          <div 
+            className="absolute top-1 w-6 h-6 rounded-full transition-all duration-300 ease-out z-20 cursor-pointer flex items-center justify-center overflow-hidden"
+            style={{
+              left: getSliderLeft(),
+              transform: getSliderTransform(),
+              backgroundColor: 'rgba(99, 102, 241, 0.3)',
+              // Sharp, readable white border, NO external glow
+              border: '1.5px solid rgba(255, 255, 255, 0.95)',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255, 255, 255, 0.2)'
+            }}
+          >
+             <div className="w-full h-full bg-gradient-to-br from-white/20 to-transparent" />
+          </div>
+          
+          {/* Invisible click targets on the track */}
+          <div className="absolute inset-0 flex z-10">
+            <div className="flex-1 cursor-pointer" onClick={() => onChange('original')} />
+            <div className="flex-1 cursor-pointer" onClick={() => onChange('simplified')} />
+            <div className="flex-1 cursor-pointer" onClick={() => onChange('translated')} />
+          </div>
+        </div>
+
+        {/* Right Label (Traduzione) */}
+        <div className="absolute left-full ml-2 flex items-center">
+          <div className={`h-[0.5px] w-4 bg-indigo-300 dark:bg-indigo-700 mr-1 transition-opacity duration-500 ${currentMode === 'translated' ? 'opacity-100' : 'opacity-20'}`} />
+          <button 
+            onClick={() => onChange('translated')}
+            className={`text-[15px] font-extrabold tracking-tight transition-all duration-500 whitespace-nowrap cursor-pointer ${
+              currentMode === 'translated' ? 'text-indigo-600 dark:text-indigo-300' : 'text-stone-400 dark:text-stone-500'
+            }`}
+          >
+            <span style={getLabelStyle('translated')}>
+              Traduzione
+            </span>
+          </button>
+        </div>
+      </div>
+
+      {/* Bottom Label (Semplificato) */}
+      <div className="absolute top-full mt-1 flex flex-col items-center">
+        <div className={`w-[0.5px] h-3 bg-indigo-300 dark:bg-indigo-700 mb-0.5 transition-opacity duration-500 ${currentMode === 'simplified' ? 'opacity-100' : 'opacity-20'}`} />
+        <button 
+          onClick={() => onChange('simplified')}
+          className={`text-[15px] font-extrabold tracking-tight transition-all duration-500 whitespace-nowrap cursor-pointer ${
+            currentMode === 'simplified' ? 'text-indigo-600 dark:text-indigo-400' : 'text-stone-400 dark:text-stone-500'
+          }`}
+        >
+          <span style={getLabelStyle('simplified')}>
+            Semplificato
+          </span>
+          {currentMode === 'simplified' && isLoading && (
+            <div className="inline-block ml-2">
+              <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse shadow-[0_0_5px_rgba(99,102,241,0.8)]" />
+            </div>
+          )}
+        </button>
       </div>
     </div>
   );
