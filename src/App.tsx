@@ -520,24 +520,6 @@ export default function App() {
           <span className="hidden md:inline text-sm text-stone-500 dark:text-stone-400 font-mono">
             {currentIndex + 1} / {sentences.length}
           </span>
-          <div className="flex bg-white dark:bg-stone-900 rounded-lg border border-stone-200 dark:border-stone-800 p-1 overflow-x-auto max-w-full w-full md:w-auto">
-            {(['original', 'simplified'] as Difficulty[]).map((lvl) => (
-              <button
-                key={lvl}
-                onClick={() => setDifficulty(lvl)}
-                className={`px-4 py-1.5 text-xs rounded-md capitalize transition-all whitespace-nowrap flex-1 md:flex-none text-center flex items-center justify-center gap-2 ${
-                  difficulty === lvl
-                    ? 'bg-indigo-600 dark:bg-indigo-500 text-white font-semibold shadow-sm'
-                    : 'text-stone-500 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800'
-                }`}
-              >
-                {lvl === 'original' ? 'Originale' : 'Semplificato'}
-                {lvl === 'simplified' && isSentenceLoading && (
-                  <Loader2 className="w-3 h-3 animate-spin" />
-                )}
-              </button>
-            ))}
-          </div>
         </div>
       </header>
 
@@ -616,17 +598,6 @@ export default function App() {
 
         {/* Controls */}
         <div className="flex flex-col items-center gap-6 w-full">
-          <div className="flex gap-4">
-            <button
-              onClick={handleTranslateSentence}
-              disabled={isTranslationLoading || isSentenceLoading}
-              className="px-6 py-3 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 hover:border-indigo-300 dark:hover:border-indigo-700 hover:text-indigo-600 dark:hover:text-indigo-400 text-stone-600 dark:text-stone-300 rounded-xl font-medium transition-all shadow-sm flex items-center gap-2 disabled:opacity-50"
-            >
-              {isTranslationLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Languages className="w-4 h-4" />}
-              Traduci Frase
-            </button>
-          </div>
-
           <div className="flex items-center gap-4 mt-8">
             <button
               onClick={prevSentence}

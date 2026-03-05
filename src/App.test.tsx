@@ -64,9 +64,14 @@ describe('App Component - Difficulty Toggle', () => {
     expect(screen.queryByText(/advanced/i)).toBeNull();
   });
 
-  it('should show Originale and Semplificato buttons', () => {
+  it('should NOT show Originale and Semplificato buttons', () => {
     render(<App />);
-    expect(screen.getByText(/originale/i)).toBeInTheDocument();
-    expect(screen.getByText(/semplificato/i)).toBeInTheDocument();
+    expect(screen.queryByText(/originale/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/semplificato/i)).not.toBeInTheDocument();
+  });
+
+  it('should NOT show Traduci Frase button', () => {
+    render(<App />);
+    expect(screen.queryByText(/traduci frase/i)).not.toBeInTheDocument();
   });
 });
