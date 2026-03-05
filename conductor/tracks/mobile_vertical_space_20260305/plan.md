@@ -8,7 +8,7 @@
 
 ## Phase 2: Optimize Margins and Paddings (Reader View)
 - [x] Task: Write TDD tests for `App.tsx` Reader view to ensure specific Tailwind classes are applied on mobile/desktop. e563a0d
-- [ ] Task: Update `App.tsx` Reader view to use responsive padding: `pt-4 md:pt-16` on `<main>`.
+- [x] Task: Update `App.tsx` Reader view to use responsive padding: `pt-4 md:pt-16` on `<main>`. 5c3633e
 - [ ] Task: Update `App.tsx` Reader view header to use `mb-4 md:mb-12`.
 - [ ] Task: Update `App.tsx` Reader view to use `mb-6 md:mb-12` on `SentenceDisplay`.
 - [ ] Task: Update `App.tsx` Reader view `ToneIndicator` container to use `mb-4 md:mb-10`.
