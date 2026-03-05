@@ -10,6 +10,7 @@ import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
 import { SettingsPanel } from './components/SettingsPanel';
 import { ModeSwitch, Mode } from './components/ModeSwitch';
+import { SentenceDisplay } from './components/SentenceDisplay';
 
 const APP_VERSION = 'v1.5.0';
 
@@ -598,22 +599,15 @@ const [translation, setTranslation] = useState<string | null>(null);
         )}
 
         {/* Sentence Display */}
-        <div className="text-center mb-12 w-full min-h-[240px] flex items-center justify-center transition-all duration-500">
-          <div className="text-4xl md:text-5xl font-serif leading-tight text-stone-800 dark:text-stone-100 select-none">
-            {currentSentenceText.split(' ').map((word, index) => (
-              <WordRenderer
-                key={`${index}-${word}`}
-                word={word}
-                index={index}
-                intensity={getWordIntensity(word)}
-                isSelected={selectedIndices.includes(index)}
-                isClickable={displayMode !== 'translated'}
-                onClick={handleWordClick}
-                onDoubleClick={handleWordDoubleClick}
-              />
-            ))}
-          </div>
-        </div>
+        <SentenceDisplay
+          sentenceText={currentSentenceText}
+          displayMode={displayMode}
+          selectedIndices={selectedIndices}
+          getWordIntensity={getWordIntensity}
+          onWordClick={handleWordClick}
+          onWordDoubleClick={handleWordDoubleClick}
+          isLoading={isSentenceLoading || isTranslationLoading}
+        />
 
         {/* Controls */}
         <div className="flex flex-col items-center gap-6 w-full">
