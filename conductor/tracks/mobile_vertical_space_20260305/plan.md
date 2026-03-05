@@ -6,7 +6,7 @@
 - [x] Task: Write failing tests in `src/MobileLayout.test.tsx` to verify current large margins and sentence height on mobile (should fail after implementation). 88f88ce
 - [x] Task: Conductor - User Manual Verification 'Environment & Test Preparation' (Protocol in workflow.md) 4fc421a
 
-## Phase 2: Optimize Margins and Paddings (Reader View)
+## Phase 2: Optimize Margins and Paddings (Reader View) [checkpoint: d13120f]
 - [x] Task: Write TDD tests for `App.tsx` Reader view to ensure specific Tailwind classes are applied on mobile/desktop. e563a0d
 - [x] Task: Update `App.tsx` Reader view to use responsive padding: `pt-4 md:pt-16` on `<main>`. 5c3633e
 - [x] Task: Update `App.tsx` Reader view header to use `mb-4 md:mb-12`. b305f01
@@ -15,7 +15,7 @@
 - [x] Task: Update `App.tsx` Reader view `<main>` bottom padding to `pb-10 md:pb-20`. 3ef5442
 - [x] Task: Verify that all tests pass for the margin changes. c0c5999
 - [x] Task: Further reduce internal ToneIndicator and control spacings on mobile. f2ae27e
-- [ ] Task: Conductor - User Manual Verification 'Optimize Margins and Paddings' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Optimize Margins and Paddings' (Protocol in workflow.md) d13120f
 
 ## Phase 3: Responsive Sentence Area Height
 - [ ] Task: Write TDD tests for `SentenceDisplay.tsx` to verify `min-h-[160px]` on mobile and `min-h-[240px]` on desktop.
