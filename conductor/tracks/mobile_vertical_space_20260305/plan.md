@@ -17,11 +17,11 @@
 - [x] Task: Further reduce internal ToneIndicator and control spacings on mobile. f2ae27e
 - [x] Task: Conductor - User Manual Verification 'Optimize Margins and Paddings' (Protocol in workflow.md) d13120f
 
-## Phase 3: Responsive Sentence Area Height
+## Phase 3: Responsive Sentence Area Height [checkpoint: da166f5]
 - [x] Task: Write TDD tests for `SentenceDisplay.tsx` to verify `min-h-[160px]` on mobile and `min-h-[240px]` on desktop. 7afd05c
 - [x] Task: Modify `SentenceDisplay.tsx` to apply `min-h-[160px] md:min-h-[240px]`. dd141ff
 - [x] Task: Verify that all tests pass for the height changes. 6b05071
-- [ ] Task: Conductor - User Manual Verification 'Responsive Sentence Area Height' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Responsive Sentence Area Height' (Protocol in workflow.md) da166f5
 
 ## Phase 4: Final Validation
 - [ ] Task: Run full test suite and check code coverage.
