@@ -10,7 +10,7 @@
 - [x] Task: Conductor - User Manual Verification 'Data Model & Mistral Integration' (Protocol in workflow.md) (9651323)
 
 ## Phase 2: Background Processing & Storage
-- [ ] Task: Implement background synonym extraction in `src/App.tsx`
+- [x] Task: Implement background synonym extraction in `src/App.tsx` (0b28b88)
     - Add `synonyms` state and `isSynonymAnalyzingRef`.
     - Create a `useEffect` for background synonym extraction (batch processing).
     - Update `loadState` and `saveState` logic to include synonyms.
