@@ -35,25 +35,36 @@ export const SentenceDisplay: React.FC<SentenceDisplayProps> = ({
           transition={{ duration: 0.2, ease: "linear" }}
           className="text-4xl md:text-5xl font-serif leading-[3] text-stone-800 dark:text-stone-100 select-none pt-12"
         >
-          {sentenceText.split(' ').map((word, index) => {
-            const cleanWord = word.replace(/[^\p{L}’'-]/gu, '').toLowerCase();
-            const synonymMatch = displayMode === 'original' 
-              ? synonyms.find(s => s.original.toLowerCase() === cleanWord)
-              : undefined;
+          {(() => {
+            let lastSynonymIndex = -2;
+            return sentenceText.split(' ').map((word, index) => {
+              const cleanWord = word.replace(/[^\p{L}’'-]/gu, '').toLowerCase();
+              
+              // Skip if previous word had a synonym to avoid horizontal overlap
+              const canShowSynonym = index > lastSynonymIndex + 1;
+              
+              const synonymMatch = (displayMode === 'original' && canShowSynonym)
+                ? synonyms.find(s => s.original.toLowerCase() === cleanWord)
+                : undefined;
 
-            return (
-              <WordRenderer
-                key={`${index}-${word}`}
-                word={word}
-                index={index}
-                intensity={getWordIntensity(word)}
-                isSelected={selectedIndices.includes(index)}
-                isClickable={displayMode !== 'translated'}
-                synonym={synonymMatch?.synonym}
-                onClick={onWordClick}
-              />
-            );
-          })}
+              if (synonymMatch) {
+                lastSynonymIndex = index;
+              }
+
+              return (
+                <WordRenderer
+                  key={`${index}-${word}`}
+                  word={word}
+                  index={index}
+                  intensity={getWordIntensity(word)}
+                  isSelected={selectedIndices.includes(index)}
+                  isClickable={displayMode !== 'translated'}
+                  synonym={synonymMatch?.synonym}
+                  onClick={onWordClick}
+                />
+              );
+            });
+          })()}
         </motion.div>
       </AnimatePresence>
     </div>

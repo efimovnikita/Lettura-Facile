@@ -35,4 +35,19 @@ describe('SentenceDisplay with Synonyms', () => {
     const motionDiv = container.querySelector('.font-serif');
     expect(motionDiv?.className).toContain('pt-12');
   });
+
+  it('skips synonyms for adjacent words to avoid overlap', () => {
+    const synonyms = [
+      { original: 'gatto', synonym: 'felino' },
+      { original: 'è', synonym: 'trovasi' }
+    ];
+
+    render(<SentenceDisplay {...defaultProps} synonyms={synonyms} />);
+    
+    // Should show FELINO
+    expect(screen.getByText('FELINO')).toBeDefined();
+    
+    // Should NOT show TROVASI because it's the next word
+    expect(screen.queryByText('TROVASI')).toBeNull();
+  });
 });
