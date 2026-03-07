@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Отображение синонимов над словами в оригинальном предложении (фуригане)**
+- [x] **Track: Отображение синонимов над словами в оригинальном предложении (фуригане)**
 *Link: [./tracks/synonym_display_furigana_20260307/](./tracks/synonym_display_furigana_20260307/)*
