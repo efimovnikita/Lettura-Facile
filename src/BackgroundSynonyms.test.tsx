@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { render, waitFor, act, fireEvent } from '@testing-library/react';
 import App from './App';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import * as mistral from './services/mistral';
@@ -68,5 +68,37 @@ describe('Background Synonym Extraction', () => {
       expect(saved.synonyms[0]).toHaveLength(1);
       expect(saved.synonyms[0][0].original).toBe('complesso');
     }, { timeout: 2000 });
+  });
+
+  it('should reset synonyms when a new text is imported', async () => {
+    // 1. Initial state with existing synonyms
+    const oldState = {
+      text: 'Vecchio testo.',
+      sentences: ['Vecchio testo.'],
+      currentSentenceIndex: 0,
+      mistralKey: 'fake-key',
+      synonyms: { 0: [{ original: 'vecchio', synonym: 'antico' }] }
+    };
+    localStorage.setItem('lettura_facile_state', JSON.stringify(oldState));
+
+    const { getAllByText, getByPlaceholderText, getByText } = render(<App />);
+
+    // 2. Go back to input view (it might already be in reader, so click "Nuovo Testo" in header)
+    const nuovoTestoBtns = getAllByText(/nuovo testo/i);
+    await act(async () => {
+      fireEvent.click(nuovoTestoBtns[0]);
+    });
+
+    // 3. Import new text
+    const textarea = await waitFor(() => getByPlaceholderText(/incolla qui il testo/i));
+    const importBtn = getByText(/importa testo/i);
+
+    await act(async () => {
+      fireEvent.click(importBtn);
+    });
+    
+    // Check if synonyms were reset
+    const saved = JSON.parse(localStorage.getItem('lettura_facile_state') || '{}');
+    expect(saved.synonyms).toEqual({});
   });
 });
