@@ -22,8 +22,8 @@ describe('SentenceDisplay with Synonyms', () => {
     // Check if original word is present
     expect(screen.getByText('tavolo')).toBeDefined();
     
-    // Check if synonym is present (in uppercase as per spec)
-    const synonymElement = screen.getByText('SCRIVANIA');
+    // Check if synonym is present (in lowercase as per latest request)
+    const synonymElement = screen.getByText('scrivania');
     expect(synonymElement).toBeDefined();
     
     // Check for orange color class (using text-orange-500 from Tailwind)
@@ -33,7 +33,7 @@ describe('SentenceDisplay with Synonyms', () => {
   it('applies padding to accommodate synonyms', () => {
     const { container } = render(<SentenceDisplay {...defaultProps} />);
     const motionDiv = container.querySelector('.font-serif');
-    expect(motionDiv?.className).toContain('pt-12');
+    expect(motionDiv?.className).toContain('pt-6');
   });
 
   it('skips synonyms for adjacent words to avoid overlap', () => {
@@ -44,10 +44,10 @@ describe('SentenceDisplay with Synonyms', () => {
 
     render(<SentenceDisplay {...defaultProps} synonyms={synonyms} />);
     
-    // Should show FELINO
-    expect(screen.getByText('FELINO')).toBeDefined();
+    // Should show felino
+    expect(screen.getByText('felino')).toBeDefined();
     
-    // Should NOT show TROVASI because it's the next word
-    expect(screen.queryByText('TROVASI')).toBeNull();
+    // Should NOT show trovasi because it's the next word
+    expect(screen.queryByText('trovasi')).toBeNull();
   });
 });
