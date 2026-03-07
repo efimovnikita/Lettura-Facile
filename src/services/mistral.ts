@@ -205,3 +205,57 @@ export async function getSentiments(apiKey: string, sentences: string[]): Promis
     return [];
   }
 }
+
+export interface SynonymPair {
+  original: string;
+  synonym: string;
+}
+
+export async function getSynonyms(apiKey: string, sentences: string[]): Promise<SynonymPair[][]> {
+  const client = getMistralClient(apiKey);
+
+  const response = await client.chat.complete({
+    model: "mistral-small-latest",
+    messages: [
+      {
+        role: "system",
+        content: `Identify complex or difficult Italian words in the provided sentences and provide ONE simple synonym for each, in the context of the sentence.
+        Return EXCLUSIVELY a JSON object with a key "results" which contains an array of arrays (one inner array per sentence).
+        Each inner array should contain objects with "original" and "synonym" keys.
+        If a sentence has no complex words, return an empty array for that sentence.
+
+        Example output:
+        {
+          "results": [
+            [{"original": "clandestino", "synonym": "segreto"}],
+            [],
+            [{"original": "perplesso", "synonym": "confuso"}, {"original": "tediato", "synonym": "annoiato"}]
+          ]
+        }`
+      },
+      {
+        role: "user",
+        content: JSON.stringify(sentences)
+      }
+    ],
+    temperature: 0,
+    responseFormat: { type: "json_object" }
+  });
+
+  const content = response.choices?.[0]?.message?.content;
+  let jsonString = "";
+
+  if (typeof content === 'string') {
+    jsonString = content;
+  } else if (Array.isArray(content)) {
+    jsonString = content.map(c => ('text' in c ? c.text : '')).join('');
+  }
+
+  try {
+    const parsed = JSON.parse(jsonString);
+    return parsed.results || [];
+  } catch (e) {
+    console.error("Failed to parse synonyms JSON:", e);
+    return [];
+  }
+}
