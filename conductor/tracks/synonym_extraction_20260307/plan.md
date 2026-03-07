@@ -1,13 +1,13 @@
 # Implementation Plan - Background Synonym Extraction (`synonym_extraction_20260307`)
 
-## Phase 1: Data Model & Mistral Integration
+## Phase 1: Data Model & Mistral Integration [checkpoint: 9651323]
 - [x] Task: Define Synonym types and update AppState in `src/utils.ts` (41c78c4)
     - Add `SynonymPair` and `SynonymData` types.
     - Update `AppState` interface to include `synonyms`.
 - [x] Task: Implement `getSynonyms` in `src/services/mistral.ts` (29eebb5)
     - Create `getSynonyms(apiKey: string, sentences: string[])` to identify complex words and provide synonyms in JSON format.
     - **TDD:** Write unit tests for `getSynonyms`.
-- [ ] Task: Conductor - User Manual Verification 'Data Model & Mistral Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Data Model & Mistral Integration' (Protocol in workflow.md) (9651323)
 
 ## Phase 2: Background Processing & Storage
 - [ ] Task: Implement background synonym extraction in `src/App.tsx`
