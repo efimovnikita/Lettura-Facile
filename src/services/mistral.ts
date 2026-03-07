@@ -215,7 +215,7 @@ export async function getSynonyms(apiKey: string, sentences: string[]): Promise<
   const client = getMistralClient(apiKey);
 
   const response = await client.chat.complete({
-    model: "mistral-small-latest",
+    model: "mistral-medium-latest",
     messages: [
       {
         role: "system",

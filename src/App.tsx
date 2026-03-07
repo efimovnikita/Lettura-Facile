@@ -12,7 +12,7 @@ import { SettingsPanel } from './components/SettingsPanel';
 import { ModeSwitch, Mode } from './components/ModeSwitch';
 import { SentenceDisplay } from './components/SentenceDisplay';
 
-const APP_VERSION = 'v1.6.0';
+const APP_VERSION = 'v1.6.1';
 
 const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: boolean }) => {
   if (isLoading) return <Loader2 className="w-4 h-4 text-stone-300 animate-spin" />;
