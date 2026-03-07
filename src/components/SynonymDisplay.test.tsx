@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { SentenceDisplay } from './SentenceDisplay';
 
@@ -49,5 +49,15 @@ describe('SentenceDisplay with Synonyms', () => {
     
     // Should NOT show trovasi because it's the next word
     expect(screen.queryByText('trovasi')).toBeNull();
+  });
+
+  it('maintains click interaction on words with synonyms', () => {
+    const synonyms = [{ original: 'gatto', synonym: 'felino' }];
+    render(<SentenceDisplay {...defaultProps} synonyms={synonyms} />);
+    
+    const word = screen.getByText('gatto');
+    fireEvent.click(word);
+    
+    expect(defaultProps.onWordClick).toHaveBeenCalled();
   });
 });

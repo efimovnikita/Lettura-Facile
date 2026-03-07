@@ -58,8 +58,8 @@ export const WordRenderer: React.FC<WordRendererProps> = ({ word, index, intensi
               <span className="text-[10px] font-bold text-orange-500 whitespace-nowrap lowercase tracking-tighter leading-none mb-0.5">
                 {synonym}
               </span>
-              <svg className="w-2 h-2 text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 19V5M12 5l-7 7m7-7l7 7"/>
+              <svg className="w-2 h-2 text-orange-500" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 4l-10 10h20z"/>
               </svg>
             </span>
           </rt>
