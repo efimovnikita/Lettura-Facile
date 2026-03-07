@@ -1,6 +1,7 @@
 import React from 'react';
 import { WordRenderer } from './WordRenderer';
 import { motion, AnimatePresence } from 'motion/react';
+import { SynonymPair } from '../utils';
 
 interface SentenceDisplayProps {
   sentenceText: string;
@@ -9,6 +10,7 @@ interface SentenceDisplayProps {
   getWordIntensity: (word: string) => number;
   onWordClick: (word: string, index: number, event: React.MouseEvent<HTMLSpanElement>) => void;
   isLoading?: boolean;
+  synonyms?: SynonymPair[];
 }
 
 export const SentenceDisplay: React.FC<SentenceDisplayProps> = ({
@@ -18,6 +20,7 @@ export const SentenceDisplay: React.FC<SentenceDisplayProps> = ({
   getWordIntensity,
   onWordClick,
   isLoading = false,
+  synonyms = [],
 }) => {
   return (
     <div 
@@ -32,17 +35,25 @@ export const SentenceDisplay: React.FC<SentenceDisplayProps> = ({
           transition={{ duration: 0.2, ease: "linear" }}
           className="text-4xl md:text-5xl font-serif leading-tight text-stone-800 dark:text-stone-100 select-none"
         >
-          {sentenceText.split(' ').map((word, index) => (
-            <WordRenderer
-              key={`${index}-${word}`}
-              word={word}
-              index={index}
-              intensity={getWordIntensity(word)}
-              isSelected={selectedIndices.includes(index)}
-              isClickable={displayMode !== 'translated'}
-              onClick={onWordClick}
-            />
-          ))}
+          {sentenceText.split(' ').map((word, index) => {
+            const cleanWord = word.replace(/[^\p{L}’'-]/gu, '').toLowerCase();
+            const synonymMatch = displayMode === 'original' 
+              ? synonyms.find(s => s.original.toLowerCase() === cleanWord)
+              : undefined;
+
+            return (
+              <WordRenderer
+                key={`${index}-${word}`}
+                word={word}
+                index={index}
+                intensity={getWordIntensity(word)}
+                isSelected={selectedIndices.includes(index)}
+                isClickable={displayMode !== 'translated'}
+                synonym={synonymMatch?.synonym}
+                onClick={onWordClick}
+              />
+            );
+          })}
         </motion.div>
       </AnimatePresence>
     </div>

@@ -6,10 +6,11 @@ interface WordRendererProps {
   intensity: number;
   isSelected: boolean;
   isClickable?: boolean;
+  synonym?: string;
   onClick: (word: string, index: number, event: React.MouseEvent<HTMLSpanElement>) => void;
 }
 
-export const WordRenderer: React.FC<WordRendererProps> = ({ word, index, intensity, isSelected, isClickable = true, onClick }) => {
+export const WordRenderer: React.FC<WordRendererProps> = ({ word, index, intensity, isSelected, isClickable = true, synonym, onClick }) => {
   const getHighlightClass = (clicks: number) => {
     if (!isClickable || clicks === 0) return '';
     if (clicks < 3) return 'underline decoration-dotted decoration-gray-300 dark:decoration-gray-700 decoration-2 underline-offset-4';
@@ -38,7 +39,15 @@ export const WordRenderer: React.FC<WordRendererProps> = ({ word, index, intensi
   const [, prefix, coreWord, suffix] = match;
 
   return (
-    <span className="inline-block mr-1">
+    <span className="inline-block mr-1 relative group">
+      {synonym && (
+        <span className="absolute left-1/2 -translate-x-1/2 -top-8 flex flex-col items-center pointer-events-none select-none">
+          <span className="text-[10px] font-bold text-orange-500 whitespace-nowrap uppercase tracking-tighter">
+            {synonym.toUpperCase()}
+          </span>
+          <span className="text-orange-500 text-[10px] leading-none -mt-1">↑</span>
+        </span>
+      )}
       {prefix}
       <span
         onClick={(e) => isClickable && onClick(coreWord, index, e)}

@@ -641,6 +641,7 @@ const [translation, setTranslation] = useState<string | null>(null);
           getWordIntensity={getWordIntensity}
           onWordClick={handleWordClick}
           isLoading={isSentenceLoading || isTranslationLoading}
+          synonyms={synonyms[currentIndex]}
         />
 
         {/* Controls */}
