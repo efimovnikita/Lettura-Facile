@@ -11,6 +11,13 @@ export interface SentimentData {
   explanation?: string;
 }
 
+export interface SynonymPair {
+  original: string;
+  synonym: string;
+}
+
+export type SynonymData = Record<number, SynonymPair[]>; // index -> pairs
+
 export interface AppState {
   text: string;
   sentences: string[];
@@ -18,6 +25,7 @@ export interface AppState {
   mistralKey: string;
   difficulty: Difficulty;
   sentiments?: Record<number, SentimentData>;
+  synonyms?: SynonymData;
 }
 
 export const STORAGE_KEY = 'lettura_facile_state';
