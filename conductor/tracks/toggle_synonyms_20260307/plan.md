@@ -7,10 +7,13 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: State Management' (Protocol in workflow.md)
 
 ## Phase 2: Component Updates (ModeSwitch & SentenceDisplay)
-- [ ] Task: Write tests for `ModeSwitch` thumb click and `SentenceDisplay` synonym visibility (TDD)
-- [ ] Task: Update `ModeSwitch` component to accept `onThumbClick` and handle click on slider thumb
+- [ ] Task: Write tests for `ModeSwitch` thumb click, icon rendering, and `SentenceDisplay` synonym visibility (TDD)
+- [ ] Task: Update `ModeSwitch` component:
+    - [ ] Add `onThumbClick`, `hasSynonyms`, and `showSynonyms` props
+    - [ ] Implement `ChevronsUp`/`ChevronsDown` icon rendering inside the thumb
+    - [ ] Apply conditional coloring and direction based on `hasSynonyms` and `showSynonyms`
 - [ ] Task: Update `SentenceDisplay` to accept `showSynonyms` and conditionally pass synonyms to `WordRenderer`
-- [ ] Task: Update `App.tsx` to connect `ModeSwitch` and `SentenceDisplay` with the new state
+- [ ] Task: Update `App.tsx` to connect `ModeSwitch` and `SentenceDisplay` with the new state and props (`hasSynonyms`)
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Component Integration' (Protocol in workflow.md)
 
 ## Phase 3: Final Verification & Cleanup

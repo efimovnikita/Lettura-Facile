@@ -7,6 +7,11 @@ Currently, synonyms are automatically displayed above complex words when the app
 1.  **Toggle Trigger:**
     *   The "Slider Thumb" (circular knob) of the `ModeSwitch` component must act as a toggle button when the `currentMode` is set to `original`.
     *   Clicking the thumb while in `original` mode will toggle the visibility of synonyms.
+    *   **Visual Indicator:** The thumb must display a "double chevron" icon (`ChevronsUp` / `ChevronsDown`) when in `original` mode.
+        *   **Direction:** The chevron should point **UP** when synonyms are hidden and **DOWN** when they are shown (or vice versa, to indicate the action).
+        *   **Coloring:**
+            *   If synonyms **exist** for the current sentence: The icon should be colored (e.g., `text-indigo-500` or `text-orange-500`) to indicate availability.
+            *   If synonyms **do not exist**: The icon should be pale and barely visible (`text-stone-300` or `opacity-20`).
 2.  **Default State:**
     *   Synonyms must be **hidden** by default when a new sentence is loaded or when the application is first opened.
 3.  **Reset Behavior:**
@@ -22,7 +27,10 @@ Currently, synonyms are automatically displayed above complex words when the app
 1.  **State Management:**
     *   Introduce `showSynonyms` boolean state in `App.tsx`.
 2.  **Component Updates:**
-    *   `ModeSwitch.tsx`: Add a click handler to the slider thumb. Pass `onThumbClick` prop from `App.tsx`.
+    *   `ModeSwitch.tsx`: 
+        *   Add a click handler to the slider thumb. Pass `onThumbClick` prop from `App.tsx`.
+        *   Accept `hasSynonyms` (boolean) and `showSynonyms` (boolean) props.
+        *   Render `ChevronsUp`/`ChevronsDown` icons inside the thumb with conditional styling and rotation.
     *   `SentenceDisplay.tsx`: Accept `showSynonyms` prop and use it to conditionally pass `synonym` values to `WordRenderer`.
 3.  **Reset Logic:**
     *   Update `nextSentence`, `prevSentence`, and `setDisplayMode` calls to include `setShowSynonyms(false)`.
