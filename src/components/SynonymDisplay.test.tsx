@@ -29,4 +29,10 @@ describe('SentenceDisplay with Synonyms', () => {
     // Check for orange color class (using text-orange-500 from Tailwind)
     expect(synonymElement.className).toContain('text-orange-500');
   });
+
+  it('applies padding to accommodate synonyms', () => {
+    const { container } = render(<SentenceDisplay {...defaultProps} />);
+    const motionDiv = container.querySelector('.font-serif');
+    expect(motionDiv?.className).toContain('pt-12');
+  });
 });

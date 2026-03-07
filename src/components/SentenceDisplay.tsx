@@ -33,7 +33,7 @@ export const SentenceDisplay: React.FC<SentenceDisplayProps> = ({
           animate={{ opacity: isLoading ? 0.3 : 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2, ease: "linear" }}
-          className="text-4xl md:text-5xl font-serif leading-tight text-stone-800 dark:text-stone-100 select-none"
+          className="text-4xl md:text-5xl font-serif leading-[3] text-stone-800 dark:text-stone-100 select-none pt-12"
         >
           {sentenceText.split(' ').map((word, index) => {
             const cleanWord = word.replace(/[^\p{L}’'-]/gu, '').toLowerCase();
