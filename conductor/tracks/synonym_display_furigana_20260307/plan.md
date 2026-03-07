@@ -1,7 +1,7 @@
 # Implementation Plan - Furigana-Style Synonym Display (`synonym_display_furigana_20260307`)
 
 ## Phase 1: Component Refactoring & Basic Furigana UI
-- [ ] Task: Refactor `SentenceDisplay` and `WordRenderer` to support furigana annotations.
+- [x] Task: Refactor `SentenceDisplay` and `WordRenderer` to support furigana annotations. (b91c767)
     - Update component interfaces to accept synonym data.
     - Ensure synonyms are correctly passed down from `App.tsx` state.
     - **TDD:** Write unit tests for `SentenceDisplay` ensuring it renders `ruby` or equivalent tags when synonyms are present.
