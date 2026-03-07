@@ -1,7 +1,7 @@
 # Implementation Plan - Background Synonym Extraction (`synonym_extraction_20260307`)
 
 ## Phase 1: Data Model & Mistral Integration
-- [ ] Task: Define Synonym types and update AppState in `src/utils.ts`
+- [x] Task: Define Synonym types and update AppState in `src/utils.ts` (41c78c4)
     - Add `SynonymPair` and `SynonymData` types.
     - Update `AppState` interface to include `synonyms`.
 - [ ] Task: Implement `getSynonyms` in `src/services/mistral.ts`
