@@ -21,6 +21,7 @@ Lettura-Facile is a language-learning reading assistant designed to make complex
 3. **Interactive Word/Phrase Dictionary:** Instant translation for single words or multi-word phrases via direct interaction with the text.
 4. **Sentiment Analysis:** Reveal the "mood" or tone of the current sentence to improve emotional comprehension.
 5. **Text Import:** Support for pasting or uploading custom text for analysis.
+6. **Background Synonym Extraction:** Automatic identification of complex words with contextual synonym generation for enhanced vocabulary support.
 
 ## User Experience Guidelines
 - **Minimalist Interface:** Focus on the text with no distractions.
