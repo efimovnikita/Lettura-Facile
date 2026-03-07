@@ -70,6 +70,7 @@ export default function App() {
 
   const [showSettings, setShowSettings] = useState(false);
   const [showWordList, setShowWordList] = useState(false);
+  const [showSynonyms, setShowSynonyms] = useState(false);
 // Reader State
 const [currentSentenceText, setCurrentSentenceText] = useState('');
 const [cachedVersions, setCachedVersions] = useState<Record<string, { simplified?: string, translated?: string }>>({});
@@ -84,7 +85,7 @@ const [translation, setTranslation] = useState<string | null>(null);
   // Tooltip State
   const [tooltipPosition, setTooltipPosition] = useState<{top: number, left: number, placement: 'top' | 'bottom'} | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const clickTimeoutRef = useRef<any>(null);
 
   // Load state on mount
   useEffect(() => {
@@ -134,8 +135,12 @@ const [translation, setTranslation] = useState<string | null>(null);
       if (lastProcessedIndexRef.current !== currentIndex) {
         setCurrentSentenceText(original);
         setTranslation(null);
+        setShowSynonyms(false);
         lastProcessedIndexRef.current = currentIndex;
       }
+
+      // Reset showSynonyms whenever displayMode changes
+      setShowSynonyms(false);
 
       if (displayMode === 'original') {
         setCurrentSentenceText(original);
@@ -451,6 +456,7 @@ const [translation, setTranslation] = useState<string | null>(null);
   const nextSentence = () => {
     // Сбрасываем сложность на оригинал при переходе вперед
     setDisplayMode('original');
+    setShowSynonyms(false);
 
     if (currentIndex < sentences.length - 1) {
       setCurrentIndex(prev => prev + 1);
@@ -467,6 +473,7 @@ const [translation, setTranslation] = useState<string | null>(null);
     if (currentIndex > 0) {
       // Сбрасываем сложность на оригинал при возврате назад
       setDisplayMode('original');
+      setShowSynonyms(false);
       setCurrentIndex(prev => prev - 1);
     }
   };
@@ -642,11 +649,19 @@ const [translation, setTranslation] = useState<string | null>(null);
           onWordClick={handleWordClick}
           isLoading={isSentenceLoading || isTranslationLoading}
           synonyms={synonyms[currentIndex]}
+          showSynonyms={showSynonyms}
         />
 
         {/* Controls */}
         <div className="flex flex-col items-center gap-3 md:gap-6 w-full">
-          <ModeSwitch currentMode={displayMode} onChange={setDisplayMode} isLoading={isSentenceLoading || isTranslationLoading} />
+          <ModeSwitch 
+            currentMode={displayMode} 
+            onChange={setDisplayMode} 
+            onThumbClick={() => setShowSynonyms(!showSynonyms)}
+            hasSynonyms={!!synonyms[currentIndex] && synonyms[currentIndex]!.length > 0}
+            showSynonyms={showSynonyms}
+            isLoading={isSentenceLoading || isTranslationLoading} 
+          />
 
           <div className="flex items-center gap-4 mt-4 md:mt-8">
             <button

@@ -29,6 +29,8 @@ vi.mock('lucide-react', () => ({
   Trash2: () => <div data-testid="icon-trash2" />,
   Languages: () => <div data-testid="icon-languages" />,
   Check: () => <div data-testid="icon-check" />,
+  ChevronsUp: () => <div data-testid="icon-chevrons-up" />,
+  ChevronsDown: () => <div data-testid="icon-chevrons-down" />,
 }));
 
 // Mock Mistral service

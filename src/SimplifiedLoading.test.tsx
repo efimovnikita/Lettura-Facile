@@ -28,6 +28,8 @@ vi.mock('lucide-react', () => ({
   Languages: () => <div data-testid="icon-languages" />,
   ChevronDown: () => <div data-testid="icon-chevron-down" />,
   ChevronUp: () => <div data-testid="icon-chevron-up" />,
+  ChevronsUp: () => <div data-testid="icon-chevrons-up" />,
+  ChevronsDown: () => <div data-testid="icon-chevrons-down" />,
 }));
 
 // Mock Mistral service functions

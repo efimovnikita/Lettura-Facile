@@ -10,6 +10,7 @@ describe('SentenceDisplay with Synonyms', () => {
     getWordIntensity: () => 0,
     onWordClick: vi.fn(),
     isLoading: false,
+    showSynonyms: true,
   };
 
   it('renders synonyms when provided for complex words', () => {

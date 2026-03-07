@@ -11,6 +11,7 @@ interface SentenceDisplayProps {
   onWordClick: (word: string, index: number, event: React.MouseEvent<HTMLSpanElement>) => void;
   isLoading?: boolean;
   synonyms?: SynonymPair[];
+  showSynonyms?: boolean;
 }
 
 export const SentenceDisplay: React.FC<SentenceDisplayProps> = ({
@@ -21,6 +22,7 @@ export const SentenceDisplay: React.FC<SentenceDisplayProps> = ({
   onWordClick,
   isLoading = false,
   synonyms = [],
+  showSynonyms = false,
 }) => {
   return (
     <div 
@@ -43,7 +45,7 @@ export const SentenceDisplay: React.FC<SentenceDisplayProps> = ({
               // Skip if previous word had a synonym to avoid horizontal overlap
               const canShowSynonym = index > lastSynonymIndex + 1;
               
-              const synonymMatch = (displayMode === 'original' && canShowSynonym)
+              const synonymMatch = (displayMode === 'original' && showSynonyms && canShowSynonym)
                 ? synonyms.find(s => s.original.toLowerCase() === cleanWord)
                 : undefined;
 

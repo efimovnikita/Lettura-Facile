@@ -1,14 +1,25 @@
 import React from 'react';
+import { ChevronsUp, ChevronsDown } from 'lucide-react';
 
 export type Mode = 'original' | 'simplified' | 'translated';
 
 interface ModeSwitchProps {
   currentMode: Mode;
   onChange: (mode: Mode) => void;
+  onThumbClick?: () => void;
+  hasSynonyms?: boolean;
+  showSynonyms?: boolean;
   isLoading?: boolean;
 }
 
-export const ModeSwitch: React.FC<ModeSwitchProps> = ({ currentMode, onChange, isLoading }) => {
+export const ModeSwitch: React.FC<ModeSwitchProps> = ({ 
+  currentMode, 
+  onChange, 
+  onThumbClick,
+  hasSynonyms = false,
+  showSynonyms = false,
+  isLoading 
+}) => {
   const getSliderLeft = () => {
     if (currentMode === 'original') return '4px';
     if (currentMode === 'simplified') return '50%';
@@ -36,6 +47,13 @@ export const ModeSwitch: React.FC<ModeSwitchProps> = ({ currentMode, onChange, i
     }
   };
 
+  const handleThumbClick = (e: React.MouseEvent) => {
+    if (currentMode === 'original' && onThumbClick) {
+      e.stopPropagation();
+      onThumbClick();
+    }
+  };
+
   return (
     <div className="flex flex-col items-center gap-1 w-full max-w-lg mx-auto mt-8 mb-16 relative">
       {/* Central Slider Control */}
@@ -60,7 +78,11 @@ export const ModeSwitch: React.FC<ModeSwitchProps> = ({ currentMode, onChange, i
         <div className="relative w-28 h-8 bg-stone-100 dark:bg-stone-900 rounded-full border border-stone-200/50 dark:border-stone-800 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]">
           {/* Slider Thumb */}
           <div 
-            className="absolute top-1 w-6 h-6 rounded-full transition-all duration-300 ease-out z-20 cursor-pointer flex items-center justify-center overflow-hidden"
+            data-testid="mode-switch-thumb"
+            onClick={handleThumbClick}
+            className={`absolute top-1 w-6 h-6 rounded-full transition-all duration-300 ease-out z-20 cursor-pointer flex items-center justify-center overflow-hidden ${
+              currentMode === 'original' && onThumbClick ? 'hover:scale-110 active:scale-95' : ''
+            }`}
             style={{
               left: getSliderLeft(),
               transform: getSliderTransform(),
@@ -70,7 +92,20 @@ export const ModeSwitch: React.FC<ModeSwitchProps> = ({ currentMode, onChange, i
               boxShadow: '0 2px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255, 255, 255, 0.2)'
             }}
           >
-             <div className="w-full h-full bg-gradient-to-br from-white/20 to-transparent" />
+            {currentMode === 'original' && (
+              <div className={`transition-all duration-300 ${
+                hasSynonyms 
+                  ? 'text-indigo-600 dark:text-indigo-400' 
+                  : 'text-stone-300 dark:text-stone-600 opacity-40'
+              }`}>
+                {showSynonyms ? (
+                  <ChevronsDown className="w-4 h-4" />
+                ) : (
+                  <ChevronsUp className="w-4 h-4" />
+                )}
+              </div>
+            )}
+             <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
           </div>
           
           {/* Invisible click targets on the track */}
