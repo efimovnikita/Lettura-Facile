@@ -4,8 +4,8 @@ import {
   ClipboardPaste, ChevronDown, ChevronUp, Trash2, Zap, Heart,
   Sun, Theater, Flame, CloudRain, AlertCircle, Swords, History, CloudLightning
 } from 'lucide-react';
-import { AppState, saveState, loadState, splitIntoSentences, Difficulty, SentimentData, DisplayMode } from './utils';
-import { translateWord, translateSentence, simplifySentence, getSentiments } from './services/mistral';
+import { AppState, saveState, loadState, splitIntoSentences, Difficulty, SentimentData, DisplayMode, SynonymData } from './utils';
+import { translateWord, translateSentence, simplifySentence, getSentiments, getSynonyms } from './services/mistral';
 import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
 import { SettingsPanel } from './components/SettingsPanel';
@@ -58,6 +58,7 @@ export default function App() {
   const [text, setText] = useState('');
   const [sentences, setSentences] = useState<string[]>([]);
   const [sentiments, setSentiments] = useState<Record<number, SentimentData>>({});
+  const [synonyms, setSynonyms] = useState<SynonymData>({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [view, setView] = useState<'input' | 'reader'>('input');
   const [displayMode, setDisplayMode] = useState<DisplayMode>('original');
@@ -65,6 +66,7 @@ export default function App() {
   const lastClickTimeRef = useRef<number>(0);
   const lastProcessedIndexRef = useRef<number>(-1);
   const isAnalyzingRef = useRef(false);
+  const isSynonymAnalyzingRef = useRef(false);
 
   const [showSettings, setShowSettings] = useState(false);
   const [showWordList, setShowWordList] = useState(false);
@@ -92,6 +94,7 @@ const [translation, setTranslation] = useState<string | null>(null);
       setText(loaded.text || '');
       setSentences(loaded.sentences || []);
       setSentiments(loaded.sentiments || {});
+      setSynonyms(loaded.synonyms || {});
       setCurrentIndex(loaded.currentSentenceIndex || 0);
       
       // displayMode is NOT loaded from state, it resets to 'original'
@@ -110,9 +113,10 @@ const [translation, setTranslation] = useState<string | null>(null);
       currentSentenceIndex: currentIndex,
       mistralKey,
       difficulty: 'original', // Placeholder for backward compatibility
-      sentiments
+      sentiments,
+      synonyms
     });
-  }, [text, sentences, currentIndex, mistralKey, sentiments]);
+  }, [text, sentences, currentIndex, mistralKey, sentiments, synonyms]);
 
   useEffect(() => {
     const fetchSentenceVersion = async () => {
@@ -211,6 +215,7 @@ const [translation, setTranslation] = useState<string | null>(null);
       const split = splitIntoSentences(combinedText);
       setSentences(split);
       setSentiments({}); // Сбрасываем старые данные
+      setSynonyms({}); // Сбрасываем старые данные
 
       // 3. Сбрасываем прогресс чтения на начало
       setCurrentIndex(0);
@@ -227,6 +232,7 @@ const [translation, setTranslation] = useState<string | null>(null);
     const split = splitIntoSentences(text);
     setSentences(split);
     setSentiments({}); // Сбрасываем старые данные
+    setSynonyms({}); // Сбрасываем старые данные
     setCurrentIndex(0);
     setView('reader');
   };
@@ -291,6 +297,52 @@ const [translation, setTranslation] = useState<string | null>(null);
     const timeout = setTimeout(analyze, 2000); // Пауза 2 секунды между батчами
     return () => clearTimeout(timeout);
   }, [view, mistralKey, sentences, sentiments]);
+
+  // Background Synonym Extraction
+  useEffect(() => {
+    if (view !== 'reader' || !mistralKey || sentences.length === 0 || isSynonymAnalyzingRef.current) return;
+
+    const findNextBatch = () => {
+      const batchSize = 5;
+      const unanalyzedIndices: number[] = [];
+
+      for (let i = 0; i < sentences.length; i++) {
+        if (!synonyms[i]) {
+          unanalyzedIndices.push(i);
+          if (unanalyzedIndices.length === batchSize) break;
+        }
+      }
+      return unanalyzedIndices;
+    };
+
+    const batch = findNextBatch();
+    if (batch.length === 0) return;
+
+    const analyze = async () => {
+      isSynonymAnalyzingRef.current = true;
+      try {
+        const batchSentences = batch.map(i => sentences[i]);
+        const results = await getSynonyms(mistralKey, batchSentences);
+
+        setSynonyms(prev => {
+          const next = { ...prev };
+          results.forEach((res, idx) => {
+            if (batch[idx] !== undefined) {
+              next[batch[idx]] = res;
+            }
+          });
+          return next;
+        });
+      } catch (err) {
+        console.error("Synonym analysis error:", err);
+      } finally {
+        isSynonymAnalyzingRef.current = false;
+      }
+    };
+
+    const timeout = setTimeout(analyze, 3000); // Пауза 3 секунды (чуть больше, чем для сентимента)
+    return () => clearTimeout(timeout);
+  }, [view, mistralKey, sentences, synonyms]);
 
   const performTranslation = async (phrase: string, rect: DOMRect) => {
     const containerRect = containerRef.current?.getBoundingClientRect();

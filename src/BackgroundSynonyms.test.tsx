@@ -1,0 +1,72 @@
+import { render, waitFor } from '@testing-library/react';
+import App from './App';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
+import * as mistral from './services/mistral';
+import { splitIntoSentences } from './utils';
+
+// Mock Lucide icons
+vi.mock('lucide-react', () => ({
+  RotateCcw: () => <div />,
+  ClipboardPaste: () => <div />,
+  ArrowRight: () => <div />,
+  Settings: () => <div />,
+  BookOpen: () => <div />,
+  Sun: () => <div />,
+  Zap: () => <div />,
+  Theater: () => <div />,
+  Swords: () => <div />,
+  CloudRain: () => <div />,
+  AlertCircle: () => <div />,
+  Heart: () => <div />,
+  Flame: () => <div />,
+  History: () => <div />,
+  CloudLightning: () => <div />,
+  Loader2: () => <div />,
+  X: () => <div />,
+  Trash2: () => <div />,
+  Languages: () => <div />,
+  ChevronDown: () => <div />,
+  ChevronUp: () => <div />,
+}));
+
+// Mock Mistral service
+vi.mock('./services/mistral', async () => {
+  const actual = await vi.importActual('./services/mistral');
+  return {
+    ...actual,
+    getSynonyms: vi.fn().mockResolvedValue([[{ original: 'complesso', synonym: 'difficile' }]]),
+    getSentiments: vi.fn().mockResolvedValue([{ tone: 'neutral', score: 0.5 }]),
+  };
+});
+
+describe('Background Synonym Extraction', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    vi.clearAllMocks();
+  });
+
+  it('should trigger synonym extraction in background', async () => {
+    const state = {
+      text: 'Questa è una frase complessa.',
+      sentences: ['Questa è una frase complessa.'],
+      currentSentenceIndex: 0,
+      mistralKey: 'fake-key',
+    };
+    localStorage.setItem('lettura_facile_state', JSON.stringify(state));
+
+    render(<App />);
+
+    // Wait for the background extraction to be called (3 seconds timeout + some buffer)
+    await waitFor(() => {
+      expect(mistral.getSynonyms).toHaveBeenCalled();
+    }, { timeout: 5000 });
+
+    // Verify that synonyms are saved to localStorage
+    await waitFor(() => {
+      const saved = JSON.parse(localStorage.getItem('lettura_facile_state') || '{}');
+      expect(saved.synonyms).toBeDefined();
+      expect(saved.synonyms[0]).toHaveLength(1);
+      expect(saved.synonyms[0][0].original).toBe('complesso');
+    }, { timeout: 2000 });
+  });
+});
