@@ -11,15 +11,15 @@
     - **TDD:** Verify component styles via Vitest/JSDOM (classes applied correctly).
 - [x] Task: Conductor - User Manual Verification 'Component Refactoring & Basic Furigana UI' (Protocol in workflow.md) (cffd89d)
 
-## Phase 2: Layout & Spacing
-- [ ] Task: Adjust vertical spacing in `SentenceDisplay`.
+## Phase 2: Layout & Spacing [checkpoint: 12765a9]
+- [x] Task: Adjust vertical spacing in `SentenceDisplay`. (82338d1)
     - Modify line height and margins to accommodate furigana without overlapping lines above.
     - Ensure the layout remains clean on mobile devices.
     - **TDD:** Verify container height/spacing adjustments in tests.
-- [ ] Task: Implement horizontal conflict handling.
+- [x] Task: Implement horizontal conflict handling. (3d13e6f)
     - Add logic to detect if adjacent furigana annotations would overlap.
     - Implement a "skip" or "offset" strategy to maintain readability.
-- [ ] Task: Conductor - User Manual Verification 'Layout & Spacing' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Layout & Spacing' (Protocol in workflow.md) (12765a9)
 
 ## Phase 3: Final Polishing & Reference Alignment
 - [ ] Task: Align with Visual Reference.
