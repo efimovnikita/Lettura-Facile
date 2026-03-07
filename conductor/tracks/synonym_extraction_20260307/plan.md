@@ -4,7 +4,7 @@
 - [x] Task: Define Synonym types and update AppState in `src/utils.ts` (41c78c4)
     - Add `SynonymPair` and `SynonymData` types.
     - Update `AppState` interface to include `synonyms`.
-- [ ] Task: Implement `getSynonyms` in `src/services/mistral.ts`
+- [x] Task: Implement `getSynonyms` in `src/services/mistral.ts` (29eebb5)
     - Create `getSynonyms(apiKey: string, sentences: string[])` to identify complex words and provide synonyms in JSON format.
     - **TDD:** Write unit tests for `getSynonyms`.
 - [ ] Task: Conductor - User Manual Verification 'Data Model & Mistral Integration' (Protocol in workflow.md)
