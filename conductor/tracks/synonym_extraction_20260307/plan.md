@@ -9,15 +9,15 @@
     - **TDD:** Write unit tests for `getSynonyms`.
 - [x] Task: Conductor - User Manual Verification 'Data Model & Mistral Integration' (Protocol in workflow.md) (9651323)
 
-## Phase 2: Background Processing & Storage
+## Phase 2: Background Processing & Storage [checkpoint: a7551d5]
 - [x] Task: Implement background synonym extraction in `src/App.tsx` (0b28b88)
     - Add `synonyms` state and `isSynonymAnalyzingRef`.
     - Create a `useEffect` for background synonym extraction (batch processing).
     - Update `loadState` and `saveState` logic to include synonyms.
-- [ ] Task: Ensure robust concurrent processing
+- [x] Task: Ensure robust concurrent processing (0b28b88)
     - Ensure sentiment and synonym analysis can run independently without interference (separate refs).
     - Verify that synonyms are correctly associated with sentence indices.
-- [ ] Task: Conductor - User Manual Verification 'Background Processing & Storage' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Background Processing & Storage' (Protocol in workflow.md) (a7551d5)
 
 ## Phase 3: Verification & Quality
 - [ ] Task: Write Integration Tests
