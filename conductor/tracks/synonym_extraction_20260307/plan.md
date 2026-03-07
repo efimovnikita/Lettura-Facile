@@ -20,7 +20,7 @@
 - [x] Task: Conductor - User Manual Verification 'Background Processing & Storage' (Protocol in workflow.md) (a7551d5)
 
 ## Phase 3: Verification & Quality
-- [ ] Task: Write Integration Tests
+- [x] Task: Write Integration Tests (774b98c)
     - Verify that synonyms are fetched and saved to `localStorage` when a text is imported.
     - Verify that the process is non-blocking and the UI remains responsive.
 - [ ] Task: Conductor - User Manual Verification 'Verification & Quality' (Protocol in workflow.md)
