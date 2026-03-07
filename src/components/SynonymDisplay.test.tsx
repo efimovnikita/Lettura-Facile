@@ -23,6 +23,10 @@ describe('SentenceDisplay with Synonyms', () => {
     expect(screen.getByText('tavolo')).toBeDefined();
     
     // Check if synonym is present (in uppercase as per spec)
-    expect(screen.getByText('SCRIVANIA')).toBeDefined();
+    const synonymElement = screen.getByText('SCRIVANIA');
+    expect(synonymElement).toBeDefined();
+    
+    // Check for orange color class (using text-orange-500 from Tailwind)
+    expect(synonymElement.className).toContain('text-orange-500');
   });
 });

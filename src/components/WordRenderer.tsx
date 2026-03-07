@@ -45,7 +45,9 @@ export const WordRenderer: React.FC<WordRendererProps> = ({ word, index, intensi
           <span className="text-[10px] font-bold text-orange-500 whitespace-nowrap uppercase tracking-tighter">
             {synonym.toUpperCase()}
           </span>
-          <span className="text-orange-500 text-[10px] leading-none -mt-1">↑</span>
+          <svg className="w-2 h-2 text-orange-500 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 19V5M12 5l-7 7m7-7l7 7"/>
+          </svg>
         </span>
       )}
       {prefix}
