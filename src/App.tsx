@@ -12,7 +12,7 @@ import { SettingsPanel } from './components/SettingsPanel';
 import { ModeSwitch, Mode } from './components/ModeSwitch';
 import { SentenceDisplay } from './components/SentenceDisplay';
 
-const APP_VERSION = 'v1.5.2';
+const APP_VERSION = 'v1.6.0';
 
 const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: boolean }) => {
   if (isLoading) return <Loader2 className="w-4 h-4 text-stone-300 animate-spin" />;
@@ -97,7 +97,7 @@ const [translation, setTranslation] = useState<string | null>(null);
       setSentiments(loaded.sentiments || {});
       setSynonyms(loaded.synonyms || {});
       setCurrentIndex(loaded.currentSentenceIndex || 0);
-      
+
       // displayMode is NOT loaded from state, it resets to 'original'
 
       if (loaded.sentences && loaded.sentences.length > 0) {
@@ -124,7 +124,7 @@ const [translation, setTranslation] = useState<string | null>(null);
       if (sentences.length === 0) return;
 
       const original = sentences[currentIndex];
-      
+
       // Always clear tooltips and selection when mode or index changes
       setWordTranslation(null);
       setTooltipPosition(null);
@@ -159,7 +159,7 @@ const [translation, setTranslation] = useState<string | null>(null);
             .replace(/["']/g, '')
             .replace(/\s*\([^)]*\)/g, '')
             .trim();
-          
+
           setCachedVersions(prev => ({
             ...prev,
             [original]: { ...prev[original], simplified: finalSentence }
@@ -182,7 +182,7 @@ const [translation, setTranslation] = useState<string | null>(null);
         setIsTranslationLoading(true);
         try {
           const trans = await translateSentence(mistralKey, original);
-          
+
           setCachedVersions(prev => ({
             ...prev,
             [original]: { ...prev[original], translated: trans }
@@ -654,13 +654,13 @@ const [translation, setTranslation] = useState<string | null>(null);
 
         {/* Controls */}
         <div className="flex flex-col items-center gap-3 md:gap-6 w-full">
-          <ModeSwitch 
-            currentMode={displayMode} 
-            onChange={setDisplayMode} 
+          <ModeSwitch
+            currentMode={displayMode}
+            onChange={setDisplayMode}
             onThumbClick={() => setShowSynonyms(!showSynonyms)}
             hasSynonyms={!!synonyms[currentIndex] && synonyms[currentIndex]!.length > 0}
             showSynonyms={showSynonyms}
-            isLoading={isSentenceLoading || isTranslationLoading} 
+            isLoading={isSentenceLoading || isTranslationLoading}
           />
 
           <div className="flex items-center gap-4 mt-4 md:mt-8">
