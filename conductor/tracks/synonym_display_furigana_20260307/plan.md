@@ -1,15 +1,15 @@
 # Implementation Plan - Furigana-Style Synonym Display (`synonym_display_furigana_20260307`)
 
-## Phase 1: Component Refactoring & Basic Furigana UI
+## Phase 1: Component Refactoring & Basic Furigana UI [checkpoint: cffd89d]
 - [x] Task: Refactor `SentenceDisplay` and `WordRenderer` to support furigana annotations. (b91c767)
     - Update component interfaces to accept synonym data.
     - Ensure synonyms are correctly passed down from `App.tsx` state.
     - **TDD:** Write unit tests for `SentenceDisplay` ensuring it renders `ruby` or equivalent tags when synonyms are present.
-- [ ] Task: Implement basic CSS for orange furigana.
+- [x] Task: Implement basic CSS for orange furigana. (963962c)
     - Create styles for small, orange, all-caps synonym text.
     - Implement the small orange arrow pointing **UP** from the word to the synonym using CSS (e.g., pseudo-elements or SVG).
     - **TDD:** Verify component styles via Vitest/JSDOM (classes applied correctly).
-- [ ] Task: Conductor - User Manual Verification 'Component Refactoring & Basic Furigana UI' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Component Refactoring & Basic Furigana UI' (Protocol in workflow.md) (cffd89d)
 
 ## Phase 2: Layout & Spacing
 - [ ] Task: Adjust vertical spacing in `SentenceDisplay`.
