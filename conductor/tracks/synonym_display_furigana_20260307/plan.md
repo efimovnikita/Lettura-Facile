@@ -21,11 +21,11 @@
     - Implement a "skip" or "offset" strategy to maintain readability.
 - [x] Task: Conductor - User Manual Verification 'Layout & Spacing' (Protocol in workflow.md) (12765a9)
 
-## Phase 3: Final Polishing & Reference Alignment
-- [ ] Task: Align with Visual Reference.
+## Phase 3: Final Polishing & Reference Alignment [checkpoint: 375f876]
+- [x] Task: Align with Visual Reference. (f68a6cf)
     - **Note:** Wait for user to provide the visual reference before final styling.
     - Adjust font weights, arrow proportions, and exact orange hue to match reference.
-- [ ] Task: Verify Interaction Integrity.
+- [x] Task: Verify Interaction Integrity. (9c0c4dd)
     - Ensure that clicking on a word with a synonym still correctly triggers the dictionary/translation popup.
     - Verify that the synonym text itself does not interfere with touch targets.
-- [ ] Task: Conductor - User Manual Verification 'Final Polishing & Reference Alignment' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Final Polishing & Reference Alignment' (Protocol in workflow.md) (375f876)
