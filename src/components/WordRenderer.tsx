@@ -38,25 +38,33 @@ export const WordRenderer: React.FC<WordRendererProps> = ({ word, index, intensi
 
   const [, prefix, coreWord, suffix] = match;
 
+  const content = (
+    <span
+      onClick={(e) => isClickable && onClick(coreWord, index, e)}
+      className={`${isClickable ? 'cursor-pointer' : 'cursor-default'} select-none touch-manipulation transition-colors ${getHighlightClass(intensity)} ${selectionClass}`}
+    >
+      {coreWord}
+    </span>
+  );
+
   return (
-    <span className="inline-block mr-1 relative group">
-      {synonym && (
-        <span className="absolute left-1/2 -translate-x-1/2 -top-8 flex flex-col items-center pointer-events-none select-none">
-          <span className="text-[10px] font-bold text-orange-500 whitespace-nowrap uppercase tracking-tighter">
-            {synonym.toUpperCase()}
-          </span>
-          <svg className="w-2 h-2 text-orange-500 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 19V5M12 5l-7 7m7-7l7 7"/>
-          </svg>
-        </span>
-      )}
+    <span className="inline-block mr-1 align-bottom">
       {prefix}
-      <span
-        onClick={(e) => isClickable && onClick(coreWord, index, e)}
-        className={`${isClickable ? 'cursor-pointer' : 'cursor-default'} select-none touch-manipulation transition-colors ${getHighlightClass(intensity)} ${selectionClass}`}
-      >
-        {coreWord}
-      </span>
+      {synonym ? (
+        <ruby className="ruby-orange">
+          {content}
+          <rt className="ruby-top">
+            <span className="flex flex-col items-center">
+              <span className="text-[10px] font-bold text-orange-500 uppercase tracking-tighter leading-none mb-0.5">
+                {synonym.toUpperCase()}
+              </span>
+              <svg className="w-2 h-2 text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 19V5M12 5l-7 7m7-7l7 7"/>
+              </svg>
+            </span>
+          </rt>
+        </ruby>
+      ) : content}
       {suffix}
     </span>
   );
