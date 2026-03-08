@@ -8,7 +8,7 @@
 ## Phase 2: Component Refactoring (TDD)
 - [x] Task: Update `WordRenderer.test.tsx` to include checks for responsive word spacing. a826c31
 - [x] Task: Update `WordRenderer.tsx` replacing fixed `mr-1` with relative `mr-[0.3em]`. a826c31
-- [ ] Task: Update `SentenceDisplay.tsx` styling (if necessary) to ensure font compatibility.
+- [x] Task: Update `SentenceDisplay.tsx` styling (if necessary) to ensure font compatibility. (No changes needed)
 - [ ] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
 ## Phase 3: Visual Polish and Verification
