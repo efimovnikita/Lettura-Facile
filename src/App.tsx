@@ -12,7 +12,7 @@ import { SettingsPanel } from './components/SettingsPanel';
 import { ModeSwitch, Mode } from './components/ModeSwitch';
 import { SentenceDisplay } from './components/SentenceDisplay';
 
-const APP_VERSION = 'v1.6.1';
+const APP_VERSION = 'v1.6.3';
 
 const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: boolean }) => {
   if (isLoading) return <Loader2 className="w-4 h-4 text-stone-300 animate-spin" />;
@@ -481,7 +481,7 @@ const [translation, setTranslation] = useState<string | null>(null);
   const hasMatchingSynonyms = () => {
     const currentSynonyms = synonyms[currentIndex];
     if (!currentSynonyms || currentSynonyms.length === 0) return false;
-    
+
     const words = currentSentenceText.split(' ');
     return words.some(word => {
       const cleanWord = word.replace(/[^\p{L}’'-]/gu, '').toLowerCase();
