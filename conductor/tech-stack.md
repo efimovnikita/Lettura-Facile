@@ -19,6 +19,7 @@
 - **API/Server (Dev):** Express (used for local development/handling requests if necessary)
 
 ## UI and UX
+- **Fonts:** Merriweather (primary serif for reading), system-sans (UI elements).
 - **Icons:** Lucide-React
 - **Animations:** Motion
 - **Deployment Strategy:** Progressive Web App (PWA) with `vite-plugin-pwa`
