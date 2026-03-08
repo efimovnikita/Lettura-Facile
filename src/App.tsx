@@ -566,7 +566,7 @@ const [translation, setTranslation] = useState<string | null>(null);
 
             {!mistralKey && (
               <p className="text-red-500 text-xs mt-3 text-center">
-                * фИи necessaria una chiave API Mistral nelle Impostazioni per procedere.
+                * È necessaria una chiave API di Mistral nelle Impostazioni per procedere.
               </p>
             )}
 
