@@ -1,7 +1,7 @@
 # Implementation Plan: Font & Spacing Upgrade
 
 ## Phase 1: Infrastructure and Font Setup
-- [ ] Task: Integrate "Merriweather" Google Font in `index.html`.
+- [x] Task: Integrate "Merriweather" Google Font in `index.html`. c772d6e
 - [ ] Task: Extend Tailwind CSS configuration to include Merriweather as the primary serif font.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
 
