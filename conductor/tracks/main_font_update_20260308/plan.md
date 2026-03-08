@@ -2,7 +2,7 @@
 
 ## Phase 1: Infrastructure and Font Setup
 - [x] Task: Integrate "Merriweather" Google Font in `index.html`. c772d6e
-- [ ] Task: Extend Tailwind CSS configuration to include Merriweather as the primary serif font.
+- [x] Task: Extend Tailwind CSS configuration to include Merriweather as the primary serif font. 2ab438f
 - [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
 
 ## Phase 2: Component Refactoring (TDD)
