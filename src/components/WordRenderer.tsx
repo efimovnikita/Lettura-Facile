@@ -55,7 +55,7 @@ export const WordRenderer: React.FC<WordRendererProps> = ({ word, index, intensi
           {content}
           <rt className="ruby-top">
             <span className="flex flex-col items-center">
-              <span className="text-[10px] font-bold text-orange-500 whitespace-nowrap lowercase tracking-tighter leading-none mb-0.5">
+              <span className="text-[10px] font-sans font-bold text-orange-500 whitespace-nowrap lowercase tracking-tighter leading-none mb-0.5">
                 {synonym}
               </span>
               <svg className="w-2 h-2 text-orange-500" viewBox="0 0 24 24" fill="currentColor">
