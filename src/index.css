@@ -4,6 +4,12 @@
   --font-serif: "Merriweather", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
+@layer base {
+  .font-serif {
+    font-family: "Merriweather", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  }
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
