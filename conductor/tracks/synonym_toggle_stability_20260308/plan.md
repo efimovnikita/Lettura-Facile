@@ -48,6 +48,6 @@ This plan addresses the issue where the synonym toggle is active even when no sy
 - [x] Task: Update `App.tsx` to pass the correct `hasSynonyms` state to `ModeSwitch`.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation - Logic Refactor' (Protocol in workflow.md)
 
-### Phase 3: Implementation - UI/UX Refinement
+### Phase 3: Implementation - UI/UX Refinement [checkpoint: 33f4d55]
 - [x] Task: Update `ModeSwitch.tsx` to handle the disabled state correctly.
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Implementation - UI/UX Refinement' (Protocol in workflow.md)
