@@ -219,10 +219,11 @@ export async function getSynonyms(apiKey: string, sentences: string[]): Promise<
     messages: [
       {
         role: "system",
-        content: `Identify complex or difficult Italian words in the provided sentences and provide ONE simple synonym for each, in the context of the sentence.
+        content: `Identify Italian words in the provided sentences that correspond to CEFR level B1 or higher. 
+        For each identified word, provide ONE simpler synonym (ideally CEFR level A1-A2) that is contextually appropriate.
         Return EXCLUSIVELY a JSON object with a key "results" which contains an array of arrays (one inner array per sentence).
         Each inner array should contain objects with "original" and "synonym" keys.
-        If a sentence has no complex words, return an empty array for that sentence.
+        If a sentence has no words at B1 level or higher, return an empty array for that sentence.
 
         Example output:
         {
