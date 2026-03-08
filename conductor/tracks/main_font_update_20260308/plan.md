@@ -12,7 +12,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
 ## Phase 3: Visual Polish and Verification
-- [ ] Task: Verify that the font looks correct across all display modes (Original, Simplified, Translated).
-- [ ] Task: Ensure the "Sentiment" and "Synonym" icons/text align correctly with the new font.
-- [ ] Task: Final cross-device manual check (Mobile/Desktop).
+- [x] Task: Verify that the font looks correct across all display modes (Original, Simplified, Translated). d43eff2
+- [x] Task: Ensure the "Sentiment" and "Synonym" icons/text align correctly with the new font. d43eff2
+- [x] Task: Final cross-device manual check (Mobile/Desktop). d43eff2
 - [ ] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)
