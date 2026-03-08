@@ -48,7 +48,7 @@ export const WordRenderer: React.FC<WordRendererProps> = ({ word, index, intensi
   );
 
   return (
-    <span className="inline-block mr-1 align-bottom">
+    <span className="inline-block mr-[0.3em] align-bottom">
       {prefix}
       {synonym ? (
         <ruby className="ruby-orange">
