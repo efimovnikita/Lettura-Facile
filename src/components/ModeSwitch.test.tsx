@@ -13,6 +13,7 @@ describe('ModeSwitch Toggle functionality', () => {
         currentMode="original" 
         onChange={onChange} 
         onThumbClick={onThumbClick}
+        hasSynonyms={true}
       />
     );
     

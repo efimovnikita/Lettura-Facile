@@ -40,14 +40,14 @@ This plan addresses the issue where the synonym toggle is active even when no sy
 ## Phases
 
 ### Phase 1: Preparation & Testing
-- [ ] Task: Create reproduction test case for hyphenated/non-matching synonyms.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Preparation & Testing' (Protocol in workflow.md)
+- [x] Task: Create reproduction test case for hyphenated/non-matching synonyms.
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Preparation & Testing' (Protocol in workflow.md)
 
 ### Phase 2: Implementation - Logic Refactor
-- [ ] Task: Implement `hasMatchingSynonyms` utility or logic in `App.tsx`.
-- [ ] Task: Update `App.tsx` to pass the correct `hasSynonyms` state to `ModeSwitch`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Implementation - Logic Refactor' (Protocol in workflow.md)
+- [x] Task: Implement `hasMatchingSynonyms` utility or logic in `App.tsx`.
+- [x] Task: Update `App.tsx` to pass the correct `hasSynonyms` state to `ModeSwitch`.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation - Logic Refactor' (Protocol in workflow.md)
 
 ### Phase 3: Implementation - UI/UX Refinement
-- [ ] Task: Update `ModeSwitch.tsx` to handle the disabled state correctly.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Implementation - UI/UX Refinement' (Protocol in workflow.md)
+- [x] Task: Update `ModeSwitch.tsx` to handle the disabled state correctly.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Implementation - UI/UX Refinement' (Protocol in workflow.md)

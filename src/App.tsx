@@ -478,6 +478,17 @@ const [translation, setTranslation] = useState<string | null>(null);
     }
   };
 
+  const hasMatchingSynonyms = () => {
+    const currentSynonyms = synonyms[currentIndex];
+    if (!currentSynonyms || currentSynonyms.length === 0) return false;
+    
+    const words = currentSentenceText.split(' ');
+    return words.some(word => {
+      const cleanWord = word.replace(/[^\p{L}’'-]/gu, '').toLowerCase();
+      return currentSynonyms.some(s => s.original.toLowerCase() === cleanWord);
+    });
+  };
+
   const closeTooltip = () => {
     setWordTranslation(null);
     setTooltipPosition(null);
@@ -522,7 +533,7 @@ const [translation, setTranslation] = useState<string | null>(null);
                 clearDictionary={clearDictionary}
               />
             )}
-            {/* === КОНЕЦ ПАНЕЛИ НАСТРОЕК === */}
+            {/* === КОНЕЦ ПАНЕНИ НАСТРОЕК === */}
 
             {/* === БЛОК ВВОДА ТЕКСТА === */}
             <div className="flex justify-between items-end mb-2">
@@ -555,7 +566,7 @@ const [translation, setTranslation] = useState<string | null>(null);
 
             {!mistralKey && (
               <p className="text-red-500 text-xs mt-3 text-center">
-                * È necessaria una chiave API Mistral nelle Impostazioni per procedere.
+                * фИи necessaria una chiave API Mistral nelle Impostazioni per procedere.
               </p>
             )}
 
@@ -658,7 +669,7 @@ const [translation, setTranslation] = useState<string | null>(null);
             currentMode={displayMode}
             onChange={setDisplayMode}
             onThumbClick={() => setShowSynonyms(!showSynonyms)}
-            hasSynonyms={!!synonyms[currentIndex] && synonyms[currentIndex]!.length > 0}
+            hasSynonyms={hasMatchingSynonyms()}
             showSynonyms={showSynonyms}
             isLoading={isSentenceLoading || isTranslationLoading}
           />

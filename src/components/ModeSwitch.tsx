@@ -48,7 +48,7 @@ export const ModeSwitch: React.FC<ModeSwitchProps> = ({
   };
 
   const handleThumbClick = (e: React.MouseEvent) => {
-    if (currentMode === 'original' && onThumbClick) {
+    if (currentMode === 'original' && hasSynonyms && onThumbClick) {
       e.stopPropagation();
       onThumbClick();
     }
@@ -80,23 +80,26 @@ export const ModeSwitch: React.FC<ModeSwitchProps> = ({
           <div 
             data-testid="mode-switch-thumb"
             onClick={handleThumbClick}
-            className={`absolute top-1 w-6 h-6 rounded-full transition-all duration-300 ease-out z-20 cursor-pointer flex items-center justify-center overflow-hidden ${
-              currentMode === 'original' && onThumbClick ? 'hover:scale-110 active:scale-95' : ''
+            className={`absolute top-1 w-6 h-6 rounded-full transition-all duration-300 ease-out z-20 flex items-center justify-center overflow-hidden ${
+              currentMode === 'original' && hasSynonyms && onThumbClick 
+                ? 'cursor-pointer hover:scale-110 active:scale-95' 
+                : 'cursor-not-allowed'
             }`}
             style={{
               left: getSliderLeft(),
               transform: getSliderTransform(),
-              backgroundColor: 'rgba(99, 102, 241, 0.3)',
+              backgroundColor: hasSynonyms ? 'rgba(99, 102, 241, 0.3)' : 'rgba(120, 113, 108, 0.2)',
               // Sharp, readable white border, NO external glow
               border: '1.5px solid rgba(255, 255, 255, 0.95)',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255, 255, 255, 0.2)'
+              boxShadow: '0 2px 6px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255, 255, 255, 0.2)',
+              opacity: hasSynonyms ? 1 : 0.6
             }}
           >
             {currentMode === 'original' && (
               <div className={`transition-all duration-300 ${
                 hasSynonyms 
                   ? 'text-indigo-600 dark:text-indigo-400' 
-                  : 'text-stone-300 dark:text-stone-600 opacity-40'
+                  : 'text-stone-400 dark:text-stone-600'
               }`}>
                 {showSynonyms ? (
                   <ChevronsDown className="w-4 h-4" />
