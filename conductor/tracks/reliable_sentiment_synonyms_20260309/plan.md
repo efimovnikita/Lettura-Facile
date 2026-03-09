@@ -1,10 +1,10 @@
 # Implementation Plan: Reliable Sentiment and Synonym Retrieval
 
-## Phase 1: Research and TDD Setup
+## Phase 1: Research and TDD Setup [checkpoint: 95e6fbf]
 - [x] Task: Analyze current Mistral AI service and identify call points for sentiment and synonyms. ac9bc79
 - [x] Task: Create a reproduction test in `src/services/mistral.test.ts` (or a new file) that mocks a 429 'Too Many Requests' response. 6e57a76
 - [x] Task: Verify that current implementation fails when encountering a 429 error. 407a065
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Research and TDD Setup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Research and TDD Setup' (Protocol in workflow.md) 95e6fbf
 
 ## Phase 2: Implementation of Retry Logic
 - [ ] Task: Implement a `withRetry` helper function in `src/services/mistral.ts` with exponential backoff and a maximum retry limit.
