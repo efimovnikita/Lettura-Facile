@@ -67,6 +67,8 @@ export default function App() {
   const lastProcessedIndexRef = useRef<number>(-1);
   const isAnalyzingRef = useRef(false);
   const isSynonymAnalyzingRef = useRef(false);
+  const [sentimentRetryCounter, setSentimentRetryCounter] = useState(0);
+  const [synonymRetryCounter, setSynonymRetryCounter] = useState(0);
 
   const [showSettings, setShowSettings] = useState(false);
   const [showWordList, setShowWordList] = useState(false);
@@ -296,12 +298,13 @@ const [translation, setTranslation] = useState<string | null>(null);
         console.error("Sentiment analysis error:", err);
       } finally {
         isAnalyzingRef.current = false;
+        setSentimentRetryCounter(prev => prev + 1);
       }
     };
 
     const timeout = setTimeout(analyze, 2000); // Пауза 2 секунды между батчами
     return () => clearTimeout(timeout);
-  }, [view, mistralKey, sentences, sentiments]);
+  }, [view, mistralKey, sentences, sentiments, sentimentRetryCounter]);
 
   // Background Synonym Extraction
   useEffect(() => {
@@ -342,12 +345,13 @@ const [translation, setTranslation] = useState<string | null>(null);
         console.error("Synonym analysis error:", err);
       } finally {
         isSynonymAnalyzingRef.current = false;
+        setSynonymRetryCounter(prev => prev + 1);
       }
     };
 
     const timeout = setTimeout(analyze, 3000); // Пауза 3 секунды (чуть больше, чем для сентимента)
     return () => clearTimeout(timeout);
-  }, [view, mistralKey, sentences, synonyms]);
+  }, [view, mistralKey, sentences, synonyms, synonymRetryCounter]);
 
   const performTranslation = async (phrase: string, rect: DOMRect) => {
     const containerRect = containerRef.current?.getBoundingClientRect();
