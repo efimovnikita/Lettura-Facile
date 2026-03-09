@@ -7,9 +7,9 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Research and TDD Setup' (Protocol in workflow.md) 95e6fbf
 
 ## Phase 2: Implementation of Retry Logic
-- [ ] Task: Implement a `withRetry` helper function in `src/services/mistral.ts` with exponential backoff and a maximum retry limit.
-- [ ] Task: Apply `withRetry` to the `getSentiment` and `getSynonyms` (or equivalent) calls.
-- [ ] Task: Run tests to verify that the 429 error is caught and the request is retried until success (or max retries reached).
+- [x] Task: Implement a `withRetry` helper function in `src/services/mistral.ts` with exponential backoff and a maximum retry limit. b485b22
+- [x] Task: Apply `withRetry` to the `getSentiment` and `getSynonyms` (or equivalent) calls. 9668fd5
+- [x] Task: Run tests to verify that the 429 error is caught and the request is retried until success (or max retries reached). 3d0fdca
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Implementation of Retry Logic' (Protocol in workflow.md)
 
 ## Phase 3: Integration and Final Verification
