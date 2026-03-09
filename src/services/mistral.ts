@@ -63,7 +63,7 @@ export async function translateWord(apiKey: string, word: string, sentence: stri
 
   const client = getMistralClient(apiKey);
 
-  const response = await client.chat.complete({
+  const response = await withRetry(() => client.chat.complete({
     model: "mistral-medium-latest",
     messages: [
       {
@@ -110,11 +110,11 @@ export async function translateSentence(apiKey: string, sentence: string) {
   const client = getMistralClient(apiKey);
   const prompt = `Translate the following Italian sentence into English: "${sentence}". Provide ONLY the English translation.`;
 
-  const response = await client.chat.complete({
+  const response = await withRetry(() => client.chat.complete({
     model: "mistral-small-latest",
     messages: [{ role: "user", content: prompt }],
     temperature: 0.7
-  });
+  }));
 
   const content = response.choices?.[0]?.message?.content;
   let result = "";
@@ -137,7 +137,7 @@ export async function simplifySentence(apiKey: string, sentence: string, level: 
   const client = getMistralClient(apiKey);
   const targetLevel = level === 'simplified' ? 'beginner (A1/A2)' : level;
 
-  const response = await client.chat.complete({
+  const response = await withRetry(() => client.chat.complete({
       model: "mistral-small-latest",
       messages: [
         {
@@ -154,7 +154,7 @@ export async function simplifySentence(apiKey: string, sentence: string, level: 
         }
       ],
       temperature: 0 // Делает модель максимально строгой и последовательной
-    });
+    }));
 
   const content = response.choices?.[0]?.message?.content;
   if (typeof content === 'string') return content;
@@ -170,7 +170,7 @@ export async function simplifySentence(apiKey: string, sentence: string, level: 
 export async function getSentiments(apiKey: string, sentences: string[]): Promise<SentimentData[]> {
   const client = getMistralClient(apiKey);
 
-  const response = await client.chat.complete({
+  const response = await withRetry(() => client.chat.complete({
     model: "mistral-small-latest",
     messages: [
       {
@@ -211,7 +211,7 @@ export async function getSentiments(apiKey: string, sentences: string[]): Promis
     ],
     temperature: 0,
     responseFormat: { type: "json_object" }
-  });
+  }));
 
   const content = response.choices?.[0]?.message?.content;
   let jsonString = "";
@@ -239,7 +239,7 @@ export interface SynonymPair {
 export async function getSynonyms(apiKey: string, sentences: string[]): Promise<SynonymPair[][]> {
   const client = getMistralClient(apiKey);
 
-  const response = await client.chat.complete({
+  const response = await withRetry(() => client.chat.complete({
     model: "mistral-medium-latest",
     messages: [
       {
@@ -266,7 +266,7 @@ export async function getSynonyms(apiKey: string, sentences: string[]): Promise<
     ],
     temperature: 0,
     responseFormat: { type: "json_object" }
-  });
+  }));
 
   const content = response.choices?.[0]?.message?.content;
   let jsonString = "";
