@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { ThemeProvider } from './hooks/useTheme';
 
 // Mock Lucide icons to avoid potential issues
 vi.mock('lucide-react', () => ({
@@ -10,6 +11,7 @@ vi.mock('lucide-react', () => ({
   Settings: () => <div data-testid="icon-settings" />,
   BookOpen: () => <div data-testid="icon-book-open" />,
   Sun: () => <div data-testid="icon-sun" />,
+  Moon: () => <div data-testid="icon-moon" />,
   Zap: () => <div data-testid="icon-zap" />,
   Theater: () => <div data-testid="icon-theater" />,
   Swords: () => <div data-testid="icon-swords" />,
@@ -57,7 +59,7 @@ describe('App Component - Difficulty Toggle', () => {
   });
 
   it('should NOT show Beginner, Intermediate, and Advanced difficulty buttons', () => {
-    render(<App />);
+    render(<ThemeProvider><App /></ThemeProvider>);
     
     // These should NOT be found in the document after implementation
     // Currently, they SHOULD be found, so this test will fail if I expect them NOT to be there.
@@ -67,7 +69,7 @@ describe('App Component - Difficulty Toggle', () => {
   });
 
   it('should show the ModeSwitch with three states', () => {
-    render(<App />);
+    render(<ThemeProvider><App /></ThemeProvider>);
     expect(screen.getByText(/originale/i)).toBeInTheDocument();
     expect(screen.getByText(/semplificato/i)).toBeInTheDocument();
     expect(screen.getByText(/traduzione/i)).toBeInTheDocument();
@@ -84,7 +86,7 @@ describe('App Component - Difficulty Toggle', () => {
     };
     localStorage.setItem('lettura_facile_state', JSON.stringify(state));
     
-    const { rerender } = render(<App />);
+    const { rerender } = render(<ThemeProvider><App /></ThemeProvider>);
     
     // Even if 'simplified' was in state, the new logic should ignore it for displayMode
     // and default to 'original'. We check if 'Originale' is highlighted.

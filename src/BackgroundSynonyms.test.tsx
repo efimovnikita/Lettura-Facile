@@ -3,6 +3,7 @@ import App from './App';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import * as mistral from './services/mistral';
 import { splitIntoSentences } from './utils';
+import { ThemeProvider } from './hooks/useTheme';
 
 // Mock Lucide icons
 vi.mock('lucide-react', () => ({
@@ -15,6 +16,7 @@ vi.mock('lucide-react', () => ({
   ChevronsDown: () => <div />,
   Zap: () => <div />,
   Sun: () => <div />,
+  Moon: () => <div />,
   Theater: () => <div />,
   Swords: () => <div />,
   CloudRain: () => <div />,
@@ -56,7 +58,7 @@ describe('Background Synonym Extraction', () => {
     };
     localStorage.setItem('lettura_facile_state', JSON.stringify(state));
 
-    render(<App />);
+    render(<ThemeProvider><App /></ThemeProvider>);
 
     // Wait for the background extraction to be called (3 seconds timeout + some buffer)
     await waitFor(() => {
@@ -83,7 +85,7 @@ describe('Background Synonym Extraction', () => {
     };
     localStorage.setItem('lettura_facile_state', JSON.stringify(oldState));
 
-    const { getByTitle, getByPlaceholderText, getByText } = render(<App />);
+    const { getByTitle, getByPlaceholderText, getByText } = render(<ThemeProvider><App /></ThemeProvider>);
 
     // 2. Go back to input view (it might already be in reader, so click "Nuovo Testo" in header)
     const headerButton = getByTitle(/nuovo testo/i);

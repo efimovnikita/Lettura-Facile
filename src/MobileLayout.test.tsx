@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { ThemeProvider } from './hooks/useTheme';
 
 // Mock Mistral service
 vi.mock('./services/mistral', () => ({
@@ -18,6 +19,7 @@ vi.mock('lucide-react', () => ({
   Settings: () => <div data-testid="icon-settings" />,
   BookOpen: () => <div data-testid="icon-book-open" />,
   Sun: () => <div data-testid="icon-sun" />,
+  Moon: () => <div data-testid="icon-moon" />,
   Zap: () => <div data-testid="icon-zap" />,
   Theater: () => <div data-testid="icon-theater" />,
   Swords: () => <div data-testid="icon-swords" />,
@@ -55,7 +57,7 @@ describe('Responsive Layout Verification', () => {
 
   describe('Mobile Classes (Responsive)', () => {
     it('should have mobile-specific classes', async () => {
-      render(<App />);
+      render(<ThemeProvider><App /></ThemeProvider>);
       
       const main = await screen.findByRole('main');
       // On mobile (default viewport in jsdom usually), it should have pt-4 or similar
@@ -63,7 +65,7 @@ describe('Responsive Layout Verification', () => {
     });
 
     it('should have responsive min-height on SentenceDisplay', async () => {
-      render(<App />);
+      render(<ThemeProvider><App /></ThemeProvider>);
       // We check for the container of SentenceDisplay
       // Based on code: min-h-[160px] md:min-h-[240px]
       const sentenceContainer = (await screen.findByText('Test')).parentElement?.parentElement?.parentElement;
@@ -73,13 +75,13 @@ describe('Responsive Layout Verification', () => {
 
   describe('Desktop Classes (Responsive)', () => {
     it('should preserve desktop-specific classes', async () => {
-      render(<App />);
+      render(<ThemeProvider><App /></ThemeProvider>);
       const main = await screen.findByRole('main');
       expect(main).toHaveClass('md:pt-16');
     });
 
     it('should preserve desktop min-height on SentenceDisplay', async () => {
-      render(<App />);
+      render(<ThemeProvider><App /></ThemeProvider>);
       const sentenceContainer = (await screen.findByText('Test')).parentElement?.parentElement?.parentElement;
       expect(sentenceContainer).toHaveClass('md:min-h-[240px]');
     });

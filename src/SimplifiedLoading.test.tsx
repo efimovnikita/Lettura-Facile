@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import App from './App';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import * as mistral from './services/mistral';
+import { ThemeProvider } from './hooks/useTheme';
 
 // Mock Lucide icons
 vi.mock('lucide-react', () => ({
@@ -11,6 +12,7 @@ vi.mock('lucide-react', () => ({
   Settings: () => <div data-testid="icon-settings" />,
   BookOpen: () => <div data-testid="icon-book-open" />,
   Sun: () => <div data-testid="icon-sun" />,
+  Moon: () => <div data-testid="icon-moon" />,
   Zap: () => <div data-testid="icon-zap" />,
   Theater: () => <div data-testid="icon-theater" />,
   Swords: () => <div data-testid="icon-swords" />,
@@ -63,7 +65,7 @@ describe('Simplification Loading Behavior', () => {
 
     vi.mocked(mistral.simplifySentence).mockReturnValue(simplificationPromise);
 
-    render(<App />);
+    render(<ThemeProvider><App /></ThemeProvider>);
 
     // Initial state: Original text is visible
     expect(await screen.findByText('Original')).toBeInTheDocument();
@@ -93,7 +95,7 @@ describe('Simplification Loading Behavior', () => {
   it('verifies that simplification failure keeps the original text visible', async () => {
     vi.mocked(mistral.simplifySentence).mockRejectedValue(new Error('AI Error'));
 
-    render(<App />);
+    render(<ThemeProvider><App /></ThemeProvider>);
 
     // Wait for initial text
     expect(await screen.findByText('Original')).toBeInTheDocument();

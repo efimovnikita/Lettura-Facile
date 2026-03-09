@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import App from './App';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { ThemeProvider } from './hooks/useTheme';
 
 // Mock Lucide icons
 vi.mock('lucide-react', () => ({
@@ -10,6 +11,7 @@ vi.mock('lucide-react', () => ({
   Settings: () => <div data-testid="icon-settings" />,
   BookOpen: () => <div data-testid="icon-book-open" />,
   Sun: () => <div data-testid="icon-sun" />,
+  Moon: () => <div data-testid="icon-moon" />,
   Zap: () => <div data-testid="icon-zap" />,
   Theater: () => <div data-testid="icon-theater" />,
   Swords: () => <div data-testid="icon-swords" />,
@@ -59,7 +61,7 @@ describe('Reproduction of Double-Click Issue', () => {
   });
 
   it('fails to show tooltip on double-click because handleWordDoubleClick hides it', async () => {
-    render(<App />);
+    render(<ThemeProvider><App /></ThemeProvider>);
     
     const word = await screen.findByText('Original');
     
@@ -74,7 +76,7 @@ describe('Reproduction of Double-Click Issue', () => {
   });
 
   it('still supports Ctrl+Click for multi-selection', async () => {
-    render(<App />);
+    render(<ThemeProvider><App /></ThemeProvider>);
     
     const word1 = await screen.findByText('Original');
     const word2 = await screen.findByText('sentence');
