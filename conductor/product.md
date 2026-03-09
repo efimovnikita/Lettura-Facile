@@ -26,5 +26,6 @@ Lettura-Facile is a language-learning reading assistant designed to make complex
 
 ## User Experience Guidelines
 - **Minimalist Interface:** Focus on the text with no distractions.
+- **Stable Layout:** Pinned navigation and headers across all devices ensure controls remain accessible while only the content area scrolls.
 - **Contextual Actions:** Simplification and translation should be one click away.
 - **Progressive Disclosure:** Details about a sentence (sentiment, simplified version) only appear when requested.
