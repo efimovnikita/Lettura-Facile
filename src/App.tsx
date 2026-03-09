@@ -603,7 +603,7 @@ const [translation, setTranslation] = useState<string | null>(null);
 
   // Reader View
   return (
-    <div key="reader-view" className="h-[100dvh] lg:h-auto bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans flex flex-col overflow-hidden lg:overflow-visible animate-fade-in transition-colors duration-500">
+    <div key="reader-view" className="h-[100dvh] bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans flex flex-col overflow-hidden animate-fade-in transition-colors duration-500">
       {/* Top Fixed Area */}
       <div className="z-20 bg-stone-50 dark:bg-stone-950 px-6 pt-6">
         {/* Header */}
