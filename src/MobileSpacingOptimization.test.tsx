@@ -9,6 +9,7 @@ vi.mock('./services/mistral', () => ({
   translateSentence: vi.fn(),
   simplifySentence: vi.fn(),
   getSentiments: vi.fn().mockResolvedValue([]),
+  getSynonyms: vi.fn().mockResolvedValue([]),
 }));
 
 // Mock Lucide icons
@@ -42,12 +43,12 @@ vi.mock('lucide-react', () => ({
   ChevronsDown: () => <div data-testid="icon-chevrons-down" />,
 }));
 
-describe('Responsive Layout Verification', () => {
+describe('Mobile/Tablet Spacing Optimization', () => {
   beforeEach(() => {
     localStorage.clear();
     const state = {
-      text: 'Test sentence.',
-      sentences: ['Test sentence.'],
+      text: 'First sentence. Second sentence.',
+      sentences: ['First sentence.', 'Second sentence.'],
       currentSentenceIndex: 0,
       mistralKey: 'fake-key',
       difficulty: 'original',
@@ -55,35 +56,53 @@ describe('Responsive Layout Verification', () => {
     localStorage.setItem('lettura_facile_state', JSON.stringify(state));
   });
 
-  describe('Mobile Classes (Responsive)', () => {
-    it('should have mobile-specific classes', async () => {
-      render(<ThemeProvider><App /></ThemeProvider>);
-      
-      const main = await screen.findByRole('main');
-      // On mobile (default viewport in jsdom usually), it should have pt-1 or similar
-      expect(main).toHaveClass('pt-1');
-    });
+  it('should have optimized mobile/tablet spacing (< 1024px)', async () => {
+    render(<ThemeProvider><App /></ThemeProvider>);
+    
+    // Header
+    const header = screen.getByRole('banner');
+    expect(header).toHaveClass('mb-1');
 
-    it('should have responsive min-height on SentenceDisplay', async () => {
-      render(<ThemeProvider><App /></ThemeProvider>);
-      // We check for the container of SentenceDisplay
-      // Based on code: min-h-[160px] md:min-h-[240px]
-      const sentenceContainer = (await screen.findByText('Test')).parentElement?.parentElement?.parentElement;
-      expect(sentenceContainer).toHaveClass('min-h-[160px]');
-    });
+    // Main
+    const main = screen.getByRole('main');
+    expect(main).toHaveClass('pt-1');
+
+    // ToneIndicator container (sticky one)
+    const sentimentContainer = screen.getByTestId('tone-indicator-container');
+    expect(sentimentContainer).toHaveClass('mb-1');
+
+    // Controls container (parent of ModeSwitch)
+    // ModeSwitch is inside a div with flex flex-col items-center gap-3 md:gap-6 w-full
+    const controlsContainer = screen.getByTestId('mode-switch').parentElement;
+    expect(controlsContainer).toHaveClass('gap-1');
+
+    // Navigation buttons container
+    // Buttons are inside a div with flex items-center gap-4 mt-4 md:mt-8
+    const buttonsContainer = screen.getByRole('button', { name: /La prossima frase/i }).parentElement;
+    expect(buttonsContainer).toHaveClass('mt-1');
   });
 
-  describe('Desktop Classes (Responsive)', () => {
-    it('should preserve desktop-specific classes', async () => {
-      render(<ThemeProvider><App /></ThemeProvider>);
-      const main = await screen.findByRole('main');
-      expect(main).toHaveClass('lg:pt-16');
-    });
+  it('should preserve desktop spacing (>= 1024px)', async () => {
+    render(<ThemeProvider><App /></ThemeProvider>);
+    
+    // Header
+    const header = screen.getByRole('banner');
+    expect(header).toHaveClass('lg:mb-12');
 
-    it('should preserve desktop min-height on SentenceDisplay', async () => {
-      render(<ThemeProvider><App /></ThemeProvider>);
-      const sentenceContainer = (await screen.findByText('Test')).parentElement?.parentElement?.parentElement;
-      expect(sentenceContainer).toHaveClass('md:min-h-[240px]');
-    });
+    // Main
+    const main = screen.getByRole('main');
+    expect(main).toHaveClass('lg:pt-16');
+
+    // ToneIndicator container
+    const sentimentContainer = screen.getByTestId('tone-indicator-container');
+    expect(sentimentContainer).toHaveClass('lg:mb-10');
+
+    // Controls container
+    const controlsContainer = screen.getByTestId('mode-switch').parentElement;
+    expect(controlsContainer).toHaveClass('lg:gap-6');
+
+    // Navigation buttons container
+    const buttonsContainer = screen.getByRole('button', { name: /La prossima frase/i }).parentElement;
+    expect(buttonsContainer).toHaveClass('lg:mt-8');
   });
 });

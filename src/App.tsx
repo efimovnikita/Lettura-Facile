@@ -590,7 +590,7 @@ const [translation, setTranslation] = useState<string | null>(null);
   return (
     <div key="reader-view" className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans flex flex-col p-6 animate-fade-in transition-colors duration-500">
       {/* Header */}
-      <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4 md:mb-12 max-w-5xl mx-auto w-full">
+      <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-1 lg:mb-12 max-w-5xl mx-auto w-full">
         <div className="w-full md:w-auto flex justify-between md:justify-start items-center gap-4">
           <div className="flex items-center gap-4">
             <button
@@ -616,10 +616,10 @@ const [translation, setTranslation] = useState<string | null>(null);
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-start pt-4 md:pt-16 max-w-4xl mx-auto w-full relative pb-10 md:pb-20" ref={containerRef}>
+      <main className="flex-1 flex flex-col items-center justify-start pt-1 lg:pt-16 max-w-4xl mx-auto w-full relative pb-10 md:pb-20" ref={containerRef}>
 
         {/* Sentiment Barometer */}
-        <div className="mb-2 md:mb-10 sticky top-0 z-10 py-1 md:py-2 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-sm w-full flex justify-center">
+        <div data-testid="tone-indicator-container" className="mb-1 lg:mb-10 sticky top-0 z-10 py-1 md:py-2 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-sm w-full flex justify-center">
           <ToneIndicator data={sentiments[currentIndex]} />
         </div>
 
@@ -677,7 +677,7 @@ const [translation, setTranslation] = useState<string | null>(null);
         />
 
         {/* Controls */}
-        <div className="flex flex-col items-center gap-3 md:gap-6 w-full">
+        <div className="flex flex-col items-center gap-1 lg:gap-6 w-full">
           <ModeSwitch
             currentMode={displayMode}
             onChange={setDisplayMode}
@@ -687,7 +687,7 @@ const [translation, setTranslation] = useState<string | null>(null);
             isLoading={isSentenceLoading || isTranslationLoading}
           />
 
-          <div className="flex items-center gap-4 mt-4 md:mt-8">
+          <div className="flex items-center gap-4 mt-1 lg:mt-8">
             <button
               onClick={prevSentence}
               disabled={currentIndex === 0 || isSentenceLoading}

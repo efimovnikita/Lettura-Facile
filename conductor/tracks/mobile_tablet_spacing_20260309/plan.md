@@ -1,7 +1,7 @@
 # Implementation Plan: Mobile/Tablet UI Spacing Optimization
 
 ## Phase 1: Preparation and Red Phase (TDD)
-- [ ] Task: Create `src/MobileSpacingOptimization.test.tsx` to define current vs desired spacing.
+- [~] Task: Create `src/MobileSpacingOptimization.test.tsx` to define current vs desired spacing.
 - [ ] Task: Implement tests for mobile/tablet spacing (< 1024px) that expect:
     - Header: `mb-1`
     - Main: `pt-1`

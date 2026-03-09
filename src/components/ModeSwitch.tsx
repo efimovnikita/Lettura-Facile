@@ -55,7 +55,7 @@ export const ModeSwitch: React.FC<ModeSwitchProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center gap-1 w-full max-w-lg mx-auto mt-8 mb-16 relative">
+    <div data-testid="mode-switch" className="flex flex-col items-center gap-1 w-full max-w-lg mx-auto mt-8 mb-16 relative">
       {/* Central Slider Control */}
       <div className="flex items-center gap-4 relative">
         
