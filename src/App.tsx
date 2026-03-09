@@ -591,8 +591,13 @@ const [translation, setTranslation] = useState<string | null>(null);
       {/* Header */}
       <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4 md:mb-12 max-w-5xl mx-auto w-full">
         <div className="w-full md:w-auto flex justify-between md:justify-start items-center">
-          <button onClick={() => setView('input')} className="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2 transition-colors">
-            <RotateCcw className="w-4 h-4" /> Nuovo Testo
+          <button 
+            onClick={() => setView('input')} 
+            className="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2 transition-colors"
+            aria-label="Nuovo Testo"
+            title="Nuovo Testo"
+          >
+            <RotateCcw className="w-4 h-4" />
           </button>
           <span className="md:hidden text-sm text-stone-500 dark:text-stone-400 font-mono">
             {currentIndex + 1} / {sentences.length}
