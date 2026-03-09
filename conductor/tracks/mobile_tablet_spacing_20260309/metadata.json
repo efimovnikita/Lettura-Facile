@@ -1,0 +1,8 @@
+{
+  "track_id": "mobile_tablet_spacing_20260309",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-03-09T18:26:00Z",
+  "updated_at": "2026-03-09T18:26:00Z",
+  "description": "On the mobile screen, reduce the gap between the header and the sentence sentiment panel, and also reduce the gap between the sentence mode switch and the bottom buttons for moving to the next sentence."
+}
