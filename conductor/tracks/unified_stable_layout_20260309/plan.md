@@ -12,4 +12,4 @@
 ## Phase 3: Integration & UX Tuning
 - [x] Task: Verify desktop scrollbars are visible and functional. [abf0548, 73b6268]
 - [x] Task: Verify tooltip/synonym positioning on desktop scrolling. [abf0548, 73b6268]
-- [ ] Task: Conductor - User Manual Verification 'Unified Stable Layout' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Unified Stable Layout' (Protocol in workflow.md) [ff7c43b]
