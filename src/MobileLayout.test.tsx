@@ -79,7 +79,7 @@ describe('Responsive Layout Verification', () => {
       render(<ThemeProvider><App /></ThemeProvider>);
       const main = await screen.findByRole('main');
       const content = main.firstElementChild;
-      expect(content).toHaveClass('lg:pt-16');
+      expect(content).toHaveClass('lg:pt-4');
     });
 
     it('should preserve desktop min-height on SentenceDisplay', async () => {

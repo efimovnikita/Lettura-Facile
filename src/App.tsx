@@ -607,7 +607,7 @@ const [translation, setTranslation] = useState<string | null>(null);
       {/* Top Fixed Area */}
       <div className="z-20 bg-stone-50 dark:bg-stone-950 px-6 pt-6">
         {/* Header */}
-        <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-1 lg:mb-12 max-w-5xl mx-auto w-full">
+        <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-1 lg:mb-4 max-w-5xl mx-auto w-full">
           <div className="w-full md:w-auto flex justify-between md:justify-start items-center gap-4">
             <div className="flex items-center gap-4">
               <button
@@ -633,14 +633,14 @@ const [translation, setTranslation] = useState<string | null>(null);
         </header>
 
         {/* Sentiment Barometer */}
-        <div data-testid="tone-indicator-container" className="mb-1 lg:mb-10 py-1 md:py-2 w-full flex justify-center">
+        <div data-testid="tone-indicator-container" className="mb-1 lg:mb-2 py-1 md:py-2 w-full flex justify-center">
           <ToneIndicator data={sentiments[currentIndex]} />
         </div>
       </div>
 
       {/* Middle Scrollable Area */}
       <main className="flex-1 overflow-y-auto px-6 max-w-4xl mx-auto w-full relative pb-10 md:pb-20" ref={containerRef}>
-        <div className="flex flex-col items-center justify-start pt-1 lg:pt-16 min-h-full">
+        <div className="flex flex-col items-center justify-start pt-1 lg:pt-4 min-h-full">
           {/* Error Message */}
           {error && (
             <div className="absolute top-0 left-6 right-6 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-lg text-sm text-center mb-4 border border-red-100 dark:border-red-900/30 z-50">

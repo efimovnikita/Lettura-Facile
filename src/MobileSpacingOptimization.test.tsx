@@ -88,16 +88,16 @@ describe('Mobile/Tablet Spacing Optimization', () => {
     
     // Header
     const header = screen.getByRole('banner');
-    expect(header).toHaveClass('lg:mb-12');
+    expect(header).toHaveClass('lg:mb-4');
 
     // Main
     const main = screen.getByRole('main');
     const content = main.firstElementChild;
-    expect(content).toHaveClass('lg:pt-16');
+    expect(content).toHaveClass('lg:pt-4');
 
     // ToneIndicator container
     const sentimentContainer = screen.getByTestId('tone-indicator-container');
-    expect(sentimentContainer).toHaveClass('lg:mb-10');
+    expect(sentimentContainer).toHaveClass('lg:mb-2');
 
     // Controls container
     const controlsContainer = screen.getByTestId('mode-switch').parentElement;
