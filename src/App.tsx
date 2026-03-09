@@ -13,7 +13,7 @@ import { ThemeToggle } from './components/ThemeToggle';
 import { ModeSwitch, Mode } from './components/ModeSwitch';
 import { SentenceDisplay } from './components/SentenceDisplay';
 
-const APP_VERSION = 'v1.6.7';
+const APP_VERSION = 'v1.7.0';
 
 const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: boolean }) => {
   if (isLoading) return <Loader2 className="w-4 h-4 text-stone-300 animate-spin" />;
@@ -363,7 +363,7 @@ const [translation, setTranslation] = useState<string | null>(null);
 
     // rect is from getBoundingClientRect of the word, which is absolute to viewport
     // containerRect is also absolute to viewport
-    
+
     // Position relative to scrollContainer's viewport
     const relativeTop = rect.top - containerRect.top + scrollContainer.scrollTop;
     const relativeLeft = rect.left - containerRect.left + (rect.width / 2);
