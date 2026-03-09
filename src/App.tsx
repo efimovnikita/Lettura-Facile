@@ -13,7 +13,7 @@ import { ThemeToggle } from './components/ThemeToggle';
 import { ModeSwitch, Mode } from './components/ModeSwitch';
 import { SentenceDisplay } from './components/SentenceDisplay';
 
-const APP_VERSION = 'v1.6.4';
+const APP_VERSION = 'v1.6.7';
 
 const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: boolean }) => {
   if (isLoading) return <Loader2 className="w-4 h-4 text-stone-300 animate-spin" />;
@@ -593,8 +593,8 @@ const [translation, setTranslation] = useState<string | null>(null);
       <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4 md:mb-12 max-w-5xl mx-auto w-full">
         <div className="w-full md:w-auto flex justify-between md:justify-start items-center gap-4">
           <div className="flex items-center gap-4">
-            <button 
-              onClick={() => setView('input')} 
+            <button
+              onClick={() => setView('input')}
               className="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2 transition-colors"
               aria-label="Nuovo Testo"
               title="Nuovo Testo"
