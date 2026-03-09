@@ -82,15 +82,35 @@ describe('Mistral Service Reliability - 429 Retry Logic', () => {
     expect(mockComplete).toHaveBeenCalledTimes(6);
   });
 
-  it('should not retry on non-429 errors', async () => {
-    const error500 = new Error('Internal Server Error');
-    (error500 as any).status = 500;
+  it('should not retry on non-retryable errors (e.g., 401)', async () => {
+    const error401 = new Error('Unauthorized');
+    (error401 as any).status = 401;
     
-    mockComplete.mockRejectedValueOnce(error500);
+    mockComplete.mockRejectedValueOnce(error401);
 
     const promise = getSynonyms('test-api-key', ['test']);
     
-    await expect(promise).rejects.toThrow('Internal Server Error');
+    await expect(promise).rejects.toThrow('Unauthorized');
     expect(mockComplete).toHaveBeenCalledTimes(1);
+  });
+
+  it('should retry on transient server errors (e.g., 503)', async () => {
+    const error503 = new Error('Service Unavailable');
+    (error503 as any).status = 503;
+    
+    mockComplete
+      .mockRejectedValueOnce(error503)
+      .mockResolvedValueOnce({
+        choices: [{ message: { content: JSON.stringify({ results: [[{ original: 'test', synonym: 'trial' }]] }) } }]
+      });
+
+    const promise = getSynonyms('test-api-key', ['test']);
+    
+    await vi.runAllTimersAsync();
+    
+    const result = await promise;
+    
+    expect(mockComplete).toHaveBeenCalledTimes(2);
+    expect(result[0][0].original).toBe('test');
   });
 });

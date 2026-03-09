@@ -36,16 +36,20 @@ async function withRetry<T>(
   initialDelay: number = 1000
 ): Promise<T> {
   let retries = 0;
+  const retryableStatuses = [429, 500, 502, 503, 504];
+
   while (true) {
     try {
       return await fn();
     } catch (error: any) {
-      // Retry only if it's a 429 (Too Many Requests) and we haven't exceeded max retries
-      if (retries >= maxRetries || error.status !== 429) {
+      // Retry only if it's a retryable status and we haven't exceeded max retries
+      const isRetryable = error.status && retryableStatuses.includes(error.status);
+      
+      if (retries >= maxRetries || !isRetryable) {
         throw error;
       }
       const delay = initialDelay * Math.pow(2, retries);
-      console.warn(`Mistral API Rate Limit (429). Retrying in ${delay}ms... (Attempt ${retries + 1}/${maxRetries})`);
+      console.warn(`Mistral API Error (${error.status}). Retrying in ${delay}ms... (Attempt ${retries + 1}/${maxRetries})`);
       await new Promise(resolve => setTimeout(resolve, delay));
       retries++;
     }
