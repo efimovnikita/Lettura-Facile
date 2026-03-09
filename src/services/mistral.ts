@@ -27,6 +27,31 @@ const getMistralClient = (apiKey: string) => {
   return cachedClient;
 };
 
+/**
+ * Helper function to retry an async function with exponential backoff on 429 errors.
+ */
+async function withRetry<T>(
+  fn: () => Promise<T>,
+  maxRetries: number = 5,
+  initialDelay: number = 1000
+): Promise<T> {
+  let retries = 0;
+  while (true) {
+    try {
+      return await fn();
+    } catch (error: any) {
+      // Retry only if it's a 429 (Too Many Requests) and we haven't exceeded max retries
+      if (retries >= maxRetries || error.status !== 429) {
+        throw error;
+      }
+      const delay = initialDelay * Math.pow(2, retries);
+      console.warn(`Mistral API Rate Limit (429). Retrying in ${delay}ms... (Attempt ${retries + 1}/${maxRetries})`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+      retries++;
+    }
+  }
+}
+
 export async function translateWord(apiKey: string, word: string, sentence: string) {
   // 1. Формируем уникальный ключ, связывая слово и контекст
   const cacheKey = `${word.toLowerCase().trim()}|||${sentence.trim()}`;
