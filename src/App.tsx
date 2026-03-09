@@ -9,6 +9,7 @@ import { translateWord, translateSentence, simplifySentence, getSentiments, getS
 import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
 import { SettingsPanel } from './components/SettingsPanel';
+import { ThemeToggle } from './components/ThemeToggle';
 import { ModeSwitch, Mode } from './components/ModeSwitch';
 import { SentenceDisplay } from './components/SentenceDisplay';
 
@@ -590,15 +591,18 @@ const [translation, setTranslation] = useState<string | null>(null);
     <div key="reader-view" className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans flex flex-col p-6 animate-fade-in transition-colors duration-500">
       {/* Header */}
       <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4 md:mb-12 max-w-5xl mx-auto w-full">
-        <div className="w-full md:w-auto flex justify-between md:justify-start items-center">
-          <button 
-            onClick={() => setView('input')} 
-            className="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2 transition-colors"
-            aria-label="Nuovo Testo"
-            title="Nuovo Testo"
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
+        <div className="w-full md:w-auto flex justify-between md:justify-start items-center gap-4">
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setView('input')} 
+              className="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2 transition-colors"
+              aria-label="Nuovo Testo"
+              title="Nuovo Testo"
+            >
+              <RotateCcw className="w-4 h-4" />
+            </button>
+            <ThemeToggle />
+          </div>
           <span className="md:hidden text-sm text-stone-500 dark:text-stone-400 font-mono">
             {currentIndex + 1} / {sentences.length}
           </span>
