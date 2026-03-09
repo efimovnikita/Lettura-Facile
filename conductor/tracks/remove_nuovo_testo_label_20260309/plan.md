@@ -6,11 +6,11 @@
 - [x] Task: Verify that current tests (which might rely on finding "Nuovo Testo" in the header) fail. 8243b81
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Research and TDD Setup' (Protocol in workflow.md) ccef7cb
 
-## Phase 2: Implementation
+## Phase 2: Implementation [checkpoint: 5aabc5d]
 - [x] Task: Modify the identified button in `src/App.tsx` to remove the text label. 35df049
 - [x] Task: Add `aria-label="Nuovo Testo"` and `title="Nuovo Testo"` to the button. 35df049
 - [x] Task: Run tests to ensure the header button is still correctly identified by role/aria-label and that the text is gone. 35df049
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Implementation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation' (Protocol in workflow.md) 5aabc5d
 
 ## Phase 3: Final Verification
 - [ ] Task: Verify that other buttons labeled "Nuovo Testo" (e.g., in the reader's main content area) are unaffected.
