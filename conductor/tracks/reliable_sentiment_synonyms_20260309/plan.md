@@ -13,7 +13,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation of Retry Logic' (Protocol in workflow.md) fb70c6e
 
 ## Phase 3: Integration and Final Verification
-- [ ] Task: Ensure the retry logic handles other transient errors (e.g., 500, 503) if appropriate.
-- [ ] Task: Verify that background tasks remain silent and don't affect the user experience even during retries.
-- [ ] Task: Run full test suite with coverage report.
+- [x] Task: Ensure the retry logic handles other transient errors (e.g., 500, 503) if appropriate. c91298a
+- [x] Task: Verify that background tasks remain silent and don't affect the user experience even during retries. c91298a
+- [~] Task: Run full test suite with coverage report.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration and Final Verification' (Protocol in workflow.md)
