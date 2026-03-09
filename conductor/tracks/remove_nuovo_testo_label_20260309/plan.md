@@ -13,6 +13,6 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation' (Protocol in workflow.md) 5aabc5d
 
 ## Phase 3: Final Verification
-- [ ] Task: Verify that other buttons labeled "Nuovo Testo" (e.g., in the reader's main content area) are unaffected.
-- [ ] Task: Run full test suite with coverage report.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Verification' (Protocol in workflow.md)
+- [x] Task: Verify that other buttons labeled "Nuovo Testo" (e.g., in the reader's main content area) are unaffected. 358f47d
+- [x] Task: Run full test suite with coverage report. 358f47d
+- [~] Task: Conductor - User Manual Verification 'Phase 3: Final Verification' (Protocol in workflow.md)

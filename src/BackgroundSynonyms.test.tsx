@@ -83,12 +83,12 @@ describe('Background Synonym Extraction', () => {
     };
     localStorage.setItem('lettura_facile_state', JSON.stringify(oldState));
 
-    const { getAllByText, getByPlaceholderText, getByText } = render(<App />);
+    const { getByTitle, getByPlaceholderText, getByText } = render(<App />);
 
     // 2. Go back to input view (it might already be in reader, so click "Nuovo Testo" in header)
-    const nuovoTestoBtns = getAllByText(/nuovo testo/i);
+    const headerButton = getByTitle(/nuovo testo/i);
     await act(async () => {
-      fireEvent.click(nuovoTestoBtns[0]);
+      fireEvent.click(headerButton);
     });
 
     // 3. Import new text
