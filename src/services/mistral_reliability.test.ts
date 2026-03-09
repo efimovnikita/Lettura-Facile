@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { getSynonyms, getSentiments } from './mistral';
 
 // Mock the Mistral client
@@ -14,27 +14,83 @@ vi.mock('@mistralai/mistralai', () => {
   };
 });
 
-describe('Mistral Service Reliability - 429 Error', () => {
+describe('Mistral Service Reliability - 429 Retry Logic', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useFakeTimers();
   });
 
-  it('should fail when getSynonyms encounters a 429 error', async () => {
-    // Mock 429 Error (Too Many Requests)
-    // The Mistral SDK typically throws an error for non-2xx responses.
-    // I'll simulate a generic error that looks like a 429.
-    const error429 = new Error('Too Many Requests');
-    (error429 as any).status = 429;
-    mockComplete.mockRejectedValueOnce(error429);
-
-    await expect(getSynonyms('test-api-key', ['Test sentence'])).rejects.toThrow('Too Many Requests');
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
-  it('should fail when getSentiments encounters a 429 error', async () => {
+  it('should retry getSynonyms when encountering a 429 error and eventually succeed', async () => {
     const error429 = new Error('Too Many Requests');
     (error429 as any).status = 429;
-    mockComplete.mockRejectedValueOnce(error429);
+    
+    mockComplete
+      .mockRejectedValueOnce(error429)
+      .mockRejectedValueOnce(error429)
+      .mockResolvedValueOnce({
+        choices: [{ message: { content: JSON.stringify({ results: [[{ original: 'test', synonym: 'trial' }]] }) } }]
+      });
 
-    await expect(getSentiments('test-api-key', ['Test sentence'])).rejects.toThrow('Too Many Requests');
+    const promise = getSynonyms('test-api-key', ['test']);
+    
+    // Fast-forward through retries
+    await vi.runAllTimersAsync();
+    
+    const result = await promise;
+    
+    expect(mockComplete).toHaveBeenCalledTimes(3);
+    expect(result[0][0].original).toBe('test');
+  });
+
+  it('should retry getSentiments when encountering a 429 error and eventually succeed', async () => {
+    const error429 = new Error('Too Many Requests');
+    (error429 as any).status = 429;
+    
+    mockComplete
+      .mockRejectedValueOnce(error429)
+      .mockResolvedValueOnce({
+        choices: [{ message: { content: JSON.stringify({ results: [{ tone: 'neutral', score: 0.5, explanation: 'ok' }] }) } }]
+      });
+
+    const promise = getSentiments('test-api-key', ['test']);
+    
+    await vi.runAllTimersAsync();
+    
+    const result = await promise;
+    
+    expect(mockComplete).toHaveBeenCalledTimes(2);
+    expect(result[0].tone).toBe('neutral');
+  });
+
+  it('should fail after maximum retries', async () => {
+    const error429 = new Error('Too Many Requests');
+    (error429 as any).status = 429;
+    
+    // Mock 6 failures (default maxRetries is 5, so 6th call is the last attempt)
+    mockComplete.mockRejectedValue(error429);
+
+    const promise = getSynonyms('test-api-key', ['test']);
+    
+    await vi.runAllTimersAsync();
+    
+    await expect(promise).rejects.toThrow('Too Many Requests');
+    // 1 initial attempt + 5 retries = 6 total calls
+    expect(mockComplete).toHaveBeenCalledTimes(6);
+  });
+
+  it('should not retry on non-429 errors', async () => {
+    const error500 = new Error('Internal Server Error');
+    (error500 as any).status = 500;
+    
+    mockComplete.mockRejectedValueOnce(error500);
+
+    const promise = getSynonyms('test-api-key', ['test']);
+    
+    await expect(promise).rejects.toThrow('Internal Server Error');
+    expect(mockComplete).toHaveBeenCalledTimes(1);
   });
 });

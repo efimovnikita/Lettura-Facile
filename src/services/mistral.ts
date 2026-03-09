@@ -84,7 +84,7 @@ export async function translateWord(apiKey: string, word: string, sentence: stri
       }
     ],
     temperature: 0
-  });
+  }));
 
   const content = response.choices?.[0]?.message?.content;
 
