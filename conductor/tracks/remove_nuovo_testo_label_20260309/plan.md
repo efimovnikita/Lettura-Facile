@@ -1,0 +1,18 @@
+# Implementation Plan: Remove 'Nuovo Testo' Label in Header
+
+## Phase 1: Research and TDD Setup
+- [ ] Task: Identify the specific button in `src/App.tsx` that needs updating.
+- [ ] Task: Update the existing `App.test.tsx` (or create a new test file) to assert the presence of the header button by icon/role and the absence of text.
+- [ ] Task: Verify that current tests (which might rely on finding "Nuovo Testo" in the header) fail.
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Research and TDD Setup' (Protocol in workflow.md)
+
+## Phase 2: Implementation
+- [ ] Task: Modify the identified button in `src/App.tsx` to remove the text label.
+- [ ] Task: Add `aria-label="Nuovo Testo"` and `title="Nuovo Testo"` to the button.
+- [ ] Task: Run tests to ensure the header button is still correctly identified by role/aria-label and that the text is gone.
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: Implementation' (Protocol in workflow.md)
+
+## Phase 3: Final Verification
+- [ ] Task: Verify that other buttons labeled "Nuovo Testo" (e.g., in the reader's main content area) are unaffected.
+- [ ] Task: Run full test suite with coverage report.
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Verification' (Protocol in workflow.md)
