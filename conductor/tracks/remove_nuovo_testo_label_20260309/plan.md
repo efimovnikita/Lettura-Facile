@@ -12,7 +12,7 @@
 - [x] Task: Run tests to ensure the header button is still correctly identified by role/aria-label and that the text is gone. 35df049
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation' (Protocol in workflow.md) 5aabc5d
 
-## Phase 3: Final Verification
+## Phase 3: Final Verification [checkpoint: 32d99f6]
 - [x] Task: Verify that other buttons labeled "Nuovo Testo" (e.g., in the reader's main content area) are unaffected. 358f47d
 - [x] Task: Run full test suite with coverage report. 358f47d
-- [~] Task: Conductor - User Manual Verification 'Phase 3: Final Verification' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Final Verification' (Protocol in workflow.md) 32d99f6
