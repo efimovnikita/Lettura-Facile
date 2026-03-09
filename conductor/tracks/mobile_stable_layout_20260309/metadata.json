@@ -1,0 +1,8 @@
+{
+  "track_id": "mobile_stable_layout_20260309",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-03-09T18:45:00Z",
+  "updated_at": "2026-03-09T18:45:00Z",
+  "description": "Make the sentence area scrollable. Stick the header and sentiment panel to the top border. Stick the mode switch and the previous/next sentence buttons to the bottom border."
+}
