@@ -59,9 +59,10 @@ describe('Responsive Layout Verification', () => {
     it('should have mobile-specific classes', async () => {
       render(<ThemeProvider><App /></ThemeProvider>);
       
-      const main = await screen.findByRole('main');
-      // On mobile (default viewport in jsdom usually), it should have pt-1 or similar
-      expect(main).toHaveClass('pt-1');
+      const header = await screen.findByRole('banner');
+      const topFixed = header.parentElement;
+      const readerView = topFixed?.parentElement;
+      expect(readerView).toHaveClass('h-[100dvh]');
     });
 
     it('should have responsive min-height on SentenceDisplay', async () => {
@@ -77,7 +78,8 @@ describe('Responsive Layout Verification', () => {
     it('should preserve desktop-specific classes', async () => {
       render(<ThemeProvider><App /></ThemeProvider>);
       const main = await screen.findByRole('main');
-      expect(main).toHaveClass('lg:pt-16');
+      const content = main.firstElementChild;
+      expect(content).toHaveClass('lg:pt-16');
     });
 
     it('should preserve desktop min-height on SentenceDisplay', async () => {

@@ -355,15 +355,22 @@ const [translation, setTranslation] = useState<string | null>(null);
   }, [view, mistralKey, sentences, synonyms, synonymRetryCounter]);
 
   const performTranslation = async (phrase: string, rect: DOMRect) => {
-    const containerRect = containerRef.current?.getBoundingClientRect();
-    if (!containerRect) return;
+    // We need to find the scrollable container (main)
+    const scrollContainer = containerRef.current;
+    if (!scrollContainer) return;
 
-    // Relative position to container
-    const relativeTop = rect.top - containerRect.top;
-    const relativeLeft = rect.left - containerRect.left + (rect.width / 2); // Center horizontally
+    const containerRect = scrollContainer.getBoundingClientRect();
 
-    // Decide placement (default top, fallback bottom)
-    const placement = relativeTop > 100 ? 'top' : 'bottom';
+    // rect is from getBoundingClientRect of the word, which is absolute to viewport
+    // containerRect is also absolute to viewport
+    
+    // Position relative to scrollContainer's viewport
+    const relativeTop = rect.top - containerRect.top + scrollContainer.scrollTop;
+    const relativeLeft = rect.left - containerRect.left + (rect.width / 2);
+
+    // Decide placement based on space in the VIEWPORT of the container
+    // If the word is at the top of the scrollable area, put tooltip below
+    const placement = (rect.top - containerRect.top) > 100 ? 'top' : 'bottom';
 
     setTooltipPosition({
       top: placement === 'top' ? relativeTop - 10 : relativeTop + rect.height + 10,
@@ -465,6 +472,10 @@ const [translation, setTranslation] = useState<string | null>(null);
 
     if (currentIndex < sentences.length - 1) {
       setCurrentIndex(prev => prev + 1);
+      // Reset scroll position
+      if (containerRef.current) {
+        containerRef.current.scrollTop = 0;
+      }
     } else {
       // Если это было последнее предложение:
       setView('input');
@@ -480,6 +491,10 @@ const [translation, setTranslation] = useState<string | null>(null);
       setDisplayMode('original');
       setShowSynonyms(false);
       setCurrentIndex(prev => prev - 1);
+      // Reset scroll position
+      if (containerRef.current) {
+        containerRef.current.scrollTop = 0;
+      }
     }
   };
 
@@ -588,96 +603,103 @@ const [translation, setTranslation] = useState<string | null>(null);
 
   // Reader View
   return (
-    <div key="reader-view" className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans flex flex-col p-6 animate-fade-in transition-colors duration-500">
-      {/* Header */}
-      <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-1 lg:mb-12 max-w-5xl mx-auto w-full">
-        <div className="w-full md:w-auto flex justify-between md:justify-start items-center gap-4">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setView('input')}
-              className="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2 transition-colors"
-              aria-label="Nuovo Testo"
-              title="Nuovo Testo"
-            >
-              <RotateCcw className="w-4 h-4" />
-            </button>
-            <ThemeToggle />
+    <div key="reader-view" className="h-[100dvh] lg:h-auto bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans flex flex-col overflow-hidden lg:overflow-visible animate-fade-in transition-colors duration-500">
+      {/* Top Fixed Area */}
+      <div className="z-20 bg-stone-50 dark:bg-stone-950 px-6 pt-6">
+        {/* Header */}
+        <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-1 lg:mb-12 max-w-5xl mx-auto w-full">
+          <div className="w-full md:w-auto flex justify-between md:justify-start items-center gap-4">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setView('input')}
+                className="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-2 transition-colors"
+                aria-label="Nuovo Testo"
+                title="Nuovo Testo"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </button>
+              <ThemeToggle />
+            </div>
+            <span className="md:hidden text-sm text-stone-500 dark:text-stone-400 font-mono">
+              {currentIndex + 1} / {sentences.length}
+            </span>
           </div>
-          <span className="md:hidden text-sm text-stone-500 dark:text-stone-400 font-mono">
-            {currentIndex + 1} / {sentences.length}
-          </span>
-        </div>
 
-        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-          <span className="hidden md:inline text-sm text-stone-500 dark:text-stone-400 font-mono">
-            {currentIndex + 1} / {sentences.length}
-          </span>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-start pt-1 lg:pt-16 max-w-4xl mx-auto w-full relative pb-10 md:pb-20" ref={containerRef}>
+          <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+            <span className="hidden md:inline text-sm text-stone-500 dark:text-stone-400 font-mono">
+              {currentIndex + 1} / {sentences.length}
+            </span>
+          </div>
+        </header>
 
         {/* Sentiment Barometer */}
-        <div data-testid="tone-indicator-container" className="mb-1 lg:mb-10 sticky top-0 z-10 py-1 md:py-2 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-sm w-full flex justify-center">
+        <div data-testid="tone-indicator-container" className="mb-1 lg:mb-10 py-1 md:py-2 w-full flex justify-center">
           <ToneIndicator data={sentiments[currentIndex]} />
         </div>
+      </div>
 
-        {/* Error Message */}
-        {error && (
-          <div className="absolute top-0 left-0 right-0 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-lg text-sm text-center mb-4 border border-red-100 dark:border-red-900/30 z-50">
-            {error}
-            <button onClick={() => setError(null)} className="ml-2 underline">Chiudi</button>
-          </div>
-        )}
-
-        {/* Tooltip */}
-        {wordTranslation && tooltipPosition && (
-          <div
-            className={`absolute z-20 bg-indigo-600 dark:bg-indigo-700 text-white px-4 py-3 rounded-xl shadow-lg animate-in fade-in zoom-in-95 duration-200 max-w-xs transform -translate-x-1/2 ${
-              tooltipPosition.placement === 'top' ? '-translate-y-full mb-2' : 'mt-2'
-            }`}
-            style={{
-              top: tooltipPosition.top,
-              left: tooltipPosition.left
-            }}
-          >
-            <div className="flex justify-between items-start gap-4">
-              <div>
-                <div className="opacity-75 text-xs mb-1">{wordTranslation.word}</div>
-                {isWordLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <div className="font-bold text-md leading-tight">{wordTranslation.translation}</div>
-                )}
-              </div>
-              <button onClick={closeTooltip} className="text-white/50 hover:text-white">
-                <X className="w-4 h-4" />
-              </button>
+      {/* Middle Scrollable Area */}
+      <main className="flex-1 overflow-y-auto px-6 max-w-4xl mx-auto w-full relative pb-10 md:pb-20" ref={containerRef}>
+        <div className="flex flex-col items-center justify-start pt-1 lg:pt-16 min-h-full">
+          {/* Error Message */}
+          {error && (
+            <div className="absolute top-0 left-6 right-6 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-lg text-sm text-center mb-4 border border-red-100 dark:border-red-900/30 z-50">
+              {error}
+              <button onClick={() => setError(null)} className="ml-2 underline">Chiudi</button>
             </div>
-            {/* Arrow */}
+          )}
+
+          {/* Tooltip */}
+          {wordTranslation && tooltipPosition && (
             <div
-              className={`absolute left-1/2 -translate-x-1/2 w-3 h-3 bg-indigo-600 dark:bg-indigo-700 rotate-45 ${
-                tooltipPosition.placement === 'top' ? '-bottom-1.5' : '-top-1.5'
+              className={`absolute z-20 bg-indigo-600 dark:bg-indigo-700 text-white px-4 py-3 rounded-xl shadow-lg animate-in fade-in zoom-in-95 duration-200 max-w-xs transform -translate-x-1/2 ${
+                tooltipPosition.placement === 'top' ? '-translate-y-full mb-2' : 'mt-2'
               }`}
-            />
-          </div>
-        )}
+              style={{
+                top: tooltipPosition.top,
+                left: tooltipPosition.left
+              }}
+            >
+              <div className="flex justify-between items-start gap-4">
+                <div>
+                  <div className="opacity-75 text-xs mb-1">{wordTranslation.word}</div>
+                  {isWordLoading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <div className="font-bold text-md leading-tight">{wordTranslation.translation}</div>
+                  )}
+                </div>
+                <button onClick={closeTooltip} className="text-white/50 hover:text-white">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              {/* Arrow */}
+              <div
+                className={`absolute left-1/2 -translate-x-1/2 w-3 h-3 bg-indigo-600 dark:bg-indigo-700 rotate-45 ${
+                  tooltipPosition.placement === 'top' ? '-bottom-1.5' : '-top-1.5'
+                }`}
+              />
+            </div>
+          )}
 
-        {/* Sentence Display */}
-        <SentenceDisplay
-          sentenceText={currentSentenceText}
-          displayMode={displayMode}
-          selectedIndices={selectedIndices}
-          getWordIntensity={getWordIntensity}
-          onWordClick={handleWordClick}
-          isLoading={isSentenceLoading || isTranslationLoading}
-          synonyms={synonyms[currentIndex]}
-          showSynonyms={showSynonyms}
-        />
+          {/* Sentence Display */}
+          <SentenceDisplay
+            sentenceText={currentSentenceText}
+            displayMode={displayMode}
+            selectedIndices={selectedIndices}
+            getWordIntensity={getWordIntensity}
+            onWordClick={handleWordClick}
+            isLoading={isSentenceLoading || isTranslationLoading}
+            synonyms={synonyms[currentIndex]}
+            showSynonyms={showSynonyms}
+          />
+        </div>
+      </main>
 
+      {/* Bottom Fixed Area */}
+      <div className="z-20 bg-stone-50 dark:bg-stone-950 px-6 pb-6 pt-2">
         {/* Controls */}
-        <div className="flex flex-col items-center gap-1 lg:gap-6 w-full">
+        <div className="flex flex-col items-center gap-1 lg:gap-6 w-full max-w-4xl mx-auto">
           <ModeSwitch
             currentMode={displayMode}
             onChange={setDisplayMode}
@@ -713,8 +735,7 @@ const [translation, setTranslation] = useState<string | null>(null);
             </button>
           </div>
         </div>
-
-      </main>
+      </div>
     </div>
   );
 }

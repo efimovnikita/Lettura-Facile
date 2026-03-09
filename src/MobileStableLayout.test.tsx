@@ -43,12 +43,12 @@ vi.mock('lucide-react', () => ({
   ChevronsDown: () => <div data-testid="icon-chevrons-down" />,
 }));
 
-describe('Mobile/Tablet Spacing Optimization', () => {
+describe('Mobile Stable Layout Reproduction Test', () => {
   beforeEach(() => {
     localStorage.clear();
     const state = {
-      text: 'First sentence. Second sentence.',
-      sentences: ['First sentence.', 'Second sentence.'],
+      text: 'Sentence one. Sentence two.',
+      sentences: ['Sentence one.', 'Sentence two.'],
       currentSentenceIndex: 0,
       mistralKey: 'fake-key',
       difficulty: 'original',
@@ -56,55 +56,41 @@ describe('Mobile/Tablet Spacing Optimization', () => {
     localStorage.setItem('lettura_facile_state', JSON.stringify(state));
   });
 
-  it('should have optimized mobile/tablet spacing (< 1024px)', async () => {
+  it('should have a fixed viewport and scrollable middle section on mobile (< 1024px)', async () => {
     render(<ThemeProvider><App /></ThemeProvider>);
     
-    // Header
-    const header = screen.getByRole('banner');
-    expect(header).toHaveClass('mb-1');
+    // Check for fixed viewport container
+    const header = await screen.findByRole('banner');
+    const topFixed = header.parentElement;
+    const readerView = topFixed?.parentElement;
+    expect(readerView).toHaveClass('lg:h-auto'); // Default should be fluid on desktop
+    expect(readerView).toHaveClass('h-[100dvh]');
+    expect(readerView).toHaveClass('flex');
+    expect(readerView).toHaveClass('flex-col');
+    expect(readerView).toHaveClass('overflow-hidden');
 
-    // Main
+    // Check for scrollable main section
     const main = screen.getByRole('main');
     expect(main).toHaveClass('flex-1');
     expect(main).toHaveClass('overflow-y-auto');
-
-    // ToneIndicator container (sticky one)
-    const sentimentContainer = screen.getByTestId('tone-indicator-container');
-    expect(sentimentContainer).toHaveClass('mb-1');
-
-    // Controls container (parent of ModeSwitch)
-    // ModeSwitch is inside a div with flex flex-col items-center gap-3 md:gap-6 w-full
-    const controlsContainer = screen.getByTestId('mode-switch').parentElement;
-    expect(controlsContainer).toHaveClass('gap-1');
-
-    // Navigation buttons container
-    // Buttons are inside a div with flex items-center gap-4 mt-4 md:mt-8
-    const buttonsContainer = screen.getByRole('button', { name: /La prossima frase/i }).parentElement;
-    expect(buttonsContainer).toHaveClass('mt-1');
   });
 
-  it('should preserve desktop spacing (>= 1024px)', async () => {
+  it('should have fixed top and bottom areas with solid backgrounds on mobile', async () => {
     render(<ThemeProvider><App /></ThemeProvider>);
     
-    // Header
     const header = screen.getByRole('banner');
-    expect(header).toHaveClass('lg:mb-12');
+    const footer = screen.getByTestId('mode-switch').parentElement;
+    
+    // Check for top fixed area
+    const topFixed = header.parentElement;
+    expect(topFixed).toHaveClass('bg-stone-50');
+    expect(topFixed).toHaveClass('dark:bg-stone-950');
+    expect(topFixed).toHaveClass('z-20');
 
-    // Main
-    const main = screen.getByRole('main');
-    const content = main.firstElementChild;
-    expect(content).toHaveClass('lg:pt-16');
-
-    // ToneIndicator container
-    const sentimentContainer = screen.getByTestId('tone-indicator-container');
-    expect(sentimentContainer).toHaveClass('lg:mb-10');
-
-    // Controls container
-    const controlsContainer = screen.getByTestId('mode-switch').parentElement;
-    expect(controlsContainer).toHaveClass('lg:gap-6');
-
-    // Navigation buttons container
-    const buttonsContainer = screen.getByRole('button', { name: /La prossima frase/i }).parentElement;
-    expect(buttonsContainer).toHaveClass('lg:mt-8');
+    // Check for bottom fixed area
+    const bottomFixed = footer.parentElement;
+    expect(bottomFixed).toHaveClass('bg-stone-50');
+    expect(bottomFixed).toHaveClass('dark:bg-stone-950');
+    expect(bottomFixed).toHaveClass('z-20');
   });
 });
