@@ -122,6 +122,13 @@ const [translation, setTranslation] = useState<string | null>(null);
     });
   }, [text, sentences, currentIndex, mistralKey, sentiments, synonyms]);
 
+  // Scroll to top when sentence or display mode changes
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
+    }
+  }, [currentIndex, displayMode]);
+
   useEffect(() => {
     const fetchSentenceVersion = async () => {
       if (sentences.length === 0) return;
@@ -472,10 +479,6 @@ const [translation, setTranslation] = useState<string | null>(null);
 
     if (currentIndex < sentences.length - 1) {
       setCurrentIndex(prev => prev + 1);
-      // Reset scroll position
-      if (containerRef.current) {
-        containerRef.current.scrollTop = 0;
-      }
     } else {
       // Если это было последнее предложение:
       setView('input');
@@ -491,10 +494,6 @@ const [translation, setTranslation] = useState<string | null>(null);
       setDisplayMode('original');
       setShowSynonyms(false);
       setCurrentIndex(prev => prev - 1);
-      // Reset scroll position
-      if (containerRef.current) {
-        containerRef.current.scrollTop = 0;
-      }
     }
   };
 

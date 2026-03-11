@@ -4,6 +4,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: При переключении режима отображения предложения скроллировать область с текстом наверх.**
+- [~] **Track: При переключении режима отображения предложения скроллировать область с текстом наверх.**
 *Link: [./tracks/scroll_reset_20260311/](./tracks/scroll_reset_20260311/)*
 
