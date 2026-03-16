@@ -26,7 +26,7 @@ export const SentenceDisplay: React.FC<SentenceDisplayProps> = ({
 }) => {
   return (
     <div 
-      className={`text-center mb-4 md:mb-12 w-full min-h-[160px] md:min-h-[240px] flex items-center justify-center transition-all duration-300 ${isLoading ? 'blur-[1px]' : 'blur-0'}`}
+      className={`text-center mb-4 md:mb-12 w-full min-h-[160px] md:min-h-[240px] flex items-center landscape:items-start justify-center transition-all duration-300 ${isLoading ? 'blur-[1px]' : 'blur-0'}`}
     >
       <AnimatePresence mode="wait">
         <motion.div
@@ -35,7 +35,7 @@ export const SentenceDisplay: React.FC<SentenceDisplayProps> = ({
           animate={{ opacity: isLoading ? 0.3 : 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2, ease: "linear" }}
-          className="text-4xl md:text-5xl font-serif leading-[1.6] text-stone-800 dark:text-stone-100 select-none pt-6"
+          className="text-4xl md:text-5xl font-serif leading-[1.6] text-stone-800 dark:text-stone-100 select-none pt-6 landscape:pt-1"
         >
           {(() => {
             let lastSynonymIndex = -2;

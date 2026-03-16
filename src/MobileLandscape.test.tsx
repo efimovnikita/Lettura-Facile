@@ -103,4 +103,20 @@ describe('Mobile Landscape Visibility', () => {
       expect(textSpan).toHaveClass('landscape:hidden');
     }
   });
+
+  it('should align the current sentence to the top in landscape mode', () => {
+    // Typical landscape mobile viewport
+    const width = 667;
+    const height = 375;
+    setViewport(width, height);
+
+    const { container } = render(<ThemeProvider><App /></ThemeProvider>);
+
+    // Find the SentenceDisplay container. It has 'min-h-[160px]'
+    const sentenceContainer = container.querySelector('.min-h-\\[160px\\]');
+    expect(sentenceContainer).toBeInTheDocument();
+    
+    // It should have 'landscape:items-start'
+    expect(sentenceContainer?.className).toContain('landscape:items-start');
+  });
 });
