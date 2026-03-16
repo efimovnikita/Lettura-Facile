@@ -11,13 +11,13 @@ Ensure the "Previous Sentence" and "Next Sentence" buttons are visible and acces
 - [x] Task: Create a reproduction test in `src/MobileLandscape.test.tsx` that sets the viewport to a landscape aspect ratio (e.g., 667x375 for iPhone 8) and asserts that the navigation buttons are within the visible viewport. 76506c6
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Research and Reproduction' (Protocol in workflow.md) aa2b667
 
-## Phase 2: Implementation (Layout Optimization)
-- [ ] Task: Implement `landscape:` Tailwind modifiers in `src/App.tsx` to reduce vertical padding and gaps in the "Bottom Fixed Area".
+## Phase 2: Implementation (Layout Optimization) [checkpoint: 6385f2a]
+- [x] Task: Implement `landscape:` Tailwind modifiers in `src/App.tsx` to reduce vertical padding and gaps in the "Bottom Fixed Area".
     - Reduce `pb-6 pt-2` to `pb-2 pt-1` in landscape.
-    - Reduce gap between `ModeSwitch` and navigation buttons (`gap-1 lg:gap-6` and `mt-1 lg:mt-8`).
-- [ ] Task: Consider switching the navigation buttons from `flex-col` to `flex-row` or side-by-side layout in landscape to save height.
-- [ ] Task: Ensure the "Next Sentence" button text ("La prossima frase") doesn't cause overflow; consider using only an icon in landscape if necessary.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Implementation (Layout Optimization)' (Protocol in workflow.md)
+    - Reduce gap between `ModeSwitch` and navigation buttons (`gap-1 lg:gap-6` and `mt-1 lg:mt-8`). 652aeb9
+- [x] Task: Consider switching the navigation buttons from `flex-col` to `flex-row` or side-by-side layout in landscape to save height. 652aeb9
+- [x] Task: Ensure the "Next Sentence" button text ("La prossima frase") doesn't cause overflow; consider using only an icon in landscape if necessary. 652aeb9
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation (Layout Optimization)' (Protocol in workflow.md) 652aeb9
 
 ## Phase 3: Final Verification and Quality Gates
 - [ ] Task: Run `npm test` to ensure all tests pass, including the new landscape visibility test.
