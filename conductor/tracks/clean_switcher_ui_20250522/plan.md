@@ -1,0 +1,25 @@
+# Implementation Plan: Clean Sentence Display Mode Switcher UI
+
+## Phase 1: Preparation and Environment Setup
+- [ ] Task: Identify the relevant UI components and files for the sentence display mode switcher.
+- [ ] Task: Verify the existing "synonym indicator" icon implementation to ensure no visual interference.
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Preparation' (Protocol in workflow.md)
+
+## Phase 2: UI Modification - Removing Labels and Adding Icons
+- [ ] Task: Remove text labels "Originale", "Simplificato", and "Traduzione" from the switcher UI.
+- [ ] Task: Integrate conceptual icons (e.g., "O", "S", "T" or equivalent SVGs/font icons) into the switcher.
+- [ ] Task: Ensure icons have appropriate `aria-label` for accessibility.
+- [ ] Task: Implement background highlight for the active display mode icon.
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Modification' (Protocol in workflow.md)
+
+## Phase 3: Functionality and Visual Refinement
+- [ ] Task: Verify that clicking/tapping the new icons correctly triggers the mode switch.
+- [ ] Task: Refine the layout and spacing of the switcher after label removal to ensure it looks balanced.
+- [ ] Task: Perform a visual check in "original sentence" mode to ensure no conflict with the synonym indicator icon.
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Functionality and Visual Refinement' (Protocol in workflow.md)
+
+## Phase 4: Final Validation and Cleanup
+- [ ] Task: Run unit/integration tests to ensure no regressions in switcher functionality.
+- [ ] Task: Verify that no tooltips are present on the new icons.
+- [ ] Task: Conduct a final cross-browser and mobile responsiveness check (ensuring no layout breaks).
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Validation' (Protocol in workflow.md)
