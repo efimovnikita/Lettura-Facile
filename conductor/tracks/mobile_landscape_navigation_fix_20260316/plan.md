@@ -8,7 +8,7 @@ Ensure the "Previous Sentence" and "Next Sentence" buttons are visible and acces
 - `src/index.css`: Defines global styles and potentially custom scroll behavior.
 
 ## Phase 1: Research and Reproduction
-- [ ] Task: Create a reproduction test in `src/MobileLandscape.test.tsx` that sets the viewport to a landscape aspect ratio (e.g., 667x375 for iPhone 8) and asserts that the navigation buttons are within the visible viewport.
+- [x] Task: Create a reproduction test in `src/MobileLandscape.test.tsx` that sets the viewport to a landscape aspect ratio (e.g., 667x375 for iPhone 8) and asserts that the navigation buttons are within the visible viewport. 76506c6
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Research and Reproduction' (Protocol in workflow.md)
 
 ## Phase 2: Implementation (Layout Optimization)
