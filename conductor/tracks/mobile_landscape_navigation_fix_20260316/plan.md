@@ -7,9 +7,9 @@ Ensure the "Previous Sentence" and "Next Sentence" buttons are visible and acces
 - `src/App.tsx`: Contains the main layout and the "Bottom Fixed Area" with navigation controls.
 - `src/index.css`: Defines global styles and potentially custom scroll behavior.
 
-## Phase 1: Research and Reproduction
+## Phase 1: Research and Reproduction [checkpoint: 0aaeb96]
 - [x] Task: Create a reproduction test in `src/MobileLandscape.test.tsx` that sets the viewport to a landscape aspect ratio (e.g., 667x375 for iPhone 8) and asserts that the navigation buttons are within the visible viewport. 76506c6
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Research and Reproduction' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Research and Reproduction' (Protocol in workflow.md) aa2b667
 
 ## Phase 2: Implementation (Layout Optimization)
 - [ ] Task: Implement `landscape:` Tailwind modifiers in `src/App.tsx` to reduce vertical padding and gaps in the "Bottom Fixed Area".
