@@ -1,9 +1,9 @@
 # Implementation Plan: Mobile Landscape Vertical Alignment Fix
 
 ## Phase 1: Research & Reproduction
-- [ ] Task: Identify the component and CSS classes responsible for the current sentence display.
-- [ ] Task: Create a reproduction test case that simulates mobile landscape orientation and asserts the current (centered) vertical alignment.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Research & Reproduction' (Protocol in workflow.md)
+- [x] Task: Identify the component and CSS classes responsible for the current sentence display.
+- [x] Task: Create a reproduction test case that simulates mobile landscape orientation and asserts the current (centered) vertical alignment.
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Research & Reproduction' (Protocol in workflow.md)
 
 ## Phase 2: Implementation (TDD)
 - [ ] Task: Write failing tests for top-alignment in landscape mode.

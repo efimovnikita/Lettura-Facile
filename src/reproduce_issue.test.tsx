@@ -1,29 +1,26 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
 import { SentenceDisplay } from './components/SentenceDisplay';
-import { vi, describe, it, expect } from 'vitest';
 
-describe('SentenceDisplay Reproduction', () => {
+describe('SentenceDisplay Landscape Alignment', () => {
   const defaultProps = {
-    sentenceText: "This is a test sentence.",
-    displayMode: "original",
+    sentenceText: 'Test sentence display',
+    displayMode: 'original',
     selectedIndices: [],
     getWordIntensity: () => 0,
-    onWordClick: () => {},
+    onWordClick: vi.fn(),
     isLoading: false,
-    synonyms: [],
-    showSynonyms: false,
   };
 
-  it('should NOT have landscape-specific height classes yet', () => {
-    render(<SentenceDisplay {...defaultProps} />);
+  it('has landscape:items-start class for top alignment in landscape', () => {
+    const { container } = render(<SentenceDisplay {...defaultProps} />);
+    const div = container.firstChild as HTMLElement;
     
-    const container = screen.getByText("This", { exact: false }).closest('div')?.parentElement;
-    // The immediate parent of the motion.div is the one with the min-h classes
-    expect(container).toBeInTheDocument();
+    // This is the core requirement: it should have landscape:items-start
+    expect(div.className).toContain('landscape:items-start');
     
-    // Current classes: text-center mb-4 md:mb-12 w-full min-h-[160px] md:min-h-[240px] flex items-center justify-center transition-all duration-300
-    // We want to verify it DOES NOT contain landscape:min-h-[45vh]
-    expect(container?.className).not.toContain('landscape:min-h-[45vh]');
-    expect(container?.className).not.toContain('landscape:overflow-y-auto');
+    // It should also have items-center for portrait/general (or it might change)
+    // In our case, we keep items-center and add landscape:items-start to override it
+    expect(div.className).toContain('items-center');
   });
 });
