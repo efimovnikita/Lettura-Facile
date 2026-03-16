@@ -1,9 +1,9 @@
 # Implementation Plan: Clean Sentence Display Mode Switcher UI
 
-## Phase 1: Preparation and Environment Setup
-- [ ] Task: Identify the relevant UI components and files for the sentence display mode switcher.
-- [ ] Task: Verify the existing "synonym indicator" icon implementation to ensure no visual interference.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Preparation' (Protocol in workflow.md)
+## Phase 1: Preparation and Environment Setup [checkpoint: 792a3ec]
+- [x] Task: Identify the relevant UI components and files for the sentence display mode switcher.
+- [x] Task: Verify the existing "synonym indicator" icon implementation to ensure no visual interference.
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Preparation' (Protocol in workflow.md)
 
 ## Phase 2: UI Modification - Removing Labels and Adding Icons
 - [ ] Task: Remove text labels "Originale", "Simplificato", and "Traduzione" from the switcher UI.
