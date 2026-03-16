@@ -19,8 +19,8 @@ Ensure the "Previous Sentence" and "Next Sentence" buttons are visible and acces
 - [x] Task: Ensure the "Next Sentence" button text ("La prossima frase") doesn't cause overflow; consider using only an icon in landscape if necessary. 652aeb9
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation (Layout Optimization)' (Protocol in workflow.md) 652aeb9
 
-## Phase 3: Final Verification and Quality Gates
-- [ ] Task: Run `npm test` to ensure all tests pass, including the new landscape visibility test.
-- [ ] Task: Verify that touch targets for the buttons remain at least 44x44px.
-- [ ] Task: Check for regressions in portrait mode.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Verification and Quality Gates' (Protocol in workflow.md)
+## Phase 3: Final Verification and Quality Gates [checkpoint: 190dd3c]
+- [x] Task: Run `npm test` to ensure all tests pass, including the new landscape visibility test. 652aeb9
+- [x] Task: Verify that touch targets for the buttons remain at least 44x44px. 652aeb9
+- [x] Task: Check for regressions in portrait mode. 652aeb9
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Final Verification and Quality Gates' (Protocol in workflow.md) 652aeb9
