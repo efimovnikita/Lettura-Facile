@@ -15,7 +15,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation (TDD)' (Protocol in workflow.md) ed8b3d1
 
 ## Phase 3: Verification & Cleanup
-- [ ] Task: Manually verify the fix in various simulated devices (iPhone, iPad) using the browser's developer tools.
-- [ ] Task: Ensure no regressions in portrait mode or other screen sizes.
+- [~] Task: Manually verify the fix in various simulated devices (iPhone, iPad) using the browser's developer tools.
+- [~] Task: Ensure no regressions in portrait mode or other screen sizes.
 - [ ] Task: Run full test suite and check coverage.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Verification & Cleanup' (Protocol in workflow.md)

@@ -73,14 +73,14 @@ describe('Mobile/Tablet Spacing Optimization', () => {
     expect(sentimentContainer).toHaveClass('mb-1');
 
     // Controls container (parent of ModeSwitch)
-    // ModeSwitch is inside a div with flex flex-col items-center gap-3 md:gap-6 w-full
+    // ModeSwitch is inside a div with flex flex-col items-center gap-0 lg:gap-2 w-full max-w-4xl mx-auto
     const controlsContainer = screen.getByTestId('mode-switch').parentElement;
-    expect(controlsContainer).toHaveClass('gap-1');
+    expect(controlsContainer).toHaveClass('gap-0');
 
     // Navigation buttons container
-    // Buttons are inside a div with flex items-center gap-4 mt-4 md:mt-8
+    // Buttons are inside a div with flex items-center gap-4 mt-0 lg:mt-2
     const buttonsContainer = screen.getByRole('button', { name: /La prossima frase/i }).parentElement;
-    expect(buttonsContainer).toHaveClass('mt-1');
+    expect(buttonsContainer).toHaveClass('mt-0');
   });
 
   it('should preserve desktop spacing (>= 1024px)', async () => {
@@ -101,10 +101,10 @@ describe('Mobile/Tablet Spacing Optimization', () => {
 
     // Controls container
     const controlsContainer = screen.getByTestId('mode-switch').parentElement;
-    expect(controlsContainer).toHaveClass('lg:gap-6');
+    expect(controlsContainer).toHaveClass('lg:gap-2');
 
     // Navigation buttons container
     const buttonsContainer = screen.getByRole('button', { name: /La prossima frase/i }).parentElement;
-    expect(buttonsContainer).toHaveClass('lg:mt-8');
+    expect(buttonsContainer).toHaveClass('lg:mt-2');
   });
 });
