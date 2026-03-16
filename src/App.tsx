@@ -35,7 +35,7 @@ const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: 
   const color = data ? current.color : 'text-stone-200';
 
   return (
-    <div className="flex flex-col items-center gap-1 min-h-[40px]">
+    <div className="flex flex-col items-center gap-0 min-h-[20px]">
       <div className={`transition-colors duration-500 ${color}`}>
         {current.icon}
       </div>
@@ -45,9 +45,6 @@ const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: 
           <span className={`text-[10px] font-bold uppercase tracking-tighter ${color} opacity-80`}>
             {current.label} {Math.round(data.score * 100)}%
           </span>
-          <p className="text-[9px] text-stone-400 font-light leading-none text-center max-w-[120px] mt-0.5 italic">
-            {data.explanation}
-          </p>
         </div>
       )}
     </div>
@@ -632,7 +629,7 @@ const [translation, setTranslation] = useState<string | null>(null);
         </header>
 
         {/* Sentiment Barometer */}
-        <div data-testid="tone-indicator-container" className="mb-1 lg:mb-2 py-1 md:py-2 w-full flex justify-center">
+        <div data-testid="tone-indicator-container" className="mb-0 lg:mb-1 py-0.5 lg:py-1 w-full flex justify-center">
           <ToneIndicator data={sentiments[currentIndex]} />
         </div>
       </div>

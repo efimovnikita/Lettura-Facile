@@ -70,7 +70,8 @@ describe('Mobile/Tablet Spacing Optimization', () => {
 
     // ToneIndicator container (sticky one)
     const sentimentContainer = screen.getByTestId('tone-indicator-container');
-    expect(sentimentContainer).toHaveClass('mb-1');
+    expect(sentimentContainer).toHaveClass('mb-0');
+    expect(sentimentContainer).toHaveClass('py-0.5');
 
     // Controls container (parent of ModeSwitch)
     // ModeSwitch is inside a div with flex flex-col items-center gap-0 lg:gap-2 w-full max-w-4xl mx-auto
@@ -97,7 +98,7 @@ describe('Mobile/Tablet Spacing Optimization', () => {
 
     // ToneIndicator container
     const sentimentContainer = screen.getByTestId('tone-indicator-container');
-    expect(sentimentContainer).toHaveClass('lg:mb-2');
+    expect(sentimentContainer).toHaveClass('lg:mb-1');
 
     // Controls container
     const controlsContainer = screen.getByTestId('mode-switch').parentElement;
