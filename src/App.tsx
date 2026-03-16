@@ -696,9 +696,9 @@ const [translation, setTranslation] = useState<string | null>(null);
       </main>
 
       {/* Bottom Fixed Area */}
-      <div className="z-20 bg-stone-50 dark:bg-stone-950 px-6 pb-6 pt-2">
+      <div className="z-20 bg-stone-50 dark:bg-stone-950 px-6 pb-6 landscape:pb-2 pt-2 landscape:pt-1">
         {/* Controls */}
-        <div className="flex flex-col items-center gap-1 lg:gap-6 w-full max-w-4xl mx-auto">
+        <div className="flex flex-col items-center gap-1 landscape:gap-0.5 lg:gap-6 w-full max-w-4xl mx-auto">
           <ModeSwitch
             currentMode={displayMode}
             onChange={setDisplayMode}
@@ -708,27 +708,29 @@ const [translation, setTranslation] = useState<string | null>(null);
             isLoading={isSentenceLoading || isTranslationLoading}
           />
 
-          <div className="flex items-center gap-4 mt-1 lg:mt-8">
+          <div className="flex items-center gap-4 mt-1 landscape:mt-0.5 lg:mt-8">
             <button
               onClick={prevSentence}
               disabled={currentIndex === 0 || isSentenceLoading}
-              className="p-4 rounded-full bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-400 dark:text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 hover:border-stone-300 dark:hover:border-stone-700 disabled:opacity-30 transition-all"
+              className="p-4 landscape:p-2.5 rounded-full bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-400 dark:text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 hover:border-stone-300 dark:hover:border-stone-700 disabled:opacity-30 transition-all"
             >
-              <ArrowRight className="w-6 h-6 rotate-180" />
+              <ArrowRight className="w-6 h-6 landscape:w-5 landscape:h-5 rotate-180" />
             </button>
 
             <button
               onClick={nextSentence}
               disabled={isSentenceLoading}
-              className="px-8 py-4 bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 text-white rounded-full font-medium text-lg shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 hover:shadow-indigo-300 dark:hover:shadow-indigo-900/50 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-8 landscape:px-6 py-4 landscape:py-2.5 bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 text-white rounded-full font-medium text-lg landscape:text-base shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 hover:shadow-indigo-300 dark:hover:shadow-indigo-900/50 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {currentIndex === sentences.length - 1 ? (
                 <>
-                  Nuovo Testo <RotateCcw className="w-5 h-5" />
+                  <span className="landscape:hidden">Nuovo Testo</span>
+                  <RotateCcw className="w-5 h-5 landscape:w-4 landscape:h-4" />
                 </>
               ) : (
                 <>
-                  La prossima frase <ArrowRight className="w-5 h-5" />
+                  <span className="landscape:hidden">La prossima frase</span>
+                  <ArrowRight className="w-5 h-5 landscape:w-4 landscape:h-4" />
                 </>
               )}
             </button>
