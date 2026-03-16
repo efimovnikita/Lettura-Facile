@@ -38,7 +38,7 @@ describe('Scroll Reset Logic', () => {
     expect(main.scrollTop).toBe(100);
 
     // Change mode to "Semplificato"
-    const simplifiedBtn = screen.getByText(/semplificato/i);
+    const simplifiedBtn = screen.getByLabelText(/semplificato/i);
     await act(async () => {
       fireEvent.click(simplifiedBtn);
     });

@@ -698,7 +698,7 @@ const [translation, setTranslation] = useState<string | null>(null);
       {/* Bottom Fixed Area */}
       <div className="z-20 bg-stone-50 dark:bg-stone-950 px-6 pb-6 landscape:pb-2 pt-2 landscape:pt-1">
         {/* Controls */}
-        <div className="flex flex-col items-center gap-1 landscape:gap-0.5 lg:gap-6 w-full max-w-4xl mx-auto">
+        <div className="flex flex-col items-center gap-0 lg:gap-2 w-full max-w-4xl mx-auto">
           <ModeSwitch
             currentMode={displayMode}
             onChange={setDisplayMode}
@@ -708,7 +708,7 @@ const [translation, setTranslation] = useState<string | null>(null);
             isLoading={isSentenceLoading || isTranslationLoading}
           />
 
-          <div className="flex items-center gap-4 mt-1 landscape:mt-0.5 lg:mt-8">
+          <div className="flex items-center gap-4 mt-0 lg:mt-2">
             <button
               onClick={prevSentence}
               disabled={currentIndex === 0 || isSentenceLoading}

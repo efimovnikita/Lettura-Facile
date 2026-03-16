@@ -73,7 +73,7 @@ describe('Simplification Loading Behavior', () => {
     expect(screen.getByText('.')).toBeInTheDocument();
 
     // Click "Semplificato"
-    const simplifyButton = screen.getByText(/semplificato/i);
+    const simplifyButton = screen.getByLabelText(/semplificato/i);
     fireEvent.click(simplifyButton);
 
     // NEW BEHAVIOR: 
@@ -100,7 +100,7 @@ describe('Simplification Loading Behavior', () => {
     // Wait for initial text
     expect(await screen.findByText('Original')).toBeInTheDocument();
 
-    const simplifyButton = screen.getByText(/semplificato/i);
+    const simplifyButton = screen.getByLabelText(/semplificato/i);
     fireEvent.click(simplifyButton);
 
     // Should show error and keep original text

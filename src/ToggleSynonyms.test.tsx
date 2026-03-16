@@ -96,12 +96,12 @@ describe('Toggle Synonyms State Management', () => {
     await screen.findByText('test');
 
     // 2. Change mode to Semplificato
-    const simplifiedBtn = screen.getByText('Semplificato');
+    const simplifiedBtn = screen.getByLabelText('Semplificato');
     fireEvent.click(simplifiedBtn);
     
     // Synonyms should be hidden (though they are not rendered in this mode anyway)
     // Switch back to Originale
-    const originalBtn = screen.getByText('Originale');
+    const originalBtn = screen.getByLabelText('Originale');
     fireEvent.click(originalBtn);
     
     // Synonyms should still be hidden (reset happened on mode change)

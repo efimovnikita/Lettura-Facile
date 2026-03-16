@@ -70,9 +70,9 @@ describe('App Component - Difficulty Toggle', () => {
 
   it('should show the ModeSwitch with three states', () => {
     render(<ThemeProvider><App /></ThemeProvider>);
-    expect(screen.getByText(/originale/i)).toBeInTheDocument();
-    expect(screen.getByText(/semplificato/i)).toBeInTheDocument();
-    expect(screen.getByText(/traduzione/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/originale/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/semplificato/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/traduzione/i)).toBeInTheDocument();
   });
 
   it('should reset display mode to original on page reload', () => {
@@ -92,6 +92,6 @@ describe('App Component - Difficulty Toggle', () => {
     // and default to 'original'. We check if 'Originale' is highlighted.
     // In our implementation, the active mode has specific textShadow/opacity.
     // But since we can't easily check styles in this setup, we check if the component is rendered.
-    expect(screen.getByText(/originale/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/originale/i)).toBeInTheDocument();
   });
 });

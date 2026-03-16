@@ -9,5 +9,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Clean Sentence Display Mode Switcher UI**
+- [x] **Track: Clean Sentence Display Mode Switcher UI**
 *Link: [./tracks/clean_switcher_ui_20250522/](./tracks/clean_switcher_ui_20250522/)*
