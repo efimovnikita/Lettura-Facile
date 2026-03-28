@@ -1,7 +1,7 @@
 # Implementation Plan: Add Listen Button (Mistral TTS)
 
 ## Phase 1: Service Integration [checkpoint: 3c094b2]
-- [x] Task: Add `getTextToSpeech` to `src/services/mistral.ts` aff85df.
+- [x] Task: Add `getTextToSpeech` to `src/services/mistral.ts` aff85df (service), 6f1f866 (UI).
     - [ ] Implement the call to Mistral AI's TTS endpoint based on this example:
       ```typescript
       const audio = await client.audio.speech.complete({
@@ -19,16 +19,16 @@
       const url = URL.createObjectURL(blob);
       ```
     - [ ] Handle API responses and potential errors.
-- [x] Task: Add unit test for `getTextToSpeech` in `src/services/mistral.test.ts` aff85df.
+- [x] Task: Add unit test for `getTextToSpeech` in `src/services/mistral.test.ts` aff85df (service), 6f1f866 (UI).
 
 ## Phase 2: UI Implementation
-- [ ] Task: Update `App.tsx` to include the "Listen" button.
-    - [ ] Add state for tracking audio playback (`isPlaying`, `audioUrl`).
-    - [ ] Implement `handleListen` function to fetch and play audio.
-    - [ ] Add the button to the bottom controls area.
-    - [ ] Implement visibility logic: button is available ONLY in `original` and `simplified` modes (NOT in `translated` mode).
-    - [ ] Style the "Next Sentence" and "Listen" buttons for proper alignment and width.
-- [ ] Task: Ensure the button uses `Volume2` and `Square` icons from `lucide-react`.
+- [x] Task: Update `App.tsx` to include the "Listen" button aff85df (service), 6f1f866 (UI).
+    - [x] Add state for tracking audio playback (`isPlaying`, `audioUrl`).
+    - [x] Implement `handleListen` function to fetch and play audio.
+    - [x] Add the button to the bottom controls area.
+    - [x] Implement visibility logic: button is available ONLY in `original` and `simplified` modes (NOT in `translated` mode).
+    - [x] Style the "Next Sentence" and "Listen" buttons for proper alignment and width.
+- [x] Task: Ensure the button uses `Volume2` and `Square` icons from `lucide-react` aff85df (service), 6f1f866 (UI).
 
 ## Phase 3: Refinement and Verification
 - [ ] Task: Add loading state for the "Listen" button.
