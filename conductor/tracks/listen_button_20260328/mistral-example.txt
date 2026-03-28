@@ -1,0 +1,15 @@
+import { Mistral } from "@mistralai/mistralai";
+import fs from "fs";
+
+const client = new Mistral({ apiKey: process.env.MISTRAL_API_KEY });
+
+const audio = await client.audio.speech.complete({
+  model: "voxtral-mini-tts-2603",
+  input: "La storia racconta di due sorelline, Lisa e Aina, mentre sono nel bosco a raccogliere i lamponi. Tra le bacche, trovano un bruco e, anche se il fratello Otto vorrebbe eliminarlo, le ragazze decidono di salvarlo. Nel corso della storia, Lisa e Aina si perdono nel bosco ma misteriosamente trovano acqua, cibo e riparo. È il gentile ‘re dei lamponi’, che rivela di essere il bruco salvato dalle ragazze. Il re dei lamponi si assicura che tornino a casa, regala loro gioielli a forma di lampone e una gemma per Otto per ricordargli di essere gentile con chi non si può difendere. È una favola magica che sottolinea l’importanza della gentilezza, della gratitudine e della compassione verso ogni essere vivente.",
+  responseFormat: "mp3",
+  stream: false,
+  voiceId: "c48524bb-3f27-4fd9-863c-c63c26564b04",
+});
+
+const buffer = Buffer.from(audio.audioData, "base64");
+fs.writeFileSync("output.mp3", buffer);

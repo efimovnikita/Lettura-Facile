@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Добавить кнопку для прослушивания текущего предложения.**
+- [~] **Track: Добавить кнопку для прослушивания текущего предложения.**
 *Link: [./tracks/listen_button_20260328/](./tracks/listen_button_20260328/)*
