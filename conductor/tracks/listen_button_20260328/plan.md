@@ -35,3 +35,7 @@
 - [x] Task: Verify playback on different sentences and display modes (original/simplified) d034bbf.
 - [x] Task: Ensure audio is stopped when navigating to the next/previous sentence d034bbf.
 - [ ] Task: Conductor - User Manual Verification 'Refinement and Verification' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions d5cdffa
+
