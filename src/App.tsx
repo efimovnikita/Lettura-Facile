@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Settings, BookOpen, ArrowRight, RotateCcw, Languages, Loader2, X,
   ClipboardPaste, ChevronDown, ChevronUp, Trash2, Zap, Heart,
-  Sun, Theater, Flame, CloudRain, AlertCircle, Swords, History, CloudLightning
+  Sun, Theater, Flame, CloudRain, AlertCircle, Swords, History, CloudLightning,
+  Volume2, Square
 } from 'lucide-react';
 import { AppState, saveState, loadState, splitIntoSentences, Difficulty, SentimentData, DisplayMode, SynonymData } from './utils';
-import { translateWord, translateSentence, simplifySentence, getSentiments, getSynonyms } from './services/mistral';
+import { translateWord, translateSentence, simplifySentence, getSentiments, getSynonyms, getTextToSpeech } from './services/mistral';
 import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
 import { SettingsPanel } from './components/SettingsPanel';
@@ -80,12 +81,15 @@ const [translation, setTranslation] = useState<string | null>(null);
   const [isSentenceLoading, setIsSentenceLoading] = useState(false);
   const [isWordLoading, setIsWordLoading] = useState(false);
   const [isTranslationLoading, setIsTranslationLoading] = useState(false);
+  const [isAudioLoading, setIsAudioLoading] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Tooltip State
   const [tooltipPosition, setTooltipPosition] = useState<{top: number, left: number, placement: 'top' | 'bottom'} | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const clickTimeoutRef = useRef<any>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Load state on mount
   useEffect(() => {
@@ -123,6 +127,11 @@ const [translation, setTranslation] = useState<string | null>(null);
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = 0;
+    }
+    // Stop audio when sentence or mode changes
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
     }
   }, [currentIndex, displayMode]);
 
@@ -469,6 +478,40 @@ const [translation, setTranslation] = useState<string | null>(null);
       }, 400); // Increased to 400ms
     };
 
+  const handleListen = async () => {
+    if (isPlaying && audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+      return;
+    }
+
+    setIsAudioLoading(true);
+    setError(null);
+    try {
+      const base64 = await getTextToSpeech(mistralKey, currentSentenceText);
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      const blob = new Blob([bytes], { type: 'audio/mpeg' });
+      const url = URL.createObjectURL(blob);
+
+      if (audioRef.current) {
+        audioRef.current.src = url;
+      } else {
+        audioRef.current = new Audio(url);
+        audioRef.current.onended = () => setIsPlaying(false);
+      }
+      
+      await audioRef.current.play();
+      setIsPlaying(true);
+    } catch (err: any) {
+      console.error('Audio playback error:', err);
+      setError("Audio error: " + (err.message || "Failed to generate speech"));
+    } finally {
+      setIsAudioLoading(false);
+    }
+  };
+
   const nextSentence = () => {
     // Сбрасываем сложность на оригинал при переходе вперед
     setDisplayMode('original');
@@ -717,7 +760,7 @@ const [translation, setTranslation] = useState<string | null>(null);
             <button
               onClick={nextSentence}
               disabled={isSentenceLoading}
-              className="px-8 landscape:px-6 py-4 landscape:py-2.5 bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 text-white rounded-full font-medium text-lg landscape:text-base shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 hover:shadow-indigo-300 dark:hover:shadow-indigo-900/50 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 sm:px-8 landscape:px-6 py-4 landscape:py-2.5 bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 text-white rounded-full font-medium text-lg landscape:text-base shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 hover:shadow-indigo-300 dark:hover:shadow-indigo-900/50 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed min-w-[140px] justify-center"
             >
               {currentIndex === sentences.length - 1 ? (
                 <>
@@ -731,6 +774,27 @@ const [translation, setTranslation] = useState<string | null>(null);
                 </>
               )}
             </button>
+
+            {(displayMode === 'original' || displayMode === 'simplified') && (
+              <button
+                onClick={handleListen}
+                disabled={isAudioLoading || isSentenceLoading}
+                aria-label="Ascolta"
+                className={`p-4 landscape:p-2.5 rounded-full border transition-all flex items-center justify-center ${
+                  isPlaying 
+                    ? 'bg-amber-100 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800 text-amber-600 dark:text-amber-400 shadow-inner' 
+                    : 'bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-200 dark:hover:border-indigo-800 shadow-sm'
+                }`}
+              >
+                {isAudioLoading ? (
+                  <Loader2 className="w-6 h-6 landscape:w-5 landscape:h-5 animate-spin" />
+                ) : isPlaying ? (
+                  <Square className="w-6 h-6 landscape:w-5 landscape:h-5 fill-current" />
+                ) : (
+                  <Volume2 className="w-6 h-6 landscape:w-5 landscape:h-5" />
+                )}
+              </button>
+            )}
           </div>
         </div>
       </div>
