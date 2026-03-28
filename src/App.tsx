@@ -14,7 +14,7 @@ import { ThemeToggle } from './components/ThemeToggle';
 import { ModeSwitch, Mode } from './components/ModeSwitch';
 import { SentenceDisplay } from './components/SentenceDisplay';
 
-const APP_VERSION = 'v1.7.5';
+const APP_VERSION = 'v1.8.0';
 
 const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: boolean }) => {
   if (isLoading) return <Loader2 className="w-4 h-4 text-stone-300 animate-spin" />;
@@ -512,7 +512,7 @@ const [translation, setTranslation] = useState<string | null>(null);
     setError(null);
     try {
       const base64 = await getTextToSpeech(mistralKey, currentSentenceText);
-      
+
       if (!base64) {
         throw new Error("No audio data received from service");
       }
@@ -528,7 +528,7 @@ const [translation, setTranslation] = useState<string | null>(null);
       for (let i = 0; i < binaryString.length; i++) {
         bytes[i] = binaryString.charCodeAt(i);
       }
-      
+
       const blob = new Blob([bytes], { type: 'audio/mpeg' });
       const url = URL.createObjectURL(blob);
 
@@ -549,7 +549,7 @@ const [translation, setTranslation] = useState<string | null>(null);
         };
         audioRef.current = audio;
       }
-      
+
       await audioRef.current.play();
       setIsPlaying(true);
     } catch (err: any) {
@@ -829,8 +829,8 @@ const [translation, setTranslation] = useState<string | null>(null);
               disabled={isAudioLoading || isSentenceLoading || displayMode === 'translated'}
               aria-label="Ascolta"
               className={`p-4 landscape:p-2.5 rounded-full border transition-all flex items-center justify-center ${
-                isPlaying 
-                  ? 'bg-amber-100 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800 text-amber-600 dark:text-amber-400 shadow-inner' 
+                isPlaying
+                  ? 'bg-amber-100 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800 text-amber-600 dark:text-amber-400 shadow-inner'
                   : 'bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-200 dark:hover:border-indigo-800 shadow-sm disabled:opacity-30'
               }`}
             >
