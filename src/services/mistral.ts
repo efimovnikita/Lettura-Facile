@@ -289,3 +289,18 @@ export async function getSynonyms(apiKey: string, sentences: string[]): Promise<
     return [];
   }
 }
+
+export async function getTextToSpeech(apiKey: string, input: string): Promise<string> {
+  const client = getMistralClient(apiKey);
+
+  const response = await withRetry(() => client.audio.speech.complete({
+    model: "voxtral-mini-tts-2603",
+    input,
+    responseFormat: "mp3",
+    stream: false,
+    voiceId: "c48524bb-3f27-4fd9-863c-c63c26564b04",
+  }));
+
+  // Mistral API returns audioData as base64 encoded string
+  return response.audioData as string;
+}

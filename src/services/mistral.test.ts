@@ -16,13 +16,22 @@ const mockComplete = vi.fn().mockResolvedValue({
   ]
 });
 
+const mockSpeechComplete = vi.fn().mockResolvedValue({
+  audioData: 'YmFzZTY0YXVkaW8=' // 'base64audio' in base64
+});
+
 // Mock the Mistral client
 vi.mock('@mistralai/mistralai', () => {
   return {
     Mistral: class {
       chat = {
         complete: mockComplete
-      }
+      };
+      audio = {
+        speech: {
+          complete: mockSpeechComplete
+        }
+      };
     }
   };
 });
@@ -53,5 +62,28 @@ describe('Mistral Service - getSynonyms', () => {
 
     expect(systemMessage.content).toContain('CEFR');
     expect(systemMessage.content).toContain('B1');
+  });
+});
+
+describe('Mistral Service - getTextToSpeech', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('should call Mistral TTS API and return the base64 audio data', async () => {
+    const { getTextToSpeech } = await import('./mistral');
+    const apiKey = 'test-api-key';
+    const input = 'Ciao mondo';
+
+    const result = await getTextToSpeech(apiKey, input);
+
+    expect(mockSpeechComplete).toHaveBeenCalledWith({
+      model: 'voxtral-mini-tts-2603',
+      input,
+      responseFormat: 'mp3',
+      stream: false,
+      voiceId: 'c48524bb-3f27-4fd9-863c-c63c26564b04',
+    });
+    expect(result).toBe('YmFzZTY0YXVkaW8=');
   });
 });

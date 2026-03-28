@@ -1,15 +1,21 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { getSynonyms, getSentiments } from './mistral';
+import { getSynonyms, getSentiments, getTextToSpeech } from './mistral';
 
 // Mock the Mistral client
 const mockComplete = vi.fn();
+const mockSpeechComplete = vi.fn();
 
 vi.mock('@mistralai/mistralai', () => {
   return {
     Mistral: class {
       chat = {
         complete: mockComplete
-      }
+      };
+      audio = {
+        speech: {
+          complete: mockSpeechComplete
+        }
+      };
     }
   };
 });
@@ -112,5 +118,25 @@ describe('Mistral Service Reliability - 429 Retry Logic', () => {
     
     expect(mockComplete).toHaveBeenCalledTimes(2);
     expect(result[0][0].original).toBe('test');
+  });
+
+  it('should retry getTextToSpeech when encountering a 429 error and eventually succeed', async () => {
+    const error429 = new Error('Too Many Requests');
+    (error429 as any).status = 429;
+    
+    mockSpeechComplete
+      .mockRejectedValueOnce(error429)
+      .mockResolvedValueOnce({
+        audioData: 'YmFzZTY0YXVkaW8='
+      });
+
+    const promise = getTextToSpeech('test-api-key', 'Ciao');
+    
+    await vi.runAllTimersAsync();
+    
+    const result = await promise;
+    
+    expect(mockSpeechComplete).toHaveBeenCalledTimes(2);
+    expect(result).toBe('YmFzZTY0YXVkaW8=');
   });
 });
