@@ -31,6 +31,8 @@ vi.mock('lucide-react', () => ({
   Languages: () => <div />,
   ChevronDown: () => <div />,
   ChevronUp: () => <div />,
+  Volume2: () => <div />,
+  Square: () => <div />,
 }));
 
 // Mock Mistral service

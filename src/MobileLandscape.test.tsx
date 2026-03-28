@@ -78,7 +78,7 @@ describe('Mobile Landscape Visibility', () => {
     render(<ThemeProvider><App /></ThemeProvider>);
 
     // Text is in the DOM but hidden by class in landscape
-    const nextButton = screen.getByText(/la prossima frase/i).closest('button');
+    const nextButton = screen.getByText(/prossima/i).closest('button');
     expect(nextButton).toBeInTheDocument();
 
     if (nextButton) {
@@ -98,8 +98,8 @@ describe('Mobile Landscape Visibility', () => {
       const rect = nextButton.getBoundingClientRect();
       expect(rect.bottom).toBeLessThanOrEqual(height);
 
-      // Verify text "La prossima frase" is hidden (has 'landscape:hidden' class)
-      const textSpan = screen.getByText(/la prossima frase/i);
+      // Verify text "Prossima" is hidden (has 'landscape:hidden' class)
+      const textSpan = screen.getByText(/prossima/i);
       expect(textSpan).toHaveClass('landscape:hidden');
     }
   });

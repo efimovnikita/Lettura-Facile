@@ -58,7 +58,7 @@ describe('Header "Nuovo Testo" Button', () => {
     render(<ThemeProvider><App /></ThemeProvider>);
 
     const buttons = screen.getAllByRole('button', { name: /nuovo testo/i });
-    const endButton = buttons.find(b => b.classList.contains('px-8')); // The end button has padding classes
+    const endButton = buttons.find(b => b.classList.contains('px-6')); // The end button has px-6 sm:px-8 classes now
     
     expect(endButton).toHaveTextContent(/nuovo testo/i);
     expect(within(endButton).getByTestId('icon-rotate-ccw')).toBeInTheDocument();

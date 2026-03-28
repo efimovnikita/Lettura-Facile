@@ -29,6 +29,8 @@ vi.mock('lucide-react', () => ({
   Swords: () => <div data-testid="icon-swords" />,
   CloudRain: () => <div data-testid="icon-cloud-rain" />,
   AlertCircle: () => <div data-testid="icon-alert-circle" />,
+  Volume2: () => <div data-testid="icon-volume2" />,
+  Square: () => <div data-testid="icon-square" />,
 }));
 
 describe('Header Theme Toggle', () => {

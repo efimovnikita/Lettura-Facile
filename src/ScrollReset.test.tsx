@@ -63,7 +63,7 @@ describe('Scroll Reset Logic', () => {
     const main = screen.getByRole('main');
     Object.defineProperty(main, 'scrollTop', { value: 100, writable: true });
     
-    const nextBtn = screen.getByText(/la prossima frase/i);
+    const nextBtn = screen.getByText(/prossima/i);
     await act(async () => {
       fireEvent.click(nextBtn);
     });

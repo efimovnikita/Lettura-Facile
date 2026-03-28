@@ -41,6 +41,8 @@ vi.mock('lucide-react', () => ({
   ChevronUp: () => <div data-testid="icon-chevron-up" />,
   ChevronsUp: () => <div data-testid="icon-chevrons-up" />,
   ChevronsDown: () => <div data-testid="icon-chevrons-down" />,
+  Volume2: () => <div data-testid="icon-volume2" />,
+  Square: () => <div data-testid="icon-square" />,
 }));
 
 describe('Mobile/Tablet Spacing Optimization', () => {
@@ -80,7 +82,7 @@ describe('Mobile/Tablet Spacing Optimization', () => {
 
     // Navigation buttons container
     // Buttons are inside a div with flex items-center gap-4 mt-0 lg:mt-2
-    const buttonsContainer = screen.getByRole('button', { name: /La prossima frase/i }).parentElement;
+    const buttonsContainer = screen.getByRole('button', { name: /prossima/i }).parentElement;
     expect(buttonsContainer).toHaveClass('mt-0');
   });
 
@@ -105,7 +107,7 @@ describe('Mobile/Tablet Spacing Optimization', () => {
     expect(controlsContainer).toHaveClass('lg:gap-2');
 
     // Navigation buttons container
-    const buttonsContainer = screen.getByRole('button', { name: /La prossima frase/i }).parentElement;
+    const buttonsContainer = screen.getByRole('button', { name: /prossima/i }).parentElement;
     expect(buttonsContainer).toHaveClass('lg:mt-2');
   });
 });

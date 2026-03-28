@@ -518,7 +518,12 @@ const [translation, setTranslation] = useState<string | null>(null);
       }
 
       // Handle base64 safely
-      const binaryString = window.atob(base64);
+      let binaryString;
+      try {
+        binaryString = window.atob(base64);
+      } catch (e) {
+        throw new Error("Received corrupted audio data from Mistral");
+      }
       const bytes = new Uint8Array(binaryString.length);
       for (let i = 0; i < binaryString.length; i++) {
         bytes[i] = binaryString.charCodeAt(i);
