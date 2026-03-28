@@ -485,21 +485,40 @@ const [translation, setTranslation] = useState<string | null>(null);
       return;
     }
 
+    if (!currentSentenceText.trim()) return;
+
     setIsAudioLoading(true);
     setError(null);
     try {
       const base64 = await getTextToSpeech(mistralKey, currentSentenceText);
-      const binary = atob(base64);
-      const bytes = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      
+      if (!base64) {
+        throw new Error("No audio data received from service");
+      }
+
+      // Handle base64 safely
+      const binaryString = window.atob(base64);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      
       const blob = new Blob([bytes], { type: 'audio/mpeg' });
       const url = URL.createObjectURL(blob);
 
       if (audioRef.current) {
+        audioRef.current.pause();
         audioRef.current.src = url;
+        audioRef.current.load();
       } else {
-        audioRef.current = new Audio(url);
-        audioRef.current.onended = () => setIsPlaying(false);
+        const audio = new Audio(url);
+        audio.onended = () => setIsPlaying(false);
+        audio.onerror = (e) => {
+          console.error('Audio element error:', e);
+          setError("Playback error occurred");
+          setIsPlaying(false);
+        };
+        audioRef.current = audio;
       }
       
       await audioRef.current.play();
@@ -507,6 +526,7 @@ const [translation, setTranslation] = useState<string | null>(null);
     } catch (err: any) {
       console.error('Audio playback error:', err);
       setError("Audio error: " + (err.message || "Failed to generate speech"));
+      setIsPlaying(false);
     } finally {
       setIsAudioLoading(false);
     }
@@ -760,7 +780,7 @@ const [translation, setTranslation] = useState<string | null>(null);
             <button
               onClick={nextSentence}
               disabled={isSentenceLoading}
-              className="px-6 sm:px-8 landscape:px-6 py-4 landscape:py-2.5 bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 text-white rounded-full font-medium text-lg landscape:text-base shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 hover:shadow-indigo-300 dark:hover:shadow-indigo-900/50 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed min-w-[140px] justify-center"
+              className="px-6 sm:px-8 landscape:px-6 py-4 landscape:py-2.5 bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 text-white rounded-full font-medium text-lg landscape:text-base shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 hover:shadow-indigo-300 dark:hover:shadow-indigo-900/50 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px] justify-center whitespace-nowrap"
             >
               {currentIndex === sentences.length - 1 ? (
                 <>
@@ -769,7 +789,7 @@ const [translation, setTranslation] = useState<string | null>(null);
                 </>
               ) : (
                 <>
-                  <span className="landscape:hidden">La prossima frase</span>
+                  <span className="landscape:hidden">Prossima</span>
                   <ArrowRight className="w-5 h-5 landscape:w-4 landscape:h-4" />
                 </>
               )}

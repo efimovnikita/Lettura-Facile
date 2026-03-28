@@ -89,6 +89,7 @@ describe('Listen Button UI', () => {
   it('should NOT show the Listen button in translated mode', async () => {
     render(<ThemeProvider><App /></ThemeProvider>);
     
+    // Switch to translated mode
     const translatedRadio = screen.getByLabelText(/traduzione/i);
     fireEvent.click(translatedRadio);
     
