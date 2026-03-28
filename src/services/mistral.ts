@@ -293,6 +293,10 @@ export async function getSynonyms(apiKey: string, sentences: string[]): Promise<
 export async function getTextToSpeech(apiKey: string, input: string): Promise<string> {
   const client = getMistralClient(apiKey);
 
+  if (!client.audio || !client.audio.speech) {
+    throw new Error("Your version of the Mistral SDK does not support Text-to-Speech or the feature is not available on your client.");
+  }
+
   const response = await withRetry(() => client.audio.speech.complete({
     model: "voxtral-mini-tts-2603",
     input,
@@ -302,5 +306,9 @@ export async function getTextToSpeech(apiKey: string, input: string): Promise<st
   }));
 
   // Mistral API returns audioData as base64 encoded string
+  if (!response || !response.audioData) {
+    throw new Error("No audio data returned from Mistral API.");
+  }
+
   return response.audioData as string;
 }
