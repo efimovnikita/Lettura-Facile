@@ -75,6 +75,7 @@ export default function App() {
 // Reader State
 const [currentSentenceText, setCurrentSentenceText] = useState('');
 const [cachedVersions, setCachedVersions] = useState<Record<string, { simplified?: string, translated?: string }>>({});
+const [audioCache, setAudioCache] = useState<Record<string, string>>({});
 const [translation, setTranslation] = useState<string | null>(null);
   const [wordTranslation, setWordTranslation] = useState<{word: string, translation: string} | null>(null);
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
@@ -487,6 +488,26 @@ const [translation, setTranslation] = useState<string | null>(null);
 
     if (!currentSentenceText.trim()) return;
 
+    // Check cache
+    if (audioCache[currentSentenceText]) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = audioCache[currentSentenceText];
+        audioRef.current.load();
+      } else {
+        const audio = new Audio(audioCache[currentSentenceText]);
+        audio.onended = () => setIsPlaying(false);
+        audio.onerror = () => {
+          setError("Playback error occurred");
+          setIsPlaying(false);
+        };
+        audioRef.current = audio;
+      }
+      await audioRef.current.play();
+      setIsPlaying(true);
+      return;
+    }
+
     setIsAudioLoading(true);
     setError(null);
     try {
@@ -505,6 +526,9 @@ const [translation, setTranslation] = useState<string | null>(null);
       
       const blob = new Blob([bytes], { type: 'audio/mpeg' });
       const url = URL.createObjectURL(blob);
+
+      // Save to cache
+      setAudioCache(prev => ({ ...prev, [currentSentenceText]: url }));
 
       if (audioRef.current) {
         audioRef.current.pause();
@@ -795,26 +819,24 @@ const [translation, setTranslation] = useState<string | null>(null);
               )}
             </button>
 
-            {(displayMode === 'original' || displayMode === 'simplified') && (
-              <button
-                onClick={handleListen}
-                disabled={isAudioLoading || isSentenceLoading}
-                aria-label="Ascolta"
-                className={`p-4 landscape:p-2.5 rounded-full border transition-all flex items-center justify-center ${
-                  isPlaying 
-                    ? 'bg-amber-100 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800 text-amber-600 dark:text-amber-400 shadow-inner' 
-                    : 'bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-200 dark:hover:border-indigo-800 shadow-sm'
-                }`}
-              >
-                {isAudioLoading ? (
-                  <Loader2 className="w-6 h-6 landscape:w-5 landscape:h-5 animate-spin" />
-                ) : isPlaying ? (
-                  <Square className="w-6 h-6 landscape:w-5 landscape:h-5 fill-current" />
-                ) : (
-                  <Volume2 className="w-6 h-6 landscape:w-5 landscape:h-5" />
-                )}
-              </button>
-            )}
+            <button
+              onClick={handleListen}
+              disabled={isAudioLoading || isSentenceLoading || displayMode === 'translated'}
+              aria-label="Ascolta"
+              className={`p-4 landscape:p-2.5 rounded-full border transition-all flex items-center justify-center ${
+                isPlaying 
+                  ? 'bg-amber-100 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800 text-amber-600 dark:text-amber-400 shadow-inner' 
+                  : 'bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-200 dark:hover:border-indigo-800 shadow-sm disabled:opacity-30'
+              }`}
+            >
+              {isAudioLoading ? (
+                <Loader2 className="w-6 h-6 landscape:w-5 landscape:h-5 animate-spin" />
+              ) : isPlaying ? (
+                <Square className="w-6 h-6 landscape:w-5 landscape:h-5 fill-current" />
+              ) : (
+                <Volume2 className="w-6 h-6 landscape:w-5 landscape:h-5" />
+              )}
+            </button>
           </div>
         </div>
       </div>

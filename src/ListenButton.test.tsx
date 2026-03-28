@@ -86,7 +86,7 @@ describe('Listen Button UI', () => {
     expect(screen.getByTestId('icon-volume2')).toBeInTheDocument();
   });
 
-  it('should NOT show the Listen button in translated mode', async () => {
+  it('should be disabled in translated mode', async () => {
     render(<ThemeProvider><App /></ThemeProvider>);
     
     // Switch to translated mode
@@ -94,7 +94,8 @@ describe('Listen Button UI', () => {
     fireEvent.click(translatedRadio);
     
     await waitFor(() => {
-      expect(screen.queryByLabelText(/ascolta/i)).toBeNull();
+      const listenButton = screen.getByLabelText(/ascolta/i);
+      expect(listenButton).toBeDisabled();
     });
   });
 
@@ -117,6 +118,35 @@ describe('Listen Button UI', () => {
     
     await waitFor(() => {
       expect(screen.getByTestId('icon-square')).toBeInTheDocument();
+    });
+  });
+
+  it('should stop audio and reset icon when moving to the next sentence', async () => {
+    const state = {
+      text: 'First sentence. Second sentence.',
+      sentences: ['First sentence.', 'Second sentence.'],
+      currentSentenceIndex: 0,
+      mistralKey: 'fake-key',
+      difficulty: 'original',
+    };
+    localStorage.setItem('lettura_facile_state', JSON.stringify(state));
+    
+    render(<ThemeProvider><App /></ThemeProvider>);
+    
+    const listenButton = screen.getByLabelText(/ascolta/i);
+    fireEvent.click(listenButton);
+    
+    await waitFor(() => {
+      expect(screen.getByTestId('icon-square')).toBeInTheDocument();
+    });
+
+    const nextButton = screen.getByText(/prossima/i).closest('button')!;
+    fireEvent.click(nextButton);
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('icon-square')).toBeNull();
+      expect(screen.getByTestId('icon-volume2')).toBeInTheDocument();
+      expect(mockPause).toHaveBeenCalled();
     });
   });
 });
