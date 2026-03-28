@@ -8,6 +8,7 @@
 
 ## AI and Linguistics
 - **AI Primary Engine:** Mistral AI (`@mistralai/mistralai`)
+- **Audio Engine:** Mistral TTS (for high-quality Italian speech synthesis)
 - **Linguistics:** Snowball-stemmers (for word analysis/stemming)
 
 ## Testing
