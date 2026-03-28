@@ -1,6 +1,6 @@
 # Implementation Plan: Add Listen Button (Mistral TTS)
 
-## Phase 1: Service Integration
+## Phase 1: Service Integration [checkpoint: 3c094b2]
 - [x] Task: Add `getTextToSpeech` to `src/services/mistral.ts` aff85df.
     - [ ] Implement the call to Mistral AI's TTS endpoint based on this example:
       ```typescript
