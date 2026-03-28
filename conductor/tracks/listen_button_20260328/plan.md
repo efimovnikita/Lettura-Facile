@@ -21,7 +21,7 @@
     - [ ] Handle API responses and potential errors.
 - [x] Task: Add unit test for `getTextToSpeech` in `src/services/mistral.test.ts` aff85df (service), 6f1f866 (UI).
 
-## Phase 2: UI Implementation
+## Phase 2: UI Implementation [checkpoint: 573e416]
 - [x] Task: Update `App.tsx` to include the "Listen" button aff85df (service), 6f1f866 (UI).
     - [x] Add state for tracking audio playback (`isPlaying`, `audioUrl`).
     - [x] Implement `handleListen` function to fetch and play audio.
