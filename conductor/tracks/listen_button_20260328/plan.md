@@ -31,7 +31,7 @@
 - [x] Task: Ensure the button uses `Volume2` and `Square` icons from `lucide-react` aff85df (service), 6f1f866 (UI).
 
 ## Phase 3: Refinement and Verification [checkpoint: d034bbf]
-- [x] Task: Add loading state for the "Listen" button 573e416.
-- [x] Task: Verify playback on different sentences and display modes (original/simplified) 573e416.
-- [x] Task: Ensure audio is stopped when navigating to the next/previous sentence 573e416.
+- [x] Task: Add loading state for the "Listen" button d034bbf.
+- [x] Task: Verify playback on different sentences and display modes (original/simplified) d034bbf.
+- [x] Task: Ensure audio is stopped when navigating to the next/previous sentence d034bbf.
 - [ ] Task: Conductor - User Manual Verification 'Refinement and Verification' (Protocol in workflow.md)
