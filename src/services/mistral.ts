@@ -293,8 +293,10 @@ export async function getSynonyms(apiKey: string, sentences: string[]): Promise<
 export interface MistralVoice {
   id: string;
   name: string;
-  description: string;
-  example: string;
+  description?: string;
+  example?: string;
+  user_id?: string | null;
+  userId?: string | null;
 }
 
 export async function fetchVoices(apiKey: string): Promise<MistralVoice[]> {
@@ -306,12 +308,30 @@ export async function fetchVoices(apiKey: string): Promise<MistralVoice[]> {
 
   const response = await withRetry(() => client.audio.voices.list());
   
-  // Handle both { voices: [...] } and direct array response
+  // Handle various response formats from different SDK versions/API endpoints
+  let items: any[] = [];
   if (Array.isArray(response)) {
-    return response as MistralVoice[];
+    items = response;
+  } else {
+    const anyResponse = response as any;
+    items = anyResponse.items || anyResponse.voices || [];
   }
   
-  return ((response as any).voices || []) as MistralVoice[];
+  console.log("Mistral API returned", items.length, "total voices.");
+  if (items.length > 0) {
+    console.log("First voice keys:", Object.keys(items[0]));
+    console.log("First voice sample data:", JSON.stringify(items[0]));
+  }
+  
+  // Filter only voices with user_id or userId (user-created voices)
+  const filtered = items.filter(voice => {
+    const uid = voice.user_id !== undefined ? voice.user_id : voice.userId;
+    return uid !== null && uid !== undefined;
+  });
+  
+  console.log("Filtered to", filtered.length, "user voices.");
+  
+  return filtered as MistralVoice[];
 }
 
 export async function getTextToSpeech(apiKey: string, input: string, voiceId?: string): Promise<string> {
