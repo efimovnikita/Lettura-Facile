@@ -23,7 +23,7 @@ Lettura-Facile is a language-learning reading assistant designed to make complex
 5. **Text Import:** Support for pasting or uploading custom text for analysis.
 6. **Background Synonym Extraction**: Automatic identification of complex Italian words (CEFR level B1 or higher) with contextual synonym generation (ideally A1-A2) for enhanced vocabulary support.
 7. **Interactive Synonym Display:** On-demand visual representation of synonyms above complex words in the original text, allowing users to toggle visibility to test their vocabulary.
-8. **AI-Powered Text-to-Speech:** On-demand audio generation for the current sentence using Mistral AI's TTS service, allowing users to hear the correct pronunciation.
+8. **AI-Powered Text-to-Speech:** On-demand audio generation for the current sentence using Mistral AI's TTS service, with customizable voice selection in settings.
 
 ## User Experience Guidelines
 - **Minimalist Interface:** Focus on the text with no distractions.
