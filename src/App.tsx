@@ -129,25 +129,27 @@ const [translation, setTranslation] = useState<string | null>(null);
     });
   }, [text, sentences, currentIndex, mistralKey, selectedVoice, sentiments, synonyms]);
 
-  // Fetch voices when key changes
+  // Fetch voices when key changes (debounced)
   useEffect(() => {
     if (!mistralKey) {
       setVoices([]);
       return;
     }
 
-    const loadVoices = async () => {
+    const timer = setTimeout(async () => {
       try {
+        console.log("Fetching Mistral voices...");
         const list = await fetchVoices(mistralKey);
+        console.log("Voices fetched successfully:", list);
         setVoices(list);
         setVoiceError(null);
       } catch (err: any) {
         console.error("Failed to fetch voices:", err);
         setVoiceError("Impossibile caricare le voci Mistral.");
       }
-    };
+    }, 1000); // 1 second debounce
 
-    loadVoices();
+    return () => clearTimeout(timer);
   }, [mistralKey]);
 
   // Scroll to top when sentence or display mode changes
