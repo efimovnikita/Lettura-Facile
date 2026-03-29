@@ -12,6 +12,10 @@ describe('SettingsPanel', () => {
     showWordList: false,
     setShowWordList: vi.fn(),
     clearDictionary: vi.fn(),
+    selectedVoice: 'v1',
+    setSelectedVoice: vi.fn(),
+    voices: [],
+    voiceError: null,
   };
 
   beforeEach(() => {

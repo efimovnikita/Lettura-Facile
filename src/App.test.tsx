@@ -41,7 +41,15 @@ vi.mock('./services/mistral', () => ({
     simplify: vi.fn(),
     translate: vi.fn(),
     analyzeSentiment: vi.fn(),
+    fetchVoices: vi.fn().mockResolvedValue([]),
   })),
+  fetchVoices: vi.fn().mockResolvedValue([]),
+  translateWord: vi.fn(),
+  translateSentence: vi.fn(),
+  simplifySentence: vi.fn(),
+  getSentiments: vi.fn().mockResolvedValue([]),
+  getSynonyms: vi.fn().mockResolvedValue([]),
+  getTextToSpeech: vi.fn(),
 }));
 
 describe('App Component - Difficulty Toggle', () => {

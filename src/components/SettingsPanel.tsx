@@ -1,6 +1,7 @@
 import React from 'react';
-import { Trash2, ChevronUp, ChevronDown } from 'lucide-react';
+import { Trash2, ChevronUp, ChevronDown, AlertCircle } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import { MistralVoice } from '../services/mistral';
 
 interface SettingsPanelProps {
   mistralKey: string;
@@ -9,6 +10,10 @@ interface SettingsPanelProps {
   showWordList: boolean;
   setShowWordList: (show: boolean) => void;
   clearDictionary: () => void;
+  selectedVoice: string;
+  setSelectedVoice: (id: string) => void;
+  voices: MistralVoice[];
+  voiceError: string | null;
 }
 
 export const SettingsPanel: React.FC<SettingsPanelProps> = ({
@@ -18,6 +23,10 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
   showWordList,
   setShowWordList,
   clearDictionary,
+  selectedVoice,
+  setSelectedVoice,
+  voices,
+  voiceError,
 }) => {
   return (
     <div className="mb-6 p-5 bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl animate-fade-in-down transition-colors duration-500">
@@ -38,6 +47,37 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
           className="w-full px-3 py-2 border border-stone-300 dark:border-stone-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-inner"
         />
       </div>
+
+      {/* Voice Selection */}
+      {mistralKey && (
+        <div className="mb-4 animate-fade-in">
+          <label htmlFor="voice-select" className="block text-xs font-medium text-stone-500 dark:text-stone-400 mb-1">
+            Voce
+          </label>
+          <select
+            id="voice-select"
+            value={selectedVoice}
+            onChange={(e) => setSelectedVoice(e.target.value)}
+            disabled={voices.length === 0}
+            className="w-full px-3 py-2 border border-stone-300 dark:border-stone-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-inner disabled:opacity-50"
+          >
+            {voices.length === 0 && !voiceError && (
+              <option value="">Caricamento voci...</option>
+            )}
+            {voices.map((voice) => (
+              <option key={voice.id} value={voice.id}>
+                {voice.name} ({voice.description})
+              </option>
+            ))}
+          </select>
+          {voiceError && (
+            <div className="mt-1 flex items-center gap-1 text-[10px] text-red-500 font-medium">
+              <AlertCircle className="w-3 h-3" />
+              {voiceError}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Compact Theme Toggle Switch */}
       <div className="mb-5 flex items-center justify-between bg-white dark:bg-stone-800/50 p-4 rounded-lg border border-stone-100 dark:border-stone-800 shadow-sm">

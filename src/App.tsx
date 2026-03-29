@@ -6,7 +6,7 @@ import {
   Volume2, Square
 } from 'lucide-react';
 import { AppState, saveState, loadState, splitIntoSentences, Difficulty, SentimentData, DisplayMode, SynonymData } from './utils';
-import { translateWord, translateSentence, simplifySentence, getSentiments, getSynonyms, getTextToSpeech } from './services/mistral';
+import { translateWord, translateSentence, simplifySentence, getSentiments, getSynonyms, getTextToSpeech, fetchVoices, MistralVoice } from './services/mistral';
 import { useDictionary } from './hooks/useDictionary';
 import { WordRenderer } from './components/WordRenderer';
 import { SettingsPanel } from './components/SettingsPanel';
@@ -14,7 +14,7 @@ import { ThemeToggle } from './components/ThemeToggle';
 import { ModeSwitch, Mode } from './components/ModeSwitch';
 import { SentenceDisplay } from './components/SentenceDisplay';
 
-const APP_VERSION = 'v1.8.0';
+const APP_VERSION = 'v1.8.1';
 
 const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: boolean }) => {
   if (isLoading) return <Loader2 className="w-4 h-4 text-stone-300 animate-spin" />;
@@ -54,6 +54,9 @@ const ToneIndicator = ({ data, isLoading }: { data?: SentimentData, isLoading?: 
 
 export default function App() {
   const [mistralKey, setMistralKey] = useState('');
+  const [selectedVoice, setSelectedVoice] = useState('c48524bb-3f27-4fd9-863c-c63c26564b04'); // Default
+  const [voices, setVoices] = useState<MistralVoice[]>([]);
+  const [voiceError, setVoiceError] = useState<string | null>(null);
   const [text, setText] = useState('');
   const [sentences, setSentences] = useState<string[]>([]);
   const [sentiments, setSentiments] = useState<Record<number, SentimentData>>({});
@@ -97,6 +100,7 @@ const [translation, setTranslation] = useState<string | null>(null);
     const loaded = loadState();
     if (loaded) {
       setMistralKey(loaded.mistralKey || '');
+      setSelectedVoice(loaded.selectedVoice || 'c48524bb-3f27-4fd9-863c-c63c26564b04');
       setText(loaded.text || '');
       setSentences(loaded.sentences || []);
       setSentiments(loaded.sentiments || {});
@@ -118,11 +122,33 @@ const [translation, setTranslation] = useState<string | null>(null);
       sentences,
       currentSentenceIndex: currentIndex,
       mistralKey,
+      selectedVoice,
       difficulty: 'original', // Placeholder for backward compatibility
       sentiments,
       synonyms
     });
-  }, [text, sentences, currentIndex, mistralKey, sentiments, synonyms]);
+  }, [text, sentences, currentIndex, mistralKey, selectedVoice, sentiments, synonyms]);
+
+  // Fetch voices when key changes
+  useEffect(() => {
+    if (!mistralKey) {
+      setVoices([]);
+      return;
+    }
+
+    const loadVoices = async () => {
+      try {
+        const list = await fetchVoices(mistralKey);
+        setVoices(list);
+        setVoiceError(null);
+      } catch (err: any) {
+        console.error("Failed to fetch voices:", err);
+        setVoiceError("Impossibile caricare le voci Mistral.");
+      }
+    };
+
+    loadVoices();
+  }, [mistralKey]);
 
   // Scroll to top when sentence or display mode changes
   useEffect(() => {
@@ -511,7 +537,7 @@ const [translation, setTranslation] = useState<string | null>(null);
     setIsAudioLoading(true);
     setError(null);
     try {
-      const base64 = await getTextToSpeech(mistralKey, currentSentenceText);
+      const base64 = await getTextToSpeech(mistralKey, currentSentenceText, selectedVoice);
 
       if (!base64) {
         throw new Error("No audio data received from service");
@@ -639,6 +665,10 @@ const [translation, setTranslation] = useState<string | null>(null);
                 showWordList={showWordList}
                 setShowWordList={setShowWordList}
                 clearDictionary={clearDictionary}
+                selectedVoice={selectedVoice}
+                setSelectedVoice={setSelectedVoice}
+                voices={voices}
+                voiceError={voiceError}
               />
             )}
             {/* === КОНЕЦ ПАНЕНИ НАСТРОЕК === */}
