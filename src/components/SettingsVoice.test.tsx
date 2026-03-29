@@ -111,4 +111,23 @@ describe('SettingsPanel - Voice Selection', () => {
 
     expect(screen.getByText(/Could not load voices/i)).toBeInTheDocument();
   });
+
+  it('should not crash if voices prop is undefined', () => {
+    renderWithTheme(
+      <SettingsPanel
+        mistralKey="valid-key"
+        setMistralKey={() => {}}
+        dictionary={{}}
+        showWordList={false}
+        setShowWordList={() => {}}
+        clearDictionary={() => {}}
+        selectedVoice=""
+        setSelectedVoice={() => {}}
+        voices={undefined as any}
+        voiceError={null}
+      />
+    );
+
+    expect(screen.getByText(/Caricamento voci/i)).toBeInTheDocument();
+  });
 });

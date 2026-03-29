@@ -306,7 +306,7 @@ export async function fetchVoices(apiKey: string): Promise<MistralVoice[]> {
 
   const response = await withRetry(() => client.audio.voices.list());
 
-  return response.voices as MistralVoice[];
+  return (response.voices || []) as MistralVoice[];
 }
 
 export async function getTextToSpeech(apiKey: string, input: string, voiceId?: string): Promise<string> {

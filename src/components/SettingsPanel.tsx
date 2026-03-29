@@ -58,13 +58,13 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
             id="voice-select"
             value={selectedVoice}
             onChange={(e) => setSelectedVoice(e.target.value)}
-            disabled={voices.length === 0}
+            disabled={(voices || []).length === 0}
             className="w-full px-3 py-2 border border-stone-300 dark:border-stone-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-inner disabled:opacity-50"
           >
-            {voices.length === 0 && !voiceError && (
+            {(voices || []).length === 0 && !voiceError && (
               <option value="">Caricamento voci...</option>
             )}
-            {voices.map((voice) => (
+            {(voices || []).map((voice) => (
               <option key={voice.id} value={voice.id}>
                 {voice.name} ({voice.description})
               </option>
