@@ -290,7 +290,26 @@ export async function getSynonyms(apiKey: string, sentences: string[]): Promise<
   }
 }
 
-export async function getTextToSpeech(apiKey: string, input: string): Promise<string> {
+export interface MistralVoice {
+  id: string;
+  name: string;
+  description: string;
+  example: string;
+}
+
+export async function fetchVoices(apiKey: string): Promise<MistralVoice[]> {
+  const client = getMistralClient(apiKey);
+
+  if (!client.audio || !client.audio.voices) {
+    throw new Error("Your version of the Mistral SDK does not support voices list.");
+  }
+
+  const response = await withRetry(() => client.audio.voices.list());
+
+  return response.voices as MistralVoice[];
+}
+
+export async function getTextToSpeech(apiKey: string, input: string, voiceId?: string): Promise<string> {
   const client = getMistralClient(apiKey);
 
   if (!client.audio || !client.audio.speech) {
@@ -302,7 +321,7 @@ export async function getTextToSpeech(apiKey: string, input: string): Promise<st
     input,
     responseFormat: "mp3",
     stream: false,
-    voiceId: "c48524bb-3f27-4fd9-863c-c63c26564b04",
+    voiceId: voiceId || "c48524bb-3f27-4fd9-863c-c63c26564b04",
   }));
 
   // Mistral API returns audioData as base64 encoded string
